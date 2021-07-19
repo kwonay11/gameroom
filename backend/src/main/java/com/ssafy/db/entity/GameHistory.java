@@ -26,7 +26,7 @@ public class GameHistory extends BaseEntity{
 
     private LocalDateTime insertedTime; // 생성시간
 
-    private int rank; // 게임 끝날때 자신의 순위 기록용
+    private int ranking; // 게임 끝날때 자신의 순위 기록용
 
 
 }
