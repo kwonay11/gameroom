@@ -26,7 +26,7 @@
 
 </style>
 <script>
-import LoginDialog from './components/login-dialog'
+import Login from '../Accounts/Login'
 import MainHeader from './components/main-header'
 import MainSidebar from './components/main-sidebar'
 import MainFooter from './components/main-footer'
@@ -37,7 +37,7 @@ export default {
     MainHeader,
     MainSidebar,
     MainFooter,
-    LoginDialog
+    Login
   },
   data () {
     return {
