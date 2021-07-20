@@ -18,7 +18,7 @@
         </li>
      </ul>
      <router-link  id="a" :to="{ name: 'MainPage' }">
-     <img src="@/assets/로고 (2).png" alt="logo"></router-link>
+     <img src="@/assets/logo.png" alt="logo"></router-link>
     </nav>
 
     <router-view/>
