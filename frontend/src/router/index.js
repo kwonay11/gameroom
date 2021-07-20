@@ -4,7 +4,7 @@ import MainPage from '../views/MainPage.vue'
 import Search from '@/views/Search.vue'
 import Login from '@/views/Accounts/Login.vue'
 import Signup from '@/views/Accounts/Signup.vue'
-import MyPage from '@/views/Accounts/MyPage.vue'
+import MyPage from '@/views/Accounts/Mypage.vue'
 
 
 Vue.use(VueRouter)
@@ -31,7 +31,7 @@ const routes = [{
     },
     {
         path: '/mypage',
-        name: 'MyPage',
+        name: 'Mypage',
         component: MyPage
     },
 

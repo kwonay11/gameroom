@@ -1,6 +1,6 @@
 <template>
   <div>        
-    <body>
+    <h1>Hello</h1>
       <div class="v194_2">
         <div class="v194_4">
           <div class="v194_6">
@@ -29,7 +29,7 @@
           </div>
         </div>
       </div>
-    </body>
+    
  </div>
 
 </template>
@@ -55,7 +55,8 @@ body {
   height: 1024px;
   /* background: rgba(247,247,255,0); */
   opacity: 1;
-  position: absolute;
+  /* 고칠곳 */
+  /* position: absolute; */
   margin: 0 auto;
   border-top-right-radius: 20px;
   border-bottom-left-radius: 20px;
