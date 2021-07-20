@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    검색
+  </div>
 </template>
 
 <script>
