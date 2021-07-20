@@ -2,6 +2,7 @@
   <div id="app">
     <div id="nav">
       <router-link :to="{ name: 'MainPage' }">Main</router-link> |
+      <router-link :to="{ name: 'Login' }">Login</router-link> |
       <!-- <router-link to="/about">Login</router-link> -->
     </div>
     <router-view/>
