@@ -4,7 +4,7 @@
 
 <script>
 export default {
-     name: "Signup",
+     name: "Search",
 
 }
 </script>

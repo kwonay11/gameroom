@@ -1,15 +1,14 @@
-<template lang="">
-  <div>
-      fdgfdgsdfgsf
-  </div>
+<template>
+  <div></div>
 </template>
+
 <script>
 export default {
-  name: 'Login',
-
+     name: "Login",
 
 }
 </script>
-<style lang="">
+
+<style>
 
 </style>
