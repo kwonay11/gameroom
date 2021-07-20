@@ -1,5 +1,5 @@
 <template>
-  <div class='back'>        
+  <div>        
     <body>
       <div class="v194_2">
         <div class="v194_4">
@@ -48,12 +48,7 @@ export default {
 body {
   font-size: 14px;
 }
-.back {
-  background: url('~@/assets/landscape-5547401.png');
-  min-height: 100%;
-  background-position: center;
-  background-size: cover;
-}
+
 .v194_2 {
   width: 100%;
   height: 1024px;
