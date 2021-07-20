@@ -1,6 +1,5 @@
 <template>
   <div>        
-    <h1>Hello</h1>
       <div class="v194_2">
         <div class="v194_4">
           <div class="v194_6">
