@@ -4,7 +4,7 @@
     :gutter="10">
     <div class="contents">
       Copyright © SAMSUNG All Rights Reserved.
-      푸터수정222222
+      푸터수정222222 v프로젝트 수정
     </div>
   </el-row>
 </template>
