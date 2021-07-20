@@ -1,5 +1,7 @@
 <template>
-  <div></div>
+  <div>
+    로그인
+  </div>
 </template>
 
 <script>
