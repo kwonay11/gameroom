@@ -69,7 +69,7 @@ body {
   align-items: center;
 }
 .id_left {
-  
+
   width: 77px;
   height: 68px;
   background: rgba(49,46,46,0.5);
