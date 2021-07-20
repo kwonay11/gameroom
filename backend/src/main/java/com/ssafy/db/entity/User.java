@@ -26,4 +26,11 @@ public class User extends BaseEntity{
     @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //json 표시 안되게 하는 어노테이션
     private String password;
+
+    //닉네임 수정용
+    public void changeNickName(String nickName) {
+        this.nickName =nickName;
+    }
+
+
 }

@@ -1,14 +1,13 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.request.UserRegisterPostReq;
@@ -74,5 +73,51 @@ public class UserController {
 		User user = userService.getUserByUserId(userId);
 		
 		return ResponseEntity.status(200).body(UserRes.of(user));
+	}
+
+
+
+
+
+	@DeleteMapping(value = "/{userid}")
+	@ApiOperation(value = "회원 본인 정보 삭제", notes = "로그인한 회원 본인의 정보를 삭제한다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<? extends BaseResponseBody> remove(@PathVariable("userid") String userId ,
+															 @ApiIgnore Authentication authentication) {
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails(); //JWT토큰을 통한 유저정보 가져오기
+		String username = userDetails.getUsername(); //username: 현재 로그인된 유저 닉네임
+		if (username.equals(userId)) { // 현재 로그인된 유저와 삭제하려는 유저가 같으면 service 실행
+
+			userService.removeUser(userId);
+			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
+		}
+		return ResponseEntity.status(401).body(BaseResponseBody.of(401,"fail"));
+
+
+	}
+	@PutMapping(value = "/{userid}")
+	@ApiOperation(value = "회원 본인 닉네임 수정", notes = "로그인한 회원 본인의 닉네임을 수정한다.")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<?> modify(@PathVariable("userid") String userID,
+										 @RequestBody UserDTO userDTO,
+										 @ApiIgnore Authentication authentication) {
+
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails(); //JWT 토큰을 통한 유저 정보 가져오기
+		String username = userDetails.getUsername(); // username: 현재 로그인된 유저 닉네임
+		if (username.equals(userID)) { //로그인된 유저와 수정하려는 유저가 같으면 service 실행
+			User user = userService.getUserByUserId(userID);
+			userDTO.setUserId(userID);
+			userService.modifyUser(userDTO);
+			return ResponseEntity.status(200).body(UserRes.of(user));
+		}
+		return ResponseEntity.status(401).body(BaseResponseBody.of(401, "fail"));
 	}
 }
