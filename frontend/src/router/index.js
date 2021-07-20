@@ -9,39 +9,38 @@ import MyPage from '@/views/Accounts/MyPage.vue'
 
 Vue.use(VueRouter)
 
-const routes = [
-  {
-    path: '/main',
-    name: 'MainPage',
-    component: MainPage
-  },
-  {
-    path: '/search',
-    name: 'Search',
-    component: Search
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/signup',
-    name: 'Signup',
-    component: Signup
-  },
-  {
-    path: '/mypage',
-    name: 'MyPage',
-    component: MyPage
-  },
-  
+const routes = [{
+        path: '/main',
+        name: 'MainPage',
+        component: MainPage
+    },
+    {
+        path: '/search',
+        name: 'Search',
+        component: Search
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login
+    },
+    {
+        path: '/signup',
+        name: 'Signup',
+        component: Signup
+    },
+    {
+        path: '/mypage',
+        name: 'MyPage',
+        component: MyPage
+    },
+
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
 
 export default router
