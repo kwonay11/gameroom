@@ -39,18 +39,18 @@ body {
 }
 .login_box {
   width: 600px;
-  height: 62vh;
+  height: 58vh;
   border-radius: 15px;
   backdrop-filter: blur(10px);
   background: rgba(101, 51, 126, 0.6);
   position: relative;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content:space-around;
-  padding: 5px 0 5px 0;
+  padding: 10px 0 10px 0;
 }
 
 .circle {
