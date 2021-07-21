@@ -74,7 +74,7 @@ public class UserController {
 		return ResponseEntity.status(200).body(UserRes.of(user));
 	}
 
-
+	//비밀번호 수정
 	@PutMapping("/{id}")
 	@ApiOperation(value= "비밀 번호 수정")
 	@ApiResponses({
