@@ -35,6 +35,8 @@
   text-align: center;
   color: #000000;
   background: url("./assets/landscape-5547401.png");
+  height: 100vh;
+  background-size:100% 100%;
 }
 
 // nav {
