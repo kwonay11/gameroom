@@ -1,14 +1,12 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.UserUpdatePasswordPostReq;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.request.UserRegisterPostReq;
@@ -33,7 +31,7 @@ import springfox.documentation.annotations.ApiIgnore;
  */
 @Api(value = "유저 API", tags = {"User"})
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/users")
 public class UserController {
 	
 	@Autowired
@@ -75,4 +73,27 @@ public class UserController {
 		
 		return ResponseEntity.status(200).body(UserRes.of(user));
 	}
+
+
+	@PutMapping("/{id}")
+	@ApiOperation(value= "비밀 번호 수정")
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "성공"),
+			@ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 500, message = "회원정보 수정 실패")
+	})
+	private ResponseEntity<?> updateUserInfo(
+//			id 받기 위해서 @PathVariable사용
+			@ApiParam(value = "유저 id", required = true, example = "ssafy") @PathVariable String id,
+			@ApiParam(value = "업데이트 할 유저 정보", required = true) @RequestBody UserUpdatePasswordPostReq userReq,
+																	 @ApiIgnore Authentication authentication) {
+		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails(); //jwt토큰을 통해 유저정보가져오기
+		String username = userDetails.getUsername();
+		if(username.equals(id)) { //토큰 같은지 확인
+			return new ResponseEntity<>(userService.updateUserPassword(id, userReq), HttpStatus.OK);
+		}
+		return ResponseEntity.status(401).body(BaseResponseBody.of(401, "fail"));
+	}
 }
+
