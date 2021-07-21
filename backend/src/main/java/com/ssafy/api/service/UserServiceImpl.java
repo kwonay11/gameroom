@@ -58,9 +58,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void modifyUser(UserDTO userDTO) {
 		/* 유저 정보 수정
-		* 파라미터로 들어온 userDTO에서 userId를 뽑음
-		* userId를 기준으로 유저찾음
-		* 유저 닉네임 변경 후 저장 */
+		 * 파라미터로 들어온 userDTO에서 userId를 뽑음
+		 * userId를 기준으로 유저찾음
+		 * 유저 닉네임 변경 후 저장 */
 		String userId = userDTO.getUserId();
 
 		Optional<User> result = userRepository.findByUserId(userId);
@@ -70,6 +70,7 @@ public class UserServiceImpl implements UserService {
 			user.changeNickName(userDTO.getNickName());
 			userRepository.save(user);
 		}
+	}
 	//비밀번호 수정
 	@Override
 	public ResponseEntity updateUserPassword(String id, UserUpdatePasswordPostReq userReq){

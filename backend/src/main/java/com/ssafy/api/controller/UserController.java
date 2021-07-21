@@ -81,44 +81,48 @@ public class UserController {
 
 
 
-	@DeleteMapping(value = "/{userid}")
+	@DeleteMapping(value = "/{id}")
 	@ApiOperation(value = "회원 본인 정보 삭제", notes = "로그인한 회원 본인의 정보를 삭제한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
 			@ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<? extends BaseResponseBody> remove(@PathVariable("userid") String userId ,
+	public ResponseEntity<? extends BaseResponseBody> remove(@PathVariable("id") String id ,
 															 @ApiIgnore Authentication authentication) {
 		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails(); //JWT토큰을 통한 유저정보 가져오기
 		String username = userDetails.getUsername(); //username: 현재 로그인된 유저 닉네임
-		if (username.equals(userId)) { // 현재 로그인된 유저와 삭제하려는 유저가 같으면 service 실행
+		if (username.equals(id)) { // 현재 로그인된 유저와 삭제하려는 유저가 같으면 service 실행
 
-			userService.removeUser(userId);
+			userService.removeUser(id);
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		}
 		return ResponseEntity.status(401).body(BaseResponseBody.of(401,"fail"));
 
 
 	}
-	@PutMapping(value = "/{userid}")
+	@PutMapping(value = "/nickname/{id}")
 	@ApiOperation(value = "회원 본인 닉네임 수정", notes = "로그인한 회원 본인의 닉네임을 수정한다.")
 	@ApiResponses({
 			@ApiResponse(code = 200, message = "성공"),
 			@ApiResponse(code = 401, message = "인증 실패"),
 			@ApiResponse(code = 500, message = "서버 오류")
 	})
-	public ResponseEntity<?> modifyuserNickname(@PathVariable("userid") String userID,
+	public ResponseEntity<?> modifyuserNickname(@PathVariable("id") String id,
 										 @RequestBody UserDTO userDTO,
 										 @ApiIgnore Authentication authentication) {
 
-		SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails(); //JWT 토큰을 통한 유저 정보 가져오기
+		SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails(); //JWT 토큰을 통한 유저 정보 가져오기
 		String username = userDetails.getUsername(); // username: 현재 로그인된 유저 닉네임
-		if (username.equals(userID)) { //로그인된 유저와 수정하려는 유저가 같으면 service 실행
-			User user = userService.getUserByUserId(userID);
-			userDTO.setUserId(userID);
+		if (username.equals(id)) { //로그인된 유저와 수정하려는 유저가 같으면 service 실행
+			User user = userService.getUserByUserId(id);
+			userDTO.setUserId(id);
 			userService.modifyUser(userDTO);
 			return ResponseEntity.status(200).body(UserRes.of(user));
+		}
+		return ResponseEntity.status(401).body(BaseResponseBody.of(401, "fail"));
+	}
+
 	//비밀번호 수정
 	@PutMapping("/{id}")
 	@ApiOperation(value= "비밀 번호 수정")
