@@ -4,16 +4,16 @@
       <div class="circle"><img class="card__image" src="@/assets/user.png" alt="login"/></div>
       <div class="id_pw">
         <div class="id_left"><img class="left_image" src="@/assets/profile.png" alt="user"/></div>
-        <div class="id_right"><input id="id" class="card__input" placeholder="ID" style="height:66px" type="text" /></div>
+        <div class="id_right"><input id="id" class="card__input" placeholder="ID"  type="text" /></div>
       </div>
       <div class="id_pw">
         <div class="pw_left"><img class="left_image" src="@/assets/password.png" alt="pw"/></div>
-        <div class="pw_right"><input id="password" class="card__input" placeholder="Password" style="height:66px" type="password" /></div>
+        <div class="pw_right"><input id="password" class="card__input" placeholder="Password"  type="password" /></div>
       </div>
-      <div class="signup_box">
+      <div class="login_button">
         <router-link :to="{ name: 'MainPage' }" class='signup_text'>Login</router-link>
       </div>
-      <div class="signup_box">
+      <div class="login_button">
         <router-link :to="{ name: 'Signup' }" class='signup_text'>GO TO SIGN UP</router-link>
       </div>
     </div>
@@ -27,10 +27,7 @@ export default {
 }
 </script>
 
-<style >
-
-
-
+<style>
 
 
 .login_box {
@@ -48,7 +45,6 @@ export default {
   justify-content:space-around;
   padding: 10px 0 10px 0;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  
 }
 
 .circle {
@@ -61,15 +57,16 @@ export default {
 
 .id_pw {
   width: 482px;
-  height: 82px;
+  height: 55px;
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 0px;
 }
 .id_left {
 
   width: 77px;
-  height: 68px;
+  height: 55px;
   background: rgba(49,46,46,0.5);
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
@@ -78,7 +75,7 @@ export default {
 }
 .id_right {
   width: 405px;
-  height: 68px;
+  height: 55px;
   background: rgba(219,219,219,0.6000000238418579);
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -86,7 +83,7 @@ export default {
 }
 .pw_left {
   width: 77px;
-  height: 68px;
+  height: 55px;
   background: rgba(49,46,46,0.5);
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
@@ -94,19 +91,19 @@ export default {
 }
 .pw_right {
   width: 405px;
-  height: 68px;
+  height: 55px;
   background: rgba(219,219,219,0.6000000238418579);
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
-.signup_box {
+.login_button {
  width: 482px;
- height: 65px;
+ height: 55px;
  background: rgba(49,46,46,0.5);
- padding-top: 10px;
  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
  border-radius: 20px;
+padding-top: 8px;
 }
 .signup_text {
  color: rgba(255,255,255,1);
@@ -116,8 +113,8 @@ export default {
 }
 
 .left_image {
-  max-width: 60%;
-  padding-top: 10px;
+  max-width: 50%;
+  padding-top: 8px;
 }
 
 .card__image {
@@ -136,7 +133,6 @@ export default {
 }
 .card__input:focus, .card__input:active {
   background: rgba(254, 254, 254, 0.08);
-  
   outline: none;
 }
 

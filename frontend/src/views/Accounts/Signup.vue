@@ -4,19 +4,19 @@
       <div class="circle"><img class="card__image" src="@/assets/follower (1).png" alt="login"/></div>
       <div class="id_pw">
         <div class="left"><img class="left_image" src="@/assets/profile.png" alt="id"/></div>
-        <div class="right"><input id="id" class="card__input" placeholder="ID" style="height:66px" type="text" /></div>
+        <div class="right"><input id="id" class="card__input" placeholder="ID" type="text" /></div>
       </div>
       <div class="id_pw">
         <div class="left"><img class="left_image" src="@/assets/nickname.png" alt="nickname"/></div>
-        <div class="right"><input id="nickname" class="card__input" placeholder="Nickname" style="height:66px" type="text" /></div>
+        <div class="right"><input id="nickname" class="card__input" placeholder="Nickname"  type="text" /></div>
       </div>
       <div class="id_pw">
         <div class="left"><img class="left_image" src="@/assets/lock.png" alt="pw"/></div>
-        <div class="right"><input id="password" class="card__input" placeholder="Password" style="height:66px" type="password" /></div>
+        <div class="right"><input id="password" class="card__input" placeholder="Password"  type="password" /></div>
       </div>
       <div class="id_pw">
         <div class="left"><img class="left_image" src="@/assets/lock2.png" alt="pw_check"/></div>
-        <div class="right"><input id="password" class="card__input" placeholder="Password Check" style="height:66px" type="password" /></div>
+        <div class="right"><input id="password" class="card__input" placeholder="Password Check"  type="password" /></div>
       </div>
       <div class="signup_box">
         <router-link :to="{ name: 'Login' }" class='signup_text'>SIGN UP</router-link>
@@ -34,12 +34,9 @@ export default {
 
 <style >
 
-
-
-
 .signup {
   width: 35%;
-  height: 62vh;
+  height: 58vh;
   border-radius: 15px;
   backdrop-filter: blur(10px);
   background: rgba(101, 51, 126, 0.6);
@@ -66,16 +63,15 @@ export default {
 
 .id_pw {
   width: 482px;
-  height: 82px;
+  height: 50px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-bottom : 20px;
   
 }
 .left {
   width: 77px;
-  height: 68px;
+  height: 50px;
   background: rgba(49,46,46,0.5);
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
@@ -83,7 +79,7 @@ export default {
 }
 .right {
   width: 405px;
-  height: 68px;
+  height: 50px;
   background: rgba(219,219,219,0.6000000238418579);
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
@@ -91,15 +87,15 @@ export default {
 }
 .signup_box {
  width: 482px;
- height: 65px;
+ height: 50px;
  background: rgba(49,46,46,0.5);
- padding-top: 10px;
+ padding-top: 8px;
  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 .signup_text {
  color: rgba(255,255,255,1);
  font-family: Roboto;
- font-size: 30px;
+ font-size: 28px;
  text-decoration: none;
 }
 
