@@ -49,7 +49,7 @@ export default {
         //  서버에서 요청 받아온게 res로 들어가게 되어있음
          axios.post(`${SERVER_URL}/users/login`, this.credentials)
          .then((userinfo) => {
-          //  들어온 res 콘솔에서 확인하고
+          //  들어온 userinfo 콘솔에서 확인하고
           console.log(userinfo)
           // 로그인 성공이면 변수 값 바꾸기
           
