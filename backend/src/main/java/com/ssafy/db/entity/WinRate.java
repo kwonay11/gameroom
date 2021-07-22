@@ -2,6 +2,7 @@ package com.ssafy.db.entity;
 
 import lombok.*;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -15,7 +16,7 @@ import javax.persistence.ManyToOne;
 @ToString(exclude = {"user","gameCategory"})
 public class WinRate extends BaseEntity{
 
-    @ManyToOne(fetch = FetchType.LAZY, )
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -51,9 +51,8 @@ public class UserServiceImpl implements UserService {
 	public void removeUser(String userId) {
 		// 유저 정보 삭제 (userId를 통한 삭제)
 		Optional<User> user = userRepository.findByUserId(userId);
-		if (user.isPresent()) {
-			userRepository.delete(user.get());
-		}
+		userRepository.delete(user.get());
+
 	}
 //
 	@Override
