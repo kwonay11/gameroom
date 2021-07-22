@@ -5,6 +5,7 @@ import Search from '@/views/Search.vue'
 import Login from '@/views/Accounts/Login.vue'
 import Signup from '@/views/Accounts/Signup.vue'
 import MyPage from '@/views/Accounts/Mypage.vue'
+import Creatroom from '@/views/Creatroom.vue'
 
 
 Vue.use(VueRouter)
@@ -33,6 +34,11 @@ const routes = [{
         path: '/mypage',
         name: 'Mypage',
         component: MyPage
+    },
+    {
+        path: '/createroom',
+        name: 'Creatroom',
+        component: Creatroom
     },
 
 ]
