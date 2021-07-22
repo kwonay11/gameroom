@@ -120,6 +120,7 @@
           <div class="front" style="background-image: url(https://unsplash.it/505/505/)">
             <div class="inner">
               <p>글자 맞추기</p>
+
             </div>
           </div>
           <div class="back">
@@ -148,88 +149,6 @@ export default {
 </script>
 
 <style>
-.back {
-  width: 100%;
-  height: 582px;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  opacity: 1;
-  position: relative;
-  top: 0px;
-  left: 0px;
-  overflow: hidden;
- 
-}
-.back2{
-  width: 91%;
-  height: 87%;
-  background: rgba(44,42,47,0.6000000238418579);
-  opacity: 1;
-  position: absolute;
-  top: 53px;
-  left: 79px;
-}
-.v14_252 {
-  width: 342px;
-  height: 231px;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  opacity: 1;
-  position: absolute;
-  top: 304px;
-  left: 411px;
-  overflow: hidden;
-}
-.room_img {
-  width: 248px;
-  height: 179px;
-  background: rgba(196,196,196,1);
-  opacity: 1;
-  position: absolute;
-  top: 29px;
-  left: 49px;
-}
-.btn_1 {
-  width: 132px;
-  height: 55px;
-  background: rgba(30,69,129,0.5);
-  opacity: 1;
-  position: absolute;
-  top: 129px;
-  left: 107px;
-  border: 1px solid rgba(255,255,255,1);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-
-.text {
-  width: 117px;
-  color: rgba(42,21,128,1);
-  position: absolute;
-  top: 77px;
-  left: 114px;
-  font-family: Roboto;
-  font-weight: Regular;
-  font-size: 24px;
-  opacity: 1;
-  text-align: center;
-}
-.v92_74 {
-  width: 40px;
-  height: 40px;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  opacity: 1;
-  position: absolute;
-  top: 41px;
-  left: 242px;
-  overflow: hidden;
-}
-
-
-
 .cols{
   display: -webkit-box;
   display: -ms-flexbox;
@@ -276,10 +195,10 @@ export default {
 }
 
 .back{
-  background: #cedce7;
-  background: -webkit-linear-gradient(45deg,  #cedce7 0%,#596a72 100%);
-  background: -o-linear-gradient(45deg,  #cedce7 0%,#596a72 100%);
-  background: linear-gradient(45deg,  #cedce7 0%,#596a72 100%);
+  background: #a7aed6;
+  background: -webkit-linear-gradient(45deg,  #cedce7 0%,#5751a3 100%);
+  background: -o-linear-gradient(45deg,  #cedce7 0%,#5751a3  100%);
+  background: linear-gradient(45deg,  #cedce7 0%,#5751a3  100%);
 }
 
 .front:after{
