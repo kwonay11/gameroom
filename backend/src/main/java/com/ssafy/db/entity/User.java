@@ -21,7 +21,8 @@ public class User extends BaseEntity{
 
     private String userId; // 로그인용 유저 아이디
     private String nickName; // 방에서 사용할 닉네임
-    private int exp; // 경험치
+    @Builder.Default
+    private int exp = 0; // 경험치
 
     @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //json 표시 안되게 하는 어노테이션
