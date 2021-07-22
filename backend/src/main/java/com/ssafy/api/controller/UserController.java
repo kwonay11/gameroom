@@ -1,6 +1,7 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.UserUpdateNicknamePutReq;
+import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.WinRateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,8 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.Optional;
+
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
  */
@@ -34,7 +37,10 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
-	
+
+	@Autowired
+	UserRepository userRepository;
+
 	@PostMapping()
 	@ApiOperation(value = "회원 가입", notes = "<strong>아이디와 패스워드</strong>를 통해 회원가입 한다.") 
     @ApiResponses({
@@ -45,13 +51,35 @@ public class UserController {
     })
 	public ResponseEntity<? extends BaseResponseBody> register(
 			@RequestBody @ApiParam(value="회원가입 정보", required = true) UserRegisterPostReq registerInfo) {
-		
+
+		if(userRepository.findByUserId(registerInfo.getId()).isPresent())  // 같은 id의 회원이 이미 존재하는 경우
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "already exist"));
+
+		if(registerInfo.getId().equals("") || registerInfo.getPassword().equals("") || registerInfo.getNickname().equals(""))  // 데이터 유효성검사 (수정해야함함)
+		return ResponseEntity.status(403).body(BaseResponseBody.of(403, "invalidate data"));
+
 		//임의로 리턴된 User 인스턴스. 현재 코드는 회원 가입 성공 여부만 판단하기 때문에 굳이 Insert 된 유저 정보를 응답하지 않음.
 		User user = userService.createUser(registerInfo);
 		
 		return ResponseEntity.status(201).body(BaseResponseBody.of(201, "true"));
 	}
 
+	@PostMapping("/check")
+	@ApiOperation(value = "아이디 중복체크", notes = "<strong>아이디</strong> 중복체크")
+	@ApiResponses({
+			@ApiResponse(code = 201, message = "성공"),
+			@ApiResponse(code = 401, message = "인증 실패"),
+			@ApiResponse(code = 404, message = "사용자 없음"),
+			@ApiResponse(code = 500, message = "서버 오류")
+	})
+	public ResponseEntity<? extends BaseResponseBody> idCheck(
+			@RequestBody @ApiParam(value="아이디", required = true) UserRegisterPostReq registerInfo) {
+
+		if(userRepository.findByUserId(registerInfo.getId()).isPresent())  // 같은 id의 회원이 이미 존재하는 경우
+			return ResponseEntity.status(403).body(BaseResponseBody.of(403, "already exist"));
+
+		return ResponseEntity.status(200).body(BaseResponseBody.of(200, "true"));
+	}
 
 	@Autowired
 	WinRateRepository winRateRepository;
