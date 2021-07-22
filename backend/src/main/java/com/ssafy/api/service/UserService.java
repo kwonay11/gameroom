@@ -20,7 +20,7 @@ public interface UserService {
 	default User dtoToEntity(UserUpdateNicknamePutReq userDTO) {
 		User user = User.builder()
 				.userId(userDTO.getUserId())
-				.nickName(userDTO.getNickName())
+				.nickname(userDTO.getNickname())
 				.exp(userDTO.getExp())
 				.build();
 		return user;
@@ -31,7 +31,7 @@ public interface UserService {
 		UserUpdateNicknamePutReq userDTO = UserUpdateNicknamePutReq.builder()
 				.userId(user.getUserId())
 				.id(user.getId())
-				.nickName(user.getNickName())
+				.nickname(user.getNickname())
 				.exp(user.getExp())
 				.build();
 

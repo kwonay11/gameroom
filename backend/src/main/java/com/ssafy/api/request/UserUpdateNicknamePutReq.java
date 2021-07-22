@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class UserUpdateNicknamePutReq {
     private Long id;
     private String userId; // 로그인용 유저 아이디
-    private String nickName; // 방에서 사용할 닉네임
+    private String nickname; // 방에서 사용할 닉네임
     private int exp; // 경험치
 }

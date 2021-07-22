@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne;
 @ToString(exclude = {"user","gameCategory"})
 public class WinRate extends BaseEntity{
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, )
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
