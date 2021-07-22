@@ -1,8 +1,13 @@
 <template>
   <div>
     <div class="btn">
-       <div class="button button--brightness"> <span>빠른시작</span></div>
-       <div class="button button--brightness"> <span>방만들기</span></div>
+
+       <router-link class="btn_text" :to="{ name: '#' }">
+         <div class="button button--brightness">빠른시작</div>
+        </router-link>
+       <router-link class="btn_text" :to="{ name: 'Creatroom' }">
+         <div class="button button--brightness">방만들기</div>
+        </router-link>
     </div>
   </div>
 </template>
@@ -22,10 +27,8 @@ export default {
   height: 85px;
   left: 98px;
   top: 316px;
-  
   display: grid;
   grid-template-columns: repeat(5, auto);
-  
 }
 .button {
   width: 100px;
@@ -34,12 +37,23 @@ export default {
   position: relative;
   display: grid;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  
 }
-.button span {
+.btn_text {
   margin: auto;
   font-weight: 600;
   display: block;
   font-size: 1em;
+  text-decoration: none;
+  
+}
+.btn span {
+  margin: auto;
+  font-weight: 600;
+  display: block;
+  font-size: 1em;
+  text-decoration: none;
+  
 }
 /*****BUTTON BRIGHTNESS*****/
 .button--brightness {
@@ -49,6 +63,8 @@ export default {
   border-radius: 5px;
   overflow: hidden;
   transition: background-color 0.7s;
+  padding-top:4px;
+
 }
 .button--brightness:before, .button--brightness:after {
   content: "";
