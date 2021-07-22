@@ -1,7 +1,7 @@
 <template>
   <div>        
     <div class="login_box">
-      <div class="circle"><img class="card__image" src="@/assets/user.png" alt="login"/></div>
+      <div class="circle"><img class="card_image" src="@/assets/user.png" alt="login"/></div>
       <div class="id_pw">
         <div class="id_left"><img class="left_image" src="@/assets/profile.png" alt="user"/></div>
         <div class="id_right"><input id="id" class="card__input" placeholder="ID"  type="text" /></div>
@@ -117,9 +117,9 @@ padding-top: 8px;
   padding-top: 8px;
 }
 
-.card__image {
-  border-radius: 50%;
-  max-width: 100%;
+.card_image {
+  max-width: 87%;
+  padding-top: 7px;
 }
 .card__input {
   border-radius: 20px;
