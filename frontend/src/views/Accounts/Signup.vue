@@ -7,7 +7,7 @@
         <div class="right"><input id="id" class="card__input" placeholder="ID" style="height:66px" type="text" /></div>
       </div>
       <div class="id_pw">
-        <div class="left"><img class="left_image" src="@/assets/nickname.png" alt="nickname"/></div>
+        <div class="left"><img class="left_image" src="@/assets/nick.png" alt="nickname"/></div>
         <div class="right"><input id="nickname" class="card__input" placeholder="Nickname" style="height:66px" type="text" /></div>
       </div>
       <div class="id_pw">
@@ -55,13 +55,13 @@ export default {
 }
 
 .circle {
-  width: 153px;
+   width: 153px;
   height: 152px;
   background: rgba(219, 214, 214, 0.1);
   border-radius: 50%;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  margin-bottom : 20px;
-  margin-top : 20px;
+ 
+
 }
 
 .id_pw {
@@ -104,8 +104,9 @@ export default {
 }
 
 .card__image {
-  border-radius: 50%;
-  max-width: 100%;
+  max-width: 76%;
+  padding-top: 7px;
+  
 }
 .card__input {
   border-radius: 20px;
