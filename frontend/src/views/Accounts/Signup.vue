@@ -1,33 +1,89 @@
 <template>
   <div>       
-    <div class="signup">
-      <div class="circle"><img class="card__image" src="@/assets/follower (1).png" alt="login"/></div>
-      <div class="id_pw">
-        <div class="left"><img class="left_image" src="@/assets/profile.png" alt="id"/></div>
-        <div class="right"><input id="id" class="card__input" placeholder="ID" type="text" /></div>
-      </div>
-      <div class="id_pw">
-        <div class="left"><img class="left_image" src="@/assets/nickname.png" alt="nickname"/></div>
-        <div class="right"><input id="nickname" class="card__input" placeholder="Nickname"  type="text" /></div>
-      </div>
-      <div class="id_pw">
-        <div class="left"><img class="left_image" src="@/assets/lock.png" alt="pw"/></div>
-        <div class="right"><input id="password" class="card__input" placeholder="Password"  type="password" /></div>
-      </div>
-      <div class="id_pw">
-        <div class="left"><img class="left_image" src="@/assets/lock2.png" alt="pw_check"/></div>
-        <div class="right"><input id="password" class="card__input" placeholder="Password Check"  type="password" /></div>
-      </div>
-      <div class="signup_box">
-        <router-link :to="{ name: 'Login' }" class='signup_text'>SIGN UP</router-link>
-      </div>
-    </div>
+      <form class="signup" @submit.prevent="signup">
+        <div class="circle"><img class="card__image" src="@/assets/follower (1).png" alt="login"/></div>
+        
+        <div class="id_pw">
+          <div class="left"><img class="left_image" src="@/assets/user.png" alt="id"/></div>
+          <div class="right">
+            <input id="id" v-model="id" class="card__input" placeholder="ID" type="text" /></div>
+           
+          
+        </div>
+
+        <div class="id_pw">
+          <div class="left"><img class="left_image" src="@/assets/nickname2.png" alt="nickname"/></div>
+          <div class="right">
+           
+            <input id="nickname" v-model="nickname" class="card__input" placeholder="Nickname"  type="text" /></div>
+          
+          </div>
+       
+        <div class="id_pw">
+          <div class="left"><img class="left_image" src="@/assets/lock.png" alt="pw"/></div>
+          <div class="right">
+            <input id="password" v-model="password" class="card__input" placeholder="Password"  type="password" />
+          </div>
+        </div>
+
+        <div class="id_pw">
+          <div class="left"><img class="left_image" src="@/assets/lock2.png" alt="pw_check"/></div>
+          <div class="right">
+            <input id="password" v-model="passwordCheck" class="card__input" placeholder="Password Check"  type="password" /></div>
+        </div>
+      
+        <button type="submit" class="signup_box">
+          <!-- <router-link :to="{ name: 'Login' }" class='signup_text'>SIGN UP</router-link> -->
+          SIGN UP
+        </button>
+
+      </form>
+      
+    
+    
   </div>
 </template>
 
 <script>
+
 export default {
-     name: "Login",
+     name: "Signup",
+     components:{
+       
+
+     },
+     data(){
+       return{
+         id:'',
+         nickname:'',
+         password: '',
+         passwordCheck: '',
+       }
+     },
+     methods: {
+      signup:function() {
+        this.$store
+          .dispatch("signup", {
+            id:this.id,
+            nickname:this.nickname,
+            password:this.password,
+            passwordCheck:this.passwordCheck
+          })
+          .then(() => {
+            this.$router.push({ name: "Login" });
+            alert("회원가입에 성공하였습니다.")
+          })
+          .catch(() => {
+            alert("회원가입 실패")
+          })
+          
+          
+      }
+    }
+     
+     
+
+     
 }
 </script>
 
@@ -88,6 +144,7 @@ export default {
  width: 482px;
  height: 50px;
  background: rgba(49,46,46,0.5);
+ border-radius: 20px;
  padding-top: 8px;
  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
