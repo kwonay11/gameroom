@@ -38,13 +38,15 @@
   height: 100vh;
   background-size:100% 100%;
 }
-
+@import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap');
 // nav {
 //   margin: 0 auto;
 //   padding: 30px 0;
 //   background-image: linear-gradient(to right top, #400f55 0%, #0c3957 100%);
 // }
-
+p{
+  font-family: 'Gamja Flower', cursive;
+}
 nav ul {
   text-align: right;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 75%, rgba(255, 255, 255, 0) 100%);
@@ -70,5 +72,6 @@ nav ul li #a:hover {
   background: rgba(255, 255, 255, 0.1);
   color: rgba(0, 35, 122, 0.7);
 }
+
 
 </style>
