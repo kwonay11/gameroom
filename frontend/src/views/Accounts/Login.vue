@@ -4,14 +4,21 @@
       <div class="circle"><img class="card_image" src="@/assets/user.png" alt="login"/></div>
       <div class="id_pw">
         <div class="id_left"><img class="left_image" src="@/assets/profile.png" alt="user"/></div>
-        <div class="id_right"><input id="id" class="card__input" placeholder="ID"  type="text" /></div>
+        <div class="id_right">
+          <input id="id" class="card__input" v-model="credentials.userid" placeholder="ID"  type="text" />
+        </div>
       </div>
       <div class="id_pw">
         <div class="pw_left"><img class="left_image" src="@/assets/password.png" alt="pw"/></div>
-        <div class="pw_right"><input id="password" class="card__input" placeholder="Password"  type="password" /></div>
+        <div class="pw_right">
+          <input id="password" class="card__input" v-model="credentials.password" placeholder="Password"  type="password" />
+        </div>
       </div>
       <div class="login_button">
-        <router-link :to="{ name: 'MainPage' }" class='signup_text'>Login</router-link>
+        <!-- <router-link :to="{ name: 'MainPage' }" class='signup_text'>Login</router-link> -->
+        <button class='signup_text' @click="login(credentials)">
+              Login
+        </button>
       </div>
       <div class="login_button">
         <router-link :to="{ name: 'Signup' }" class='signup_text'>GO TO SIGN UP</router-link>
@@ -21,10 +28,49 @@
 </template>
 
 <script>
+const SERVER_URL = 'http://localhost:8080'
+import axios from 'axios'
+
 export default {
      name: "Login",
-
+     data: function () {
+       return {
+         credentials: {
+           userid: '',
+           password: '',
+           loginSuccess: false,
+         }
+       }
+     },
+     methods: {
+       login: function (res) {
+        // 입력 아이디랑 비밀번호 콘솔창에 띄워지고
+         console.log(res)
+        //  서버에서 요청 받아온게 res로 들어가게 되어있음
+         axios.post(`${SERVER_URL}/users/login`, this.credentials)
+         .then((userinfo) => {
+          //  들어온 res 콘솔에서 확인하고
+          console.log(userinfo)
+          // 로그인 성공이면 변수 값 바꾸기
+          
+          if (res.status === 200) {
+            this.credentials.loginSuccess = true
+          }
+          // res에 뭐들어오는지 확인하고 userinfo 이름 변수명 바꾸고
+          if ( this.credentials.loginSuccess) {
+            this.$storethis.$store.dispatch('Login', userinfo);
+          }
+           this.credentials.loginSuccess = false
+         })
+         .catch((err) => {
+            console.log(err)
+         })         
+       }
+       
+     }
 }
+
+
 </script>
 
 <style>
