@@ -1,6 +1,6 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.request.UserDTO;
+import com.ssafy.api.request.UserUpdateNicknamePutReq;
 import com.ssafy.api.request.UserUpdatePasswordPostReq;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.common.util.JwtTokenUtil;
@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
 	}
 //
 	@Override
-	public void modifyUser(UserDTO userDTO) {
+	public void modifyUser(UserUpdateNicknamePutReq userDTO) {
 		/* 유저 정보 수정
 		 * 파라미터로 들어온 userDTO에서 userId를 뽑음
 		 * userId를 기준으로 유저찾음

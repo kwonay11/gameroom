@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserUpdateNicknamePutReq {
     private Long id;
     private String userId; // 로그인용 유저 아이디
     private String nickName; // 방에서 사용할 닉네임
