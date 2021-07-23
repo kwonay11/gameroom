@@ -11,7 +11,7 @@ import Creatroom from '@/views/Creatroom.vue'
 Vue.use(VueRouter)
 
 const routes = [{
-        path: '/main',
+        path: '/',
         name: 'MainPage',
         component: MainPage
     },

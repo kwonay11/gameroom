@@ -7,16 +7,13 @@
           <div class="left"><img class="left_image" src="@/assets/user.png" alt="id"/></div>
           <div class="right">
             <input id="id" v-model="id" class="card__input" placeholder="ID" type="text" /></div>
-           
-          
+            <button class="button button--brightness" @click="check()">중복체크</button>
         </div>
 
         <div class="id_pw">
           <div class="left"><img class="left_image" src="@/assets/nickname2.png" alt="nickname"/></div>
           <div class="right">
-           
             <input id="nickname" v-model="nickname" class="card__input" placeholder="Nickname"  type="text" /></div>
-          
           </div>
        
         <div class="id_pw">
@@ -29,13 +26,16 @@
         <div class="id_pw">
           <div class="left"><img class="left_image" src="@/assets/lock2.png" alt="pw_check"/></div>
           <div class="right">
-            <input id="password" v-model="passwordCheck" class="card__input" placeholder="Password Check"  type="password" /></div>
+            <input id="passwordCheck" v-model="passwordCheck" class="card__input" placeholder="Password Check"  type="password" /></div>
+            <div class="pw_ck" v-if="passwordCheck != password">불일치</div>
+            <div class="pw_ck" v-if="passwordCheck == password">일치</div>
         </div>
-      
-        <button type="submit" class="signup_box">
-          <!-- <router-link :to="{ name: 'Login' }" class='signup_text'>SIGN UP</router-link> -->
+      <!-- 빈칸일 때, 패스워드와 확인이 같지 않을 때 버튼 비활성화 -->
+        <button :disabled="!passwordCheck || !password || password != passwordCheck || !id || !nickname"
+        @click="signup()" class="signup_box">
           SIGN UP
         </button>
+        
 
       </form>
       
@@ -46,6 +46,8 @@
 
 <script>
 import swal from 'sweetalert';
+const SERVER_URL = 'http://localhost:8080'
+import axios from 'axios'
 export default {
      name: "Signup",
      components:{
@@ -54,10 +56,14 @@ export default {
      },
      data(){
        return{
-         id:'',
-         nickname:'',
-         password: '',
-         passwordCheck: '',
+        
+          id:'',
+          nickname:'',
+          password: '',
+          passwordCheck: '',
+          id_check: false,
+        
+         
        }
      },
      methods: {
@@ -71,16 +77,34 @@ export default {
           })
           .then(() => {
             this.$router.push({ name: "Login" });
-            // alert("회원가입에 성공하였습니다.")
             swal(`회원가입에 성공하였습니다.`);
           })
           .catch(() => {
-            // alert("회원가입 실패")
              swal(`회원가입에 실패하였습니다.`);
           })
-          
-          
+      },
+      check: function(){
+        axios.post(`${SERVER_URL}/users/check`, this.id)
+         .then((res) => {
+           console.log(res);
+           if (res.status === 201) {
+            this.id_check = true
+            swal(`사용 가능한 아이디입니다.`);
+            console.log('중복체크 성공')
+          }
+            else if(res.status === 415) {
+              swal(`사용 불가능한 아이디입니다.`);
+              console.log('중복')
+            }
+            else {
+              swal(`사용 불가능한 아이디입니다.`);
+              console.log('중복')
+            }
+
+         })
+
       }
+      
     }
      
      
@@ -148,6 +172,7 @@ export default {
  background: rgba(49,46,46,0.5);
  border-radius: 20px;
  padding-top: 8px;
+ color:White;
  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 .signup_text {
@@ -176,5 +201,13 @@ export default {
   background: rgba(254, 254, 254, 0.08);
   
   outline: none;
+}
+
+.pw_ck{
+  box-sizing: border-box;
+  display: block;
+  font-size: 0.7rem;
+  color: #ffffff;
+  margin:3px;
 }
 </style>
