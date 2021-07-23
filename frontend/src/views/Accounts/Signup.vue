@@ -67,7 +67,7 @@ export default {
             id:this.id,
             nickname:this.nickname,
             password:this.password,
-            passwordCheck:this.passwordCheck
+            // passwordCheck:this.passwordCheck
           })
           .then(() => {
             this.$router.push({ name: "Login" });

@@ -5,7 +5,7 @@
       <div class="id_pw">
         <div class="id_left"><img class="left_image" src="@/assets/profile.png" alt="user"/></div>
         <div class="id_right">
-          <input id="id" class="card__input" v-model="credentials.userid" placeholder="ID"  type="text" />
+          <input id="id" class="card__input" v-model="credentials.id" placeholder="ID"  type="text" />
         </div>
       </div>
       <div class="id_pw">
@@ -36,7 +36,7 @@ export default {
      data: function () {
        return {
          credentials: {
-           userid: '',
+           id: '',
            password: '',
            loginSuccess: false,
          }
@@ -55,6 +55,7 @@ export default {
           
           if (res.status === 200) {
             this.credentials.loginSuccess = true
+            console.log('로그인성공')
           }
           // res에 뭐들어오는지 확인하고 userinfo 이름 변수명 바꾸고
           if ( this.credentials.loginSuccess) {
@@ -64,6 +65,8 @@ export default {
          })
          .catch((err) => {
             console.log(err)
+            console.log('로그인 실패')
+
          })         
        }
        
