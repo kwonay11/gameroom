@@ -30,7 +30,11 @@ export default new Vuex.Store({
         //토큰이 담기기 전에 로그인으로 감 async await검색해서 하기
         LOGIN: function(state, accessToken) {
             state.accessToken = accessToken
-        }
+        },
+        LOGOUT() {
+          localStorage.removeItem('user')
+          location.reload();
+        },
     },
     actions: {
         signup({ commit }, credentials) {
@@ -45,8 +49,17 @@ export default new Vuex.Store({
         // 로그인 성공하면 스토어에 액세스 토큰 저장
         Login: function({ commit }, accessToken) {
             commit('LOGIN', accessToken)
+        },
+        logout([commit]){
+          commit('LOUTGOUT')
         }
 
+    },
+    getters: {
+      //로그인 했는지 확인하는 getter
+      loggedIn(state) {
+        return !!state.user
+      }
     },
     modules: {}
 })

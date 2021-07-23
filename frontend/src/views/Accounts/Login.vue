@@ -52,11 +52,11 @@ export default {
           //  들어온 userinfo 콘솔에서 확인하고
           console.log(userinfo)
           // 로그인 성공이면 변수 값 바꾸기
+            this.$router.push({ name: "MainPage" });
+            console.log('로그인성공')
           
           if (res.status === 200) {
             this.credentials.loginSuccess = true
-            this.$router.push({ name: "MainPage" });
-            console.log('로그인성공')
           }
           // res에 뭐들어오는지 확인하고 userinfo 이름 변수명 바꾸고
           if ( this.credentials.loginSuccess) {

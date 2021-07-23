@@ -1,16 +1,24 @@
 <template>
   <div id="app">
-    
     <nav>
-      <!-- 로그인 전 -->
      <ul>
        <li>
          <router-link id="a" :to="{ name: 'Search' }">
         <img style="width:30px" src="@/assets/loupe.png" alt="search"></router-link>
         </li>
-        <li>  
-          <router-link  id="a" :to="{ name: 'Login' }">
-        <img style="width:30px" src="@/assets/check-in.png" alt="login"></router-link>
+        <li v-if="!loggedIn">  
+          <!-- 로그인 전 -->
+          <router-link  id="a" to="/login">
+          로그인
+          <img style="width:30px" src="@/assets/check-in.png" alt="login">
+          </router-link>
+        </li>
+        <li v-if="loggedIn">
+          <!-- 로그인 후 로그아웃 -->
+          <button  id="a" type="button" class="logoutButton" @click="logout">
+            로그아웃
+          <img style="width:30px" src="@/assets/exit (2).png" alt="logout">
+          </button>
         </li>
         <li>  
           <router-link  id="a" :to="{ name: 'Signup' }">
@@ -26,6 +34,24 @@
     
   </div>
 </template>
+<script>
+import { authComputed } from "./store/helpers.js"
+import swal from 'sweetalert';
+
+export default {
+  name: 'App',
+  computed: {
+    ...authComputed
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
+      swal(`로그아웃`);
+    }
+  }
+};
+
+</script>
 
 <style lang="scss">
 #app {
