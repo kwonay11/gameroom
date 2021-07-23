@@ -1,6 +1,6 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.request.UserDTO;
+import com.ssafy.api.request.UserUpdateNicknamePutReq;
 import com.ssafy.api.request.UserUpdatePasswordPostReq;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.common.util.JwtTokenUtil;
@@ -36,6 +36,7 @@ public class UserServiceImpl implements UserService {
 		user.setUserId(userRegisterInfo.getId());
 		// 보안을 위해서 유저 패스워드 암호화 하여 디비에 저장.
 		user.setPassword(passwordEncoder.encode(userRegisterInfo.getPassword()));
+		user.setNickname(userRegisterInfo.getNickname());
 		return userRepository.save(user);
 	}
 
@@ -50,13 +51,12 @@ public class UserServiceImpl implements UserService {
 	public void removeUser(String userId) {
 		// 유저 정보 삭제 (userId를 통한 삭제)
 		Optional<User> user = userRepository.findByUserId(userId);
-		if (user.isPresent()) {
-			userRepository.delete(user.get());
-		}
+		userRepository.delete(user.get());
+
 	}
 //
 	@Override
-	public void modifyUser(UserDTO userDTO) {
+	public void modifyUser(UserUpdateNicknamePutReq userDTO) {
 		/* 유저 정보 수정
 		 * 파라미터로 들어온 userDTO에서 userId를 뽑음
 		 * userId를 기준으로 유저찾음
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
 		if (result.isPresent()) {
 			User user = result.get();
-			user.changeNickName(userDTO.getNickName());
+			user.setNickname(userDTO.getNickname());
 			userRepository.save(user);
 		}
 	}
