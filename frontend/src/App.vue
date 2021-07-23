@@ -1,32 +1,41 @@
 <template>
   <div id="app">
     <nav>
+      
      <ul>
        <li>
          <router-link id="a" :to="{ name: 'Search' }">
         <img style="width:30px" src="@/assets/loupe.png" alt="search"></router-link>
         </li>
+
         <li v-if="!loggedIn">  
-          <!-- 로그인 전 -->
           <router-link  id="a" to="/login">
-          로그인
           <img style="width:30px" src="@/assets/check-in.png" alt="login">
           </router-link>
         </li>
-        <li v-if="loggedIn">
-          <!-- 로그인 후 로그아웃 -->
+
+        <li v-else>
           <button  id="a" type="button" class="logoutButton" @click="logout">
-            로그아웃
           <img style="width:30px" src="@/assets/exit (2).png" alt="logout">
           </button>
         </li>
-        <li>  
+        
+        <li v-if="!loggedIn">  
           <router-link  id="a" :to="{ name: 'Signup' }">
           <img style="width:30px" src="@/assets/add-user.png" alt="Signup"></router-link>
         </li>
+
+        <li v-else>
+         <router-link id="a" :to="{ name: 'Mypage' }">
+        <img style="width:30px" src="@/assets/profile.png" alt="search"></router-link>
+
+       </li>
      </ul>
+
+    
      <router-link  id="a" :to="{ name: 'MainPage' }">
      <img src="@/assets/logo.png" alt="logo"></router-link>
+
     </nav>
 
     <router-view/>
@@ -45,7 +54,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.dispatch("logout");
+      this.$store.dispatch('logout')
       swal(`로그아웃`);
     }
   }

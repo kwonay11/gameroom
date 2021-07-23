@@ -31,10 +31,12 @@ export default new Vuex.Store({
         LOGIN: function(state, accessToken) {
             state.accessToken = accessToken
         },
-        LOGOUT() {
-          localStorage.removeItem('user')
-          location.reload();
-        },
+        LOGOUT (state) {
+          state.user = null 
+          localStorage.removeItem('user') 
+          axios.defaults.headers.common['Authorization'] = null
+        }
+
     },
     actions: {
         signup({ commit }, credentials) {
@@ -49,6 +51,7 @@ export default new Vuex.Store({
         // 로그인 성공하면 스토어에 액세스 토큰 저장
         Login: function({ commit }, accessToken) {
             commit('LOGIN', accessToken)
+            
         },
         logout([commit]){
           commit('LOUTGOUT')
@@ -56,9 +59,8 @@ export default new Vuex.Store({
 
     },
     getters: {
-      //로그인 했는지 확인하는 getter
       loggedIn(state) {
-        return !!state.user
+        return !state.user;
       }
     },
     modules: {}
