@@ -45,7 +45,7 @@
 </template>
 
 <script>
-
+import swal from 'sweetalert';
 export default {
      name: "Signup",
      components:{
@@ -71,10 +71,12 @@ export default {
           })
           .then(() => {
             this.$router.push({ name: "Login" });
-            alert("회원가입에 성공하였습니다.")
+            // alert("회원가입에 성공하였습니다.")
+            swal(`회원가입에 성공하였습니다.`);
           })
           .catch(() => {
-            alert("회원가입 실패")
+            // alert("회원가입 실패")
+             swal(`회원가입에 실패하였습니다.`);
           })
           
           
