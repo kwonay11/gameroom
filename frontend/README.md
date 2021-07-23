@@ -1,4 +1,4 @@
-# ssafy-vue
+# frontend
 
 ## Project setup
 ```
