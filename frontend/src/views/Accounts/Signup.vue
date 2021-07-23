@@ -1,37 +1,37 @@
 <template>
   <div>       
-      <form class="signup" @submit.prevent="signup">
+      <form class="signup" @submit.prevent="signup,check">
         <div class="circle"><img class="card__image" src="@/assets/follower (1).png" alt="login"/></div>
         
         <div class="id_pw">
           <div class="left"><img class="left_image" src="@/assets/user.png" alt="id"/></div>
           <div class="right">
-            <input id="id" v-model="id" class="card__input" placeholder="ID" type="text" /></div>
-            <button class="button button--brightness" @click="check()">중복체크</button>
+            <input id="id" v-model="credentials.id" class="card__input" placeholder="ID" type="text" /></div>
+            <button class="button button--brightness" @click="check(id)">중복체크</button>
         </div>
 
         <div class="id_pw">
           <div class="left"><img class="left_image" src="@/assets/nickname2.png" alt="nickname"/></div>
           <div class="right">
-            <input id="nickname" v-model="nickname" class="card__input" placeholder="Nickname"  type="text" /></div>
+            <input id="nickname" v-model="credentials.nickname" class="card__input" placeholder="Nickname"  type="text" /></div>
           </div>
        
         <div class="id_pw">
           <div class="left"><img class="left_image" src="@/assets/lock.png" alt="pw"/></div>
           <div class="right">
-            <input id="password" v-model="password" class="card__input" placeholder="Password"  type="password" />
+            <input id="password" v-model="credentials.password" class="card__input" placeholder="Password"  type="password" />
           </div>
         </div>
 
         <div class="id_pw">
           <div class="left"><img class="left_image" src="@/assets/lock2.png" alt="pw_check"/></div>
           <div class="right">
-            <input id="passwordCheck" v-model="passwordCheck" class="card__input" placeholder="Password Check"  type="password" /></div>
-            <div class="pw_ck" v-if="passwordCheck != password">불일치</div>
-            <div class="pw_ck" v-if="passwordCheck == password">일치</div>
+            <input id="passwordCheck" v-model="credentials.passwordCheck" class="card__input" placeholder="Password Check"  type="password" /></div>
+            <div class="pw_ck" v-if="credentials.passwordCheck != credentials.password">불일치</div>
+            <div class="pw_ck" v-if="credentials.passwordCheck == credentials.password">일치</div>
         </div>
       <!-- 빈칸일 때, 패스워드와 확인이 같지 않을 때 버튼 비활성화 -->
-        <button :disabled="!passwordCheck || !password || password != passwordCheck || !id || !nickname"
+        <button :disabled="!credentials.passwordCheck || !credentials.password || credentials.password != credentials.passwordCheck || !credentials.id || !credentials.nickname"
         @click="signup()" class="signup_box">
           SIGN UP
         </button>
@@ -56,12 +56,15 @@ export default {
      },
      data(){
        return{
-        
+         
+        credentials: {
           id:'',
           nickname:'',
           password: '',
           passwordCheck: '',
-          id_check: false,
+          id_check: false
+
+        }
         
          
        }
@@ -69,12 +72,7 @@ export default {
      methods: {
       signup:function() {
         this.$store
-          .dispatch("signup", {
-            id:this.id,
-            nickname:this.nickname,
-            password:this.password,
-            // passwordCheck:this.passwordCheck
-          })
+          .dispatch("signup", this.credentials)
           .then(() => {
             this.$router.push({ name: "Login" });
             swal(`회원가입에 성공하였습니다.`);
@@ -84,24 +82,21 @@ export default {
           })
       },
       check: function(){
-        axios.post(`${SERVER_URL}/users/check`, this.id)
+        
+        axios.post(`${SERVER_URL}/users/check`,this.credentials)
          .then((res) => {
            console.log(res);
-           if (res.status === 201) {
+           if (res.status === 200) {
             this.id_check = true
             swal(`사용 가능한 아이디입니다.`);
-            console.log('중복체크 성공')
+            console.log('중복안함')
           }
-            else if(res.status === 415) {
-              swal(`사용 불가능한 아이디입니다.`);
-              console.log('중복')
-            }
-            else {
-              swal(`사용 불가능한 아이디입니다.`);
-              console.log('중복')
-            }
-
          })
+         .catch(() => {
+             swal(`이미 있는 아이디입니다.`);
+             console.log('중복')
+             
+          })
 
       }
       

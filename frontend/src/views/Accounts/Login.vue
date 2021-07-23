@@ -55,6 +55,7 @@ export default {
           
           if (res.status === 200) {
             this.credentials.loginSuccess = true
+            this.$router.push({ name: "MainPage" });
             console.log('로그인성공')
           }
           // res에 뭐들어오는지 확인하고 userinfo 이름 변수명 바꾸고

@@ -27,6 +27,7 @@ export default new Vuex.Store({
                 "Authorization"
             ] = `Bearer ${userData.token}`;
         },
+        //토큰이 담기기 전에 로그인으로 감 async await검색해서 하기
         LOGIN: function(state, accessToken) {
             state.accessToken = accessToken
         }
