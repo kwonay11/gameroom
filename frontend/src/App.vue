@@ -37,6 +37,7 @@
      <img src="@/assets/logo.png" alt="logo"></router-link>
 
     </nav>
+    <h1>{{$store.state.id}}님 ㅎㅇㅎㅇㅎㅇ</h1>
 
     <router-view/>
 
@@ -44,7 +45,7 @@
   </div>
 </template>
 <script>
-import { authComputed } from "@/store/helpers.js"
+import { authComputed } from "@/store/helpers"
 import swal from 'sweetalert';
 
 export default {
@@ -55,6 +56,7 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('logout')
+      this.$router.push({ name: "MainPage" });
       swal(`로그아웃 되었습니다.`);
     }
   }

@@ -28,7 +28,11 @@
 </template>
 
 <script>
-import swal from 'sweetalert';
+
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+import axios from 'axios'
+// import swal from 'sweetalert';
+
 export default {
      name: "Login",
      data: function () {
@@ -41,19 +45,19 @@ export default {
        }
      },
      methods: {
-       login() {
-      this.$store
-        .dispatch("login", this.credentials)
-        .then(() => {
-           swal(`로그인에 성공하였습니다.`);
-          this.$router.push({ name: "MainPage" });
+      login: function () {
+        axios.post(`${SERVER_URL}/users/login`, this.credentials)
+        .then((res) => {
+          localStorage.setItem('jwt', res.data.token)
+          this.$emit('login')
+          const id = this.credentials.id
+          this.$store.dispatch('login', id)
+          this.$router.push({ name: 'MainPage' })
         })
-        .catch(err => (this.error = err.response.data.error));
-         swal(`로그인에 실패하였습니다. 
-         정확한 비밀번호와 아이디를 적어주세요`);
-    
-       }
-       
+        .catch((err) => {
+          console.log(err)
+        })
+      }
      }
 }
 
