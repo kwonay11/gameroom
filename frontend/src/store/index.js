@@ -5,13 +5,12 @@ import axios from "axios";
 // import SERVER from '@/api/api';
 
 Vue.use(Vuex)
-const SERVER_URL = 'http://localhost:8080'
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 
 
 export default new Vuex.Store({
     state: {
-        accessToken: '',
         user: null,
     },
     mutations: {
@@ -28,8 +27,9 @@ export default new Vuex.Store({
             ] = `Bearer ${userData.token}`;
         },
         //토큰이 담기기 전에 로그인으로 감 async await검색해서 하기
-        LOGIN: function(state, accessToken) {
+         async LOGIN(state, accessToken) {
             state.accessToken = accessToken
+            
         },
         LOGOUT (state) {
           state.user = null 
@@ -49,18 +49,26 @@ export default new Vuex.Store({
                 });
         },
         // 로그인 성공하면 스토어에 액세스 토큰 저장
-        Login: function({ commit }, accessToken) {
-            commit('LOGIN', accessToken)
+        // Login: function({ commit }, accessToken) {
+        //     commit('LOGIN', accessToken)
+    
+        login({ commit }, credentials) {
+            return axios
+              .post(`${SERVER_URL}/users/login`, credentials)
+              .then(({ data }) => {
+                console.log("user data is", data);
+                commit("SET_USER_DATA", data);
+              });
             
         },
-        logout([commit]){
-          commit('LOUTGOUT')
-        }
+        logout({ commit }) {
+            commit("LOGOUT");
+        },
 
     },
     getters: {
       loggedIn(state) {
-        return !state.user;
+        return !!state.user;
       }
     },
     modules: {}

@@ -44,7 +44,7 @@
   </div>
 </template>
 <script>
-import { authComputed } from "./store/helpers.js"
+import { authComputed } from "@/store/helpers.js"
 import swal from 'sweetalert';
 
 export default {
@@ -55,7 +55,7 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch('logout')
-      swal(`로그아웃`);
+      swal(`로그아웃 되었습니다.`);
     }
   }
 };

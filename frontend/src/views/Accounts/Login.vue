@@ -16,7 +16,7 @@
       </div>
       <div class="login_button">
         <!-- <router-link :to="{ name: 'MainPage' }" class='signup_text'>Login</router-link> -->
-        <button class='signup_text' @click="login(credentials)">
+        <button class='signup_text' @click="login()">
               Login
         </button>
       </div>
@@ -28,9 +28,7 @@
 </template>
 
 <script>
-const SERVER_URL = 'http://localhost:8080'
-import axios from 'axios'
-
+import swal from 'sweetalert';
 export default {
      name: "Login",
      data: function () {
@@ -43,32 +41,17 @@ export default {
        }
      },
      methods: {
-       login: function (res) {
-        // 입력 아이디랑 비밀번호 콘솔창에 띄워지고
-         console.log(res)
-        //  서버에서 요청 받아온게 res로 들어가게 되어있음
-         axios.post(`${SERVER_URL}/users/login`, this.credentials)
-         .then((userinfo) => {
-          //  들어온 userinfo 콘솔에서 확인하고
-          console.log(userinfo)
-          // 로그인 성공이면 변수 값 바꾸기
-            this.$router.push({ name: "MainPage" });
-            console.log('로그인성공')
-          
-          if (res.status === 200) {
-            this.credentials.loginSuccess = true
-          }
-          // res에 뭐들어오는지 확인하고 userinfo 이름 변수명 바꾸고
-          if ( this.credentials.loginSuccess) {
-            this.$storethis.$store.dispatch('Login', userinfo);
-          }
-           this.credentials.loginSuccess = false
-         })
-         .catch((err) => {
-            console.log(err)
-            console.log('로그인 실패')
-
-         })         
+       login() {
+      this.$store
+        .dispatch("login", this.credentials)
+        .then(() => {
+           swal(`로그인에 성공하였습니다.`);
+          this.$router.push({ name: "MainPage" });
+        })
+        .catch(err => (this.error = err.response.data.error));
+         swal(`로그인에 실패하였습니다. 
+         정확한 비밀번호와 아이디를 적어주세요`);
+    
        }
        
      }
