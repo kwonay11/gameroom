@@ -12,10 +12,9 @@
     <button class="v113_111" @click="nickname"><img style="width:90%" src="@/assets/연필1.png" alt="img"></button>
     <button class="learn-more" @click="password">비밀번호 변경</button>
     </div>
+    <button class="learn-more" @click="out">회원탈퇴</button>
 
-    <!-- <div v-for="value in game_infos" v-bind:key="value.id">
-      게임이름 : {{ value.gameCategory.name }} | 전적 : {{ value.gameCount }}전 {{ value.firstRanked }}승 {{ value.gameCount - value.firstRanked }}패
-    </div> -->
+
 
     <WinRate />
   </div>
@@ -23,25 +22,25 @@
 
 <script>
 import WinRate from '@/components/WinRate'
-
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+import axios from 'axios'
 
 export default {
      name: "Mypage",
-    //  data: function () {
-    //    return {
-    //      game_infos: [],
-    //    }
-    //  },
+     data: function () {
+       return {
+
+       }
+     },
+
      components: {
        WinRate,
      },
 
-    // created(){
-    //     const id = this.$store.state.id;
-    //     this.$store.dispatch('fetchUser', id)
-
-    //     this.game_infos = this.$store.state.userData.winRateList
-    // },
+    created(){
+        const id = this.$store.state.id;
+        this.$store.dispatch('fetchUser', id)
+    },
 
         
       methods: {
@@ -50,8 +49,17 @@ export default {
         },
         password: function(){
 
+        },
+        out: function () {
+           axios.delete(`${SERVER_URL}/users/${this.$store.state.id}`)
+           .then((res) => {
+             console.log('회원탈퇴 하고 나서')
+             console.log(res)
+           })
+
         }
       }
+
 
   }
 
