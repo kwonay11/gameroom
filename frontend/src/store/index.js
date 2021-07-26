@@ -20,9 +20,9 @@ export default new Vuex.Store({
     },
     mutations: {
         // 가입 후 응답 받은 값 저장하기
-        SET_USER_DATA(state, userData) {
+        SET_USER_DATA(state, data) {
             //state에 유저 데이터 저장
-            state.user = userData;
+            state.user = data;
             // console.log('store user 확인')
             // console.log(state.user)
 

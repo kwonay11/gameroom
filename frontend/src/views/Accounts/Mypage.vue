@@ -14,7 +14,13 @@ export default {
     created(){
         const id = this.$store.state.id;
           this.$store.dispatch('fetchUser', id)
-        }
+    },
+    // computed: {
+    //   exp: function(){
+    //     return parseInt((this.$store.state.userDate.exp)/100);
+    //   }
+
+    // }
   }
 
 </script>
