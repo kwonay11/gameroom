@@ -37,7 +37,7 @@
      <img src="@/assets/logo.png" alt="logo"></router-link>
 
     </nav>
-    <h1>{{$store.state.id}}님 ㅎㅇㅎㅇㅎㅇ</h1>
+    <!-- <h1>{{$store.state.id}}님 ㅎㅇㅎㅇㅎㅇ</h1> -->
 
     <router-view/>
 
