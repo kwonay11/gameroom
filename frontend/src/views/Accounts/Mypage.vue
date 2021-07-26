@@ -7,76 +7,51 @@
       <img style="width:90%" src="@/assets/free-icon-gamer-3983291.png" alt="img">
     </div>
     <div class="v26_62"></div>
-    <!-- 레벨자리 -->
     <span class="v26_63">lev. {{ parseInt(($store.state.userData.exp)/100) }} </span>
-    <!-- <span class="v26_63">lev. {{($store.state.userData.exp)}} </span> -->
-    <!-- 닉네임자리 -->
     <span class="v26_64">{{ $store.state.userData.nickname }}</span>
     <button class="v113_111" @click="nickname"><img style="width:90%" src="@/assets/연필1.png" alt="img"></button>
     <button class="learn-more" @click="password">비밀번호 변경</button>
     </div>
 
-
-
-    <!-- <ul>
-      <li v-for='game_info in $store.state.userData.winRateList' ></li>
-    </ul>
-    <div v-for='game_info in $store.state.userData.winRateList'>
-      <span>게임이름 :  {{ game_name }} </span>
-      <span>게임전적 :  {{ total }}전 {{ win }}승 {{ lose }}패 </span>
+    <!-- <div v-for="value in game_infos" v-bind:key="value.id">
+      게임이름 : {{ value.gameCategory.name }} | 전적 : {{ value.gameCount }}전 {{ value.firstRanked }}승 {{ value.gameCount - value.firstRanked }}패
     </div> -->
 
-  <div v-for="value in game_infos" v-bind:key="value.id">
-    <!-- {{ value }} -->
-    게임이름 : {{ value.gameCategory.name }} | 전적 : {{ value.gameCount }}전 {{ value.firstRanked }}승 {{ value.gameCount - value.firstRanked }}패
-
-  </div>
-
-      
+    <WinRate />
   </div>
 </template>
 
 <script>
+import WinRate from '@/components/WinRate'
 
 
 export default {
      name: "Mypage",
-     data: function () {
-       return {
-        //  win: 0,
-        //  lose: 0,
-        //  total: 0,
-        //  game_name: '',
-         game_infos: [],
-        //  exp: 0,
-       }
-
+    //  data: function () {
+    //    return {
+    //      game_infos: [],
+    //    }
+    //  },
+     components: {
+       WinRate,
      },
 
-    created(){
-        const id = this.$store.state.id;
-        this.$store.dispatch('fetchUser', id)
-        
-        // this.win = this.$store.state.userData.winRateList[0].firstRanked;
-        // this.total = this.$store.state.userData.winRateList[0].gameCount;
-        // this.lose = this.total-this.win
+    // created(){
+    //     const id = this.$store.state.id;
+    //     this.$store.dispatch('fetchUser', id)
 
-        // this.game_name = this.$store.state.userData.winRateList[0].gameCategory.name;
-
-        this.game_infos = this.$store.state.userData.winRateList
-        // console.log(this.$store.state.userData.winRateList)
-        // console.log(this.game_infos)
-    },
+    //     this.game_infos = this.$store.state.userData.winRateList
+    // },
 
         
-        methods: {
-          nickname: function(){
+      methods: {
+        nickname: function(){
 
-          },
-          password: function(){
+        },
+        password: function(){
 
-          }
         }
+      }
 
   }
 
