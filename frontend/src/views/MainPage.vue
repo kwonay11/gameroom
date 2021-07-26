@@ -5,7 +5,7 @@
        <router-link class="btn_text" :to="{ name: '#' }">
          <div class="button button--brightness">빠른시작</div>
         </router-link>
-       <router-link class="btn_text" :to="{ name: 'Creatroom' }">
+       <router-link class="btn_text" :to="{ name: 'Creatroom' }" >
          <div class="button button--brightness">방만들기</div>
         </router-link>
     </div>
@@ -13,9 +13,13 @@
 </template>
 
 <script>
+
+// import { authComputed } from "@/store/helpers"
 export default {
     name: "MainPage",
-    
+    // computed: {
+    // ...authComputed
+    // },
 
 }
 </script>

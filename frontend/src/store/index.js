@@ -16,6 +16,7 @@ export default new Vuex.Store({
         user: null,
         id: null,
         accessToken: null,
+        userData: [],
     },
     mutations: {
         // 가입 후 응답 받은 값 저장하기
@@ -36,7 +37,11 @@ export default new Vuex.Store({
             state.id = null
             localStorage.removeItem('user')
             axios.defaults.headers.common['Authorization'] = null
-        }
+        },
+        FETCH_USER: function(state, data) {
+            state.userData = data
+            console.log(state.userData)
+        },
 
     },
     actions: {
@@ -59,6 +64,13 @@ export default new Vuex.Store({
         logout({ commit }) {
             commit("LOGOUT");
         },
+        fetchUser: function({ commit }, id) {
+            axios.get(`${SERVER_URL}/users/${id}`)
+                .then((res) => {
+                    commit('FETCH_USER', res.data)
+                })
+
+        }
 
     },
     getters: {
