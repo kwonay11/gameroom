@@ -21,16 +21,12 @@ export default new Vuex.Store({
     mutations: {
         // 가입 후 응답 받은 값 저장하기
         SET_USER_DATA(state, data) {
-            //state에 유저 데이터 저장
             state.user = data;
-            // console.log('store user 확인')
-            // console.log(state.user)
-
         },
 
         LOGIN: function(state, id) {
             state.id = id
-                // console.log(state.id)
+
         },
         LOGOUT(state) {
             state.user = null
@@ -38,8 +34,9 @@ export default new Vuex.Store({
             localStorage.removeItem('user')
             axios.defaults.headers.common['Authorization'] = null
         },
-        FETCH_USER: function(state, data) {
-            state.userData = data
+        FETCH_USER: function(state, res) {
+            console.log(res.data)
+            state.userData = res.data
             console.log(state.userData)
         },
 
@@ -49,10 +46,6 @@ export default new Vuex.Store({
             return axios
                 .post(`${SERVER_URL}/users`, credentials)
                 .then(({ data }) => {
-                    // console.log('토큰여부확인')
-                    // console.log(data)
-                    // console.log(credentials)
-                    // console.log("user data is", data);
                     commit("SET_USER_DATA", data);
                 });
         },
@@ -67,7 +60,7 @@ export default new Vuex.Store({
         fetchUser: function({ commit }, id) {
             axios.get(`${SERVER_URL}/users/${id}`)
                 .then((res) => {
-                    commit('FETCH_USER', res.data)
+                    commit('FETCH_USER', res)
                 })
 
         }
