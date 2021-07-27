@@ -25,7 +25,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.Optional;
 
 /**
  * 유저 관련 API 요청 처리를 위한 컨트롤러 정의.
