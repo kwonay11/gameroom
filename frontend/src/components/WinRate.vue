@@ -2,7 +2,7 @@
   <div class='ranking'>
     <table class="bluetop">
       <tr><th>게임</th><th>전적</th></tr>
-      <div v-for="value in game_infos" v-bind:key="value.id">
+      <div v-for="value in $store.state.userData.winRateList" v-bind:key="value.id">
         <tr><td>게임이름 : {{ value.gameCategory.name }}</td><td>전적 : {{ value.gameCount }}전 {{ value.firstRanked }}승 {{ value.gameCount - value.firstRanked }}패</td></tr>
       </div>
     </table>
@@ -13,13 +13,10 @@ export default {
   name: 'WinRate',
   data: function () {
     return {
-      game_infos: [],
     }
   },
 
-  created(){
-      this.game_infos = this.$store.state.userData.winRateList
-  },
+
 }
 </script>
 

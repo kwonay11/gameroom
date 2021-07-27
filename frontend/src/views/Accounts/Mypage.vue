@@ -14,8 +14,6 @@
     <button class="learn-more" @click="out">회원탈퇴</button>
     </div>
 
-
-
     <WinRate />
   </div>
 </template>
@@ -29,7 +27,7 @@ export default {
      name: "Mypage",
      data: function () {
        return {
-
+         game_infos: [],
        }
      },
 
@@ -40,7 +38,10 @@ export default {
     created(){
         const id = this.$store.state.id;
         this.$store.dispatch('fetchUser', id)
+      this.game_infos = this.$store.state.userData.winRateList
     },
+
+
 
         
     methods: {
@@ -63,8 +64,8 @@ export default {
       }
     }
 
-
-  }
+}
+  
 
 </script>
 
@@ -200,4 +201,38 @@ button.learn-more:active::before {
   box-shadow: 0 0 0 1px #8985b1, 0 0 #8985b1;
   transform: translate3d(0, 0, -1em);
 }
+
+.ranking {
+  position: relative;
+  left: 60%;
+
+  transform: translate(-50%, 0%);
+  margin-top: 60px;
+  margin-bottom: 100px;
+
+  padding: 5% 5%;
+  width: 50%;
+  /* background-color: #ffecd2; */
+  border: 3px solid #ffa500;
+
+}
+.bluetop {
+  border-collapse: collapse;
+  border-top: 3px solid #168;
+}  
+.bluetop th {
+  color: #168;
+  background: #f0f6f9;
+}
+.bluetop th, .bluetop td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+.bluetop th:first-child, .bluetop td:first-child {
+  border-left: 0;
+}
+.bluetop th:last-child, .bluetop td:last-child {
+  border-right: 0;
+}
+
 </style>
