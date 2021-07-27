@@ -2,7 +2,7 @@ package com.ssafy.db.entity;
 
 
 import lombok.*;
-import org.graalvm.compiler.lir.LIRInstruction;
+//import org.graalvm.compiler.lir.LIRInstruction;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
