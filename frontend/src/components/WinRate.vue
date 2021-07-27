@@ -1,17 +1,13 @@
 <template lang="">
-<div>
-    <table class="bluetop">
-      <tr><th>게임</th><th>전적</th></tr>
-      <tr v-for="value in $store.state.userData.winRateList" v-bind:key="value.id">
-        <td>{{ value.gameCategory.name }}</td>
-        <td>{{ value.gameCount }}전 {{ value.firstRanked }}승 {{ value.gameCount - value.firstRanked }}패</td>
-      </tr>
-    </table>
-
-</div>
-  <!-- <div class='ranking'> -->
-      <!-- <div v-for="value in $store.state.userData.winRateList" v-bind:key="value.id"> -->
-  <!-- </div> -->
+  <div>
+      <table class="bluetop">
+        <tr><th>게임</th><th>전적</th></tr>
+        <tr v-for="value in $store.state.userData.winRateList" v-bind:key="value.id">
+          <td>{{ value.gameCategory.name }}</td>
+          <td>{{ value.gameCount }}전 {{ value.firstRanked }}승 {{ value.gameCount - value.firstRanked }}패</td>
+        </tr>
+      </table>
+  </div>
 </template>
 <script>
 export default {
@@ -32,7 +28,7 @@ table {
   transform: translate(-50%, 0%);
   width: 50%;
   margin-top: 5%;
-  /* border: 3px solid #ffa500; */
+
 }
 
 .bluetop {

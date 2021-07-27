@@ -41,9 +41,6 @@ export default {
       this.game_infos = this.$store.state.userData.winRateList
     },
 
-
-
-        
     methods: {
       nickname: function(){
 
