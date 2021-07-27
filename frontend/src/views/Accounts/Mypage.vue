@@ -10,14 +10,22 @@
     <span class="v26_63">lev. {{ parseInt(($store.state.userData.exp)/100) }} </span>
     <span class="v26_64">{{ $store.state.userData.nickname }}</span>
     <button class="v113_111" @click="nickname"><img style="width:90%" src="@/assets/연필1.png" alt="img"></button>
-    <app-my-modal style="color:white" title="닉네임 수정" :visible.sync="visible">
+    <app-my-modal :visible.sync="visible">
       <div>
-        <h2 style="color:white">현재 닉네임 {{ $store.state.userData.nickname }}</h2>
-        <input id="id" class="card__input" placeholder="닉네임" type="text" />
+        <img style="width:90%" src="@/assets/닉네임변경.png" alt="img">
+        <!-- <h2 style="color:white">현재 닉네임 {{ $store.state.userData.nickname }}</h2> -->
+        <input class="_input" placeholder="닉네임" type="text" />
       </div>
-   
     </app-my-modal>
     <button class="learn-more" @click="password">비밀번호 변경</button>
+      <app-my-modal :visible.sync="visible1">
+        <div>
+          <img style="width:90%" src="@/assets/비번변경.png" alt="img">
+          <!-- <h2 style="color:white">현재 닉네임 {{ $store.state.userData.nickname }}</h2> -->
+          <input class="_input" placeholder="새비밀번호" type="text" />
+        </div>
+      </app-my-modal>
+
     <button class="learn-more" @click="out">회원탈퇴</button>
     </div>
 
@@ -29,6 +37,7 @@
 <script>
 import WinRate from '@/components/WinRate'
 import myModal from '@/components/myModal'
+// import myModal1 from '@/components/myModal1'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import axios from 'axios'
 
@@ -36,8 +45,8 @@ export default {
      name: "Mypage",
      data: function () {
        return {
-         game_infos: [],
          visible: false,
+         visible1: false,
 
        }
      },
@@ -45,12 +54,12 @@ export default {
      components: {
       WinRate,
       appMyModal: myModal,
+      // appMyModal1: myModal1,
      },
 
     created(){
         const id = this.$store.state.id;
         this.$store.dispatch('fetchUser', id)
-      this.game_infos = this.$store.state.userData.winRateList
     },
 
     methods: {
@@ -58,8 +67,10 @@ export default {
           
         this.visible = !this.visible
         
+        
       },
       password: function(){
+        this.visible1 = !this.visible1
 
       },
       out: function () {
@@ -81,10 +92,21 @@ export default {
 </script>
 
 <style>
+._input {
+  border-radius: 20px;
+  box-sizing: border-box;
+  color: #000000;
+  background-color:white;
+  display: block;
+  font-size: 1.2rem;
+  letter-spacing: 0.15rem;
+  padding: 20px;
+  width: 100%;
+}
 
 .v26_66 {
   width: 435px;
-  height: 800px;
+  height: 600px;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -169,7 +191,7 @@ export default {
 }
 
 button.learn-more {
-  top:55%;
+  top:72%;
   left:10%;
   font-weight: 600;
   color: #382b22;
