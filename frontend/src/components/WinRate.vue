@@ -1,11 +1,12 @@
 <template lang="">
-  <div class='ranking'>
-    <table class="bluetop">
-      <tr><th>게임</th><th>전적</th></tr>
-      <div v-for="value in $store.state.userData.winRateList" v-bind:key="value.id">
-        <tr><td>게임이름 : {{ value.gameCategory.name }}</td><td>전적 : {{ value.gameCount }}전 {{ value.firstRanked }}승 {{ value.gameCount - value.firstRanked }}패</td></tr>
-      </div>
-    </table>
+  <div>
+      <table class="bluetop">
+        <tr><th>게임</th><th>전적</th></tr>
+        <tr v-for="value in $store.state.userData.winRateList" v-bind:key="value.id">
+          <td>{{ value.gameCategory.name }}</td>
+          <td>{{ value.gameCount }}전 {{ value.firstRanked }}승 {{ value.gameCount - value.firstRanked }}패</td>
+        </tr>
+      </table>
   </div>
 </template>
 <script>
@@ -16,42 +17,33 @@ export default {
     }
   },
 
-
 }
 </script>
 
 <style>
-.ranking {
+table {
+  table-layout: auto;
   position: relative;
   left: 60%;
-
   transform: translate(-50%, 0%);
-  margin-top: 60px;
-  margin-bottom: 100px;
-
-  padding: 5% 5%;
   width: 50%;
-  /* background-color: #ffecd2; */
-  border: 3px solid #ffa500;
+  margin-top: 5%;
 
 }
+
 .bluetop {
   border-collapse: collapse;
   border-top: 3px solid #168;
-}  
-.bluetop th {
-  color: #168;
-  background: #f0f6f9;
-}
-.bluetop th, .bluetop td {
-  padding: 10px;
+} 
+
+.bluetop tr th {
+  height: 50px;
   border: 1px solid #ddd;
 }
-.bluetop th:first-child, .bluetop td:first-child {
-  border-left: 0;
+.bluetop tr td {
+  height: 60px;
+  border: 1px solid #ddd;
 }
-.bluetop th:last-child, .bluetop td:last-child {
-  border-right: 0;
-}
+
 
 </style>
