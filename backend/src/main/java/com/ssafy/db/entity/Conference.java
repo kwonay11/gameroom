@@ -4,6 +4,7 @@ package com.ssafy.db.entity;
 import lombok.*;
 import org.graalvm.compiler.lir.LIRInstruction;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor // @Builder를 사용하기 위한 어노테이션
 @ToString(exclude = {"owner", "gameCategory"})
 public class Conference extends BaseEntity {
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User owner;  //유저
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -29,8 +30,8 @@ public class Conference extends BaseEntity {
     private LocalDateTime callEndTime; //방 종료시간
 
     private String title; // 방제목
-
-    private boolean isActive; //방 활성화여부
+    @Builder.Default
+    private boolean isActive = true; //방 활성화여부(default = true)
 
     private String password; // 비밀방사용시 비밀번호 설정용 .... 물어볼 것 암호화처리해야되요?
 
