@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.*;
+import org.springframework.stereotype.Service;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +21,7 @@ import java.util.List;
 @AllArgsConstructor // @Builder를 사용하기 위한 어노테이션
 @NoArgsConstructor // @Builder를 사용하기 위한 어노테이션
 @ToString
-public class User extends BaseEntity{
-
-
+public class User extends BaseEntity implements Serializable {
     private String userId; // 로그인용 유저 아이디
     private String nickname; // 방에서 사용할 닉네임
     @Builder.Default
