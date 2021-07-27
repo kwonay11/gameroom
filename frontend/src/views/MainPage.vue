@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <div class="btn">
 
        <router-link class="btn_text" :to="{ name: '#' }">
@@ -31,6 +31,8 @@ export default {
 </script>
 
 <style>
+
+
 .btn{
   position: absolute;
   width: 397px;

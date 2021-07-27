@@ -1,66 +1,42 @@
 <template>
   <div id="app">
-    <nav>
-      
-     <ul>
-       <li>
-         <router-link id="a" :to="{ name: 'Search' }">
-        <img style="width:30px" src="@/assets/loupe.png" alt="search"></router-link>
-        </li>
-
-        <li v-if="!loggedIn">  
-          <router-link  id="a" to="/login">
-          <img style="width:30px" src="@/assets/check-in.png" alt="login">
-          </router-link>
-        </li>
-
-        <li v-else>
-          <button  id="a" type="button" class="logoutButton" @click="logout">
-          <img style="width:30px" src="@/assets/exit (2).png" alt="logout">
-          </button>
-        </li>
-        
-        <li v-if="!loggedIn">  
-          <router-link  id="a" :to="{ name: 'Signup' }">
-          <img style="width:30px" src="@/assets/add-user.png" alt="Signup"></router-link>
-        </li>
-
-        <li v-else>
-         <router-link id="a" :to="{ name: 'Mypage' }">
-        <img style="width:30px" src="@/assets/profile.png" alt="search"></router-link>
-
-       </li>
-     </ul>
-
+    <!-- <div ></div> -->
     
-     <router-link  id="a" :to="{ name: 'MainPage' }">
-     <img src="@/assets/logo.png" alt="logo"></router-link>
-
-    </nav>
-    <!-- <h1>{{$store.state.id}}님 ㅎㅇㅎㅇㅎㅇ</h1> -->
-
-    <router-view/>
-
-    
+    <!-- <div v-if ="$store.state.nowpage != search">
+      <navbar />
+      asdfasdfasdfasdf
+    </div> -->
+    <navbar />
+    <!-- <span v-if="$store.state.nowpage === true">
+      aswdfasdfadsf
+    </span> -->
+    <!-- <div v-else>
+      ggggggggg
+    </div> -->
   </div>
 </template>
 <script>
-import { authComputed } from "@/store/helpers"
+// import { authComputed } from "@/store/helpers"
+import navbar from '@/components/nav'
 
-import swal from 'sweetalert';
+// import swal from 'sweetalert';
 
 export default {
   name: 'App',
-  computed: {
-    ...authComputed
-  },
-  methods: {
-    logout() {
-      this.$store.dispatch('logout')
-      this.$router.push({ name: "MainPage" });
-      swal(`로그아웃 되었습니다.`);
-    }
-  }
+  components: {
+    navbar,
+    },
+
+  // computed: {
+  //     ...authComputed
+  //   },
+  // methods: {
+  //   logout() {
+  //     this.$store.dispatch('logout')
+  //     this.$router.push({ name: "MainPage" });
+  //     swal(`로그아웃 되었습니다.`);
+  //   }
+  // }
 };
 
 </script>

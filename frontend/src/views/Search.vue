@@ -15,9 +15,21 @@
 
 export default {
      name: "Search",
+     data: function () {
+       return{
+         nowpage: true,
+       }
+     },
       components: {
       
     },
+
+    created(){
+        const nowpage = this.nowpage
+        this.$store.dispatch('nowpage', nowpage)
+
+    },
+
 }
 </script>
 

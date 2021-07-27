@@ -17,6 +17,7 @@ export default new Vuex.Store({
         id: null,
         accessToken: null,
         userData: [],
+        nowpage: false,
     },
     mutations: {
 
@@ -43,6 +44,10 @@ export default new Vuex.Store({
             console.log(res.data)
             state.userData = res.data
         },
+        NOWPAGE: function(state, nowpage) {
+            state.nowpage = nowpage
+            console.log(state.nowpage)
+        }
     },
 
     actions: {
@@ -69,8 +74,10 @@ export default new Vuex.Store({
                 .then((res) => {
                     commit('FETCH_USER', res)
                 })
+        },
+        nowpage: function({ commit }, nowpage) {
+            commit('NOWPAGE', nowpage)
         }
-
 
     },
     getters: {

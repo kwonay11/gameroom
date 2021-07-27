@@ -1,5 +1,5 @@
 <template>
-  <div>       
+  <div id='signup'>       
       <form class="signup" @submit.prevent="signup,check">
         <div class="circle"><img class="card__image" src="@/assets/follower (1).png" alt="login"/></div>
         
@@ -100,6 +100,12 @@ export default {
 </script>
 
 <style >
+
+#signup {
+  background: url("../../assets/desert-5171724_1920.png");
+  height: 100vh;
+  background-size:100% 100%;
+}
 
 .signup {
   width: 35%;
