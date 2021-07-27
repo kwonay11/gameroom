@@ -10,16 +10,25 @@
     <span class="v26_63">lev. {{ parseInt(($store.state.userData.exp)/100) }} </span>
     <span class="v26_64">{{ $store.state.userData.nickname }}</span>
     <button class="v113_111" @click="nickname"><img style="width:90%" src="@/assets/연필1.png" alt="img"></button>
+    <app-my-modal style="color:white" title="닉네임 수정" :visible.sync="visible">
+      <div>
+        <h2 style="color:white">현재 닉네임 {{ $store.state.userData.nickname }}</h2>
+        <input id="id" class="card__input" placeholder="닉네임" type="text" />
+      </div>
+   
+    </app-my-modal>
     <button class="learn-more" @click="password">비밀번호 변경</button>
     <button class="learn-more" @click="out">회원탈퇴</button>
     </div>
 
     <WinRate />
+
   </div>
 </template>
 
 <script>
 import WinRate from '@/components/WinRate'
+import myModal from '@/components/myModal'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import axios from 'axios'
 
@@ -28,11 +37,14 @@ export default {
      data: function () {
        return {
          game_infos: [],
+         visible: false,
+
        }
      },
 
      components: {
-       WinRate,
+      WinRate,
+      appMyModal: myModal,
      },
 
     created(){
@@ -46,7 +58,9 @@ export default {
         
     methods: {
       nickname: function(){
-
+          
+        this.visible = !this.visible
+        
       },
       password: function(){
 
