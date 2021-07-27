@@ -41,6 +41,7 @@ export default {
            id: '',
            password: '',
            loginSuccess: false,
+           accessToken: null,
          }
        }
      },
@@ -48,16 +49,19 @@ export default {
       login: function () {
         axios.post(`${SERVER_URL}/users/login`, this.credentials)
         .then((res) => {
+          console.log(res.data)
           localStorage.setItem('jwt', res.data.token)
+          this.credentials.accessToken = res.data.accessToken
+          console.log(this.credentials.accessToken)
           this.$emit('login')
-          const id = this.credentials.id
-          this.$store.dispatch('login', id)
+          this.$store.dispatch('login', this.credentials)
           this.$router.push({ name: 'MainPage' })
         })
         .catch((err) => {
           console.log(err)
         })
       }
+
      }
 }
 

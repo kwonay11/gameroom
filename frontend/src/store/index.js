@@ -19,13 +19,18 @@ export default new Vuex.Store({
         userData: [],
     },
     mutations: {
-        // 가입 후 응답 받은 값 저장하기
+
         SET_USER_DATA(state, data) {
             state.user = data;
         },
 
-        LOGIN: function(state, id) {
-            state.id = id
+
+        LOGIN: function(state, credentials) {
+            state.id = credentials.id,
+                state.accessToken = credentials.accessToken
+            axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${state.accessToken}`;
 
         },
         LOGOUT(state) {
@@ -37,10 +42,9 @@ export default new Vuex.Store({
         FETCH_USER: function(state, res) {
             console.log(res.data)
             state.userData = res.data
-            console.log(state.userData)
         },
-
     },
+
     actions: {
         signup({ commit }, credentials) {
             return axios
@@ -50,20 +54,23 @@ export default new Vuex.Store({
                 });
         },
 
-        login: function({ commit }, id) {
-            commit('LOGIN', id)
+
+        login: function({ commit }, credentials) {
+            commit('LOGIN', credentials)
         },
+
 
         logout({ commit }) {
             commit("LOGOUT");
         },
+
         fetchUser: function({ commit }, id) {
             axios.get(`${SERVER_URL}/users/${id}`)
                 .then((res) => {
                     commit('FETCH_USER', res)
                 })
-
         }
+
 
     },
     getters: {

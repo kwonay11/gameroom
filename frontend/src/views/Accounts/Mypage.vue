@@ -11,8 +11,8 @@
     <span class="v26_64">{{ $store.state.userData.nickname }}</span>
     <button class="v113_111" @click="nickname"><img style="width:90%" src="@/assets/연필1.png" alt="img"></button>
     <button class="learn-more" @click="password">비밀번호 변경</button>
-    </div>
     <button class="learn-more" @click="out">회원탈퇴</button>
+    </div>
 
 
 
@@ -43,22 +43,25 @@ export default {
     },
 
         
-      methods: {
-        nickname: function(){
+    methods: {
+      nickname: function(){
 
-        },
-        password: function(){
+      },
+      password: function(){
 
-        },
-        out: function () {
-           axios.delete(`${SERVER_URL}/users/${this.$store.state.id}`)
-           .then((res) => {
-             console.log('회원탈퇴 하고 나서')
-             console.log(res)
-           })
+      },
+      out: function () {
+          console.log(`지금 회원 아이디 ${this.$store.state.id}`)
+          axios.delete(`${SERVER_URL}/users/${this.$store.state.id}`)
+          .then(() => {
 
-        }
+            this.$store.state.id = null
+            this.$router.push({ name: 'MainPage' })
+
+          })
+
       }
+    }
 
 
   }
