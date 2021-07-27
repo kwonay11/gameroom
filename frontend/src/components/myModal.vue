@@ -11,8 +11,8 @@
       <div class="my-modal__body">
         <button  @click="$emit('update:visible', !visible)">
           <img class="my-modal__close" src="@/assets/delete.png" alt="닫기">
-        
         </button>
+        
         <slot></slot>
       </div>
     </div>
@@ -22,6 +22,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'myModal',
   props: {
@@ -39,6 +40,7 @@ export default {
     handleWrapperClick(){
       this.$emit('update:visible', false)
     },
+    
   },
 }
 </script>
@@ -53,6 +55,8 @@ $module: 'my-modal';
   display:flex; /* 내용을 중앙정렬 하기위해 flex 사용 */
 	align-items:center; /* 위아래 기준 중앙정렬 */
 	justify-content:center; /* 좌우 기준 중앙정렬 */
+  z-index:1200;
+
   &__close{
   width:10%;
   float:right;

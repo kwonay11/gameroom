@@ -14,7 +14,10 @@
       <div>
         <img style="width:90%" src="@/assets/닉네임변경.png" alt="img">
         <!-- <h2 style="color:white">현재 닉네임 {{ $store.state.userData.nickname }}</h2> -->
-        <input class="_input" placeholder="닉네임" type="text" />
+        <input class="_input" placeholder="새로운 닉네임" type="text" />
+        <button @click="nick_save">
+          <img class="save" src="@/assets/save.png" alt="저장">
+        </button>
       </div>
     </app-my-modal>
     <button class="learn-more" @click="password">비밀번호 변경</button>
@@ -23,6 +26,9 @@
           <img style="width:90%" src="@/assets/비번변경.png" alt="img">
           <!-- <h2 style="color:white">현재 닉네임 {{ $store.state.userData.nickname }}</h2> -->
           <input class="_input" placeholder="새비밀번호" type="text" />
+          <button @click="pw_save">
+          <img class="save" src="@/assets/save.png" alt="저장">
+        </button>
         </div>
       </app-my-modal>
 
@@ -35,6 +41,7 @@
 </template>
 
 <script>
+import swal from 'sweetalert';
 import WinRate from '@/components/WinRate'
 import myModal from '@/components/myModal'
 // import myModal1 from '@/components/myModal1'
@@ -66,12 +73,18 @@ export default {
       nickname: function(){
           
         this.visible = !this.visible
-        
-        
+      },
+      nick_save: function(){
+
+        swal(`닉네임이 변경되었습니다.`)
       },
       password: function(){
         this.visible1 = !this.visible1
 
+      },
+      pw_save: function(){
+
+        swal(`비밀번호가 변경되었습니다.`)
       },
       out: function () {
           console.log(`지금 회원 아이디 ${this.$store.state.id}`)
@@ -92,6 +105,10 @@ export default {
 </script>
 
 <style>
+.save{
+  width: 10%;
+  margin: 10px;
+}
 ._input {
   border-radius: 20px;
   box-sizing: border-box;
@@ -102,6 +119,7 @@ export default {
   letter-spacing: 0.15rem;
   padding: 20px;
   width: 100%;
+  margin-bottom:10px;
 }
 
 .v26_66 {
