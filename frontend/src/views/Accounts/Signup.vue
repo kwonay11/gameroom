@@ -35,38 +35,29 @@
         @click="signup()" class="signup_box">
           SIGN UP
         </button>
-        
-
       </form>
       
-    
-    
   </div>
 </template>
 
 <script>
 import swal from 'sweetalert';
-const SERVER_URL = 'http://localhost:8080'
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import axios from 'axios'
+
 export default {
      name: "Signup",
      components:{
-       
-
+      
      },
      data(){
        return{
-         
         credentials: {
           id:'',
           nickname:'',
           password: '',
           passwordCheck: '',
-          id_check: false
-
-        }
-        
-         
+        }  
        }
      },
      methods: {

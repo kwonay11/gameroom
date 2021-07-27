@@ -5,17 +5,27 @@
        <router-link class="btn_text" :to="{ name: '#' }">
          <div class="button button--brightness">빠른시작</div>
         </router-link>
-       <router-link class="btn_text" :to="{ name: 'Creatroom' }">
-         <div class="button button--brightness">방만들기</div>
+       <router-link class="btn_text" :to="{ name: 'Creatroom' }" >
+         <div class="button button--brightness" v-if="loggedIn">방만들기</div>
         </router-link>
+
+        <router-link class="btn_text" :to="{ name: 'Login' }" >
+         <div v-if="!loggedIn">
+         <div class="button button--brightness">방만들기</div>
+         </div>
+         </router-link>
     </div>
   </div>
 </template>
 
 <script>
+
+import { authComputed } from "@/store/helpers"
 export default {
     name: "MainPage",
-    
+    computed: {
+    ...authComputed
+    },
 
 }
 </script>

@@ -1,31 +1,69 @@
 <template>
   <div id="app">
-    
     <nav>
-      <!-- 로그인 전 -->
+      
      <ul>
        <li>
          <router-link id="a" :to="{ name: 'Search' }">
         <img style="width:30px" src="@/assets/loupe.png" alt="search"></router-link>
         </li>
-        <li>  
-          <router-link  id="a" :to="{ name: 'Login' }">
-        <img style="width:30px" src="@/assets/check-in.png" alt="login"></router-link>
+
+        <li v-if="!loggedIn">  
+          <router-link  id="a" to="/login">
+          <img style="width:30px" src="@/assets/check-in.png" alt="login">
+          </router-link>
         </li>
-        <li>  
+
+        <li v-else>
+          <button  id="a" type="button" class="logoutButton" @click="logout">
+          <img style="width:30px" src="@/assets/exit (2).png" alt="logout">
+          </button>
+        </li>
+        
+        <li v-if="!loggedIn">  
           <router-link  id="a" :to="{ name: 'Signup' }">
           <img style="width:30px" src="@/assets/add-user.png" alt="Signup"></router-link>
         </li>
+
+        <li v-else>
+         <router-link id="a" :to="{ name: 'Mypage' }">
+        <img style="width:30px" src="@/assets/profile.png" alt="search"></router-link>
+
+       </li>
      </ul>
+
+    
      <router-link  id="a" :to="{ name: 'MainPage' }">
      <img src="@/assets/logo.png" alt="logo"></router-link>
+
     </nav>
+    <!-- <h1>{{$store.state.id}}님 ㅎㅇㅎㅇㅎㅇ</h1> -->
 
     <router-view/>
 
     
   </div>
 </template>
+<script>
+import { authComputed } from "@/store/helpers"
+
+import swal from 'sweetalert';
+
+export default {
+  name: 'App',
+  computed: {
+    ...authComputed
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch('logout')
+      this.$router.push({ name: "MainPage" });
+      swal(`로그아웃 되었습니다.`);
+    }
+  }
+};
+
+</script>
 
 <style lang="scss">
 #app {
