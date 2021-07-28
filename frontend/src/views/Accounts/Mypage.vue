@@ -66,7 +66,6 @@ export default {
      components: {
       WinRate,
       appMyModal: myModal,
-      // appMyModal1: myModal1,
      },
 
     created(){
@@ -80,10 +79,8 @@ export default {
 
       },
       nick_save: function(){
-        // console.log(this.new_nickname)
         const content = {
           nickname: this.new_nickname,
-          // userId: this.$store.state.id
         }
         this.$store.dispatch('newnickname', content)
         console.log('loggedIn')
@@ -99,8 +96,8 @@ export default {
       },
       pw_save: function(){
         const content = {
-          // id: this.$store.state.id,
-          passsword: this.$store.state.password,
+
+          password: this.$store.state.password,
           changePassword: this.new_password,
         }
         this.$store.dispatch('newpassword', content)
