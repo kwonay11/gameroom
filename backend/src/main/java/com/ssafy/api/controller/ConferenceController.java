@@ -3,7 +3,6 @@ package com.ssafy.api.controller;
 import com.ssafy.api.service.ConferenceHistoryService;
 import com.ssafy.api.service.ConferenceService;
 import com.ssafy.api.service.UserConferenceService;
-import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.*;
@@ -11,7 +10,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -21,10 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,8 +35,6 @@ public class ConferenceController {
     UserConferenceService userConferenceService;
     @Autowired
     ConferenceHistoryService conferenceHistoryService;
-    @Autowired
-    UserService userService;
 
     @GetMapping("/{conferenceId}")
     @ApiOperation(value = "게임 방 접속", notes = "인원 수에 여유가 있다면 게임 방에 접속")
@@ -82,10 +74,6 @@ public class ConferenceController {
         conferenceHistory.setConference(conference.get());
         conferenceHistory.setUser(userDetails.getUser());
         conferenceHistory.setAction(1);
-        conferenceHistory.setInsertedTime(
-                Instant.ofEpochMilli( new Date().getTime() )
-                .atZone( ZoneId.systemDefault() )
-                .toLocalDateTime());
         conferenceHistoryService.addConferenceHistory(conferenceHistory);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "true"));

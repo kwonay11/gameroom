@@ -1,8 +1,11 @@
 package com.ssafy.db.entity;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
@@ -14,6 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor // @Builder를 사용하기 위한 어노테이션
 @NoArgsConstructor // @Builder를 사용하기 위한 어노테이션
 @ToString(exclude = {"user","conference"})
+@EntityListeners(AuditingEntityListener.class)
 public class ConferenceHistory extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
@@ -23,6 +27,7 @@ public class ConferenceHistory extends BaseEntity{
 
     private int action; // 액션
 
+    @CreatedDate
     private LocalDateTime insertedTime; //히스토리 생성시간
 
 }
