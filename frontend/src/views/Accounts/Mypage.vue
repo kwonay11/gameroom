@@ -14,7 +14,7 @@
       <div>
         <img style="width:90%" src="@/assets/닉네임변경.png" alt="img">
         <!-- <h2 style="color:white">현재 닉네임 {{ $store.state.userData.nickname }}</h2> -->
-        <input class="_input" placeholder="새로운 닉네임" type="text" />
+        <input class="_input" v-model="new_nickname" placeholder="새로운 닉네임" type="text" />
         <button @click="nick_save">
           <img class="save" src="@/assets/save.png" alt="저장">
         </button>
@@ -25,7 +25,7 @@
         <div>
           <img style="width:90%" src="@/assets/비번변경.png" alt="img">
           <!-- <h2 style="color:white">현재 닉네임 {{ $store.state.userData.nickname }}</h2> -->
-          <input class="_input" placeholder="새비밀번호" type="text" />
+          <input class="_input" v-model="new_password" placeholder="새비밀번호" type="text" />
           <button @click="pw_save">
           <img class="save" src="@/assets/save.png" alt="저장">
         </button>
@@ -46,6 +46,7 @@ import WinRate from '@/components/WinRate'
 import myModal from '@/components/myModal'
 // import myModal1 from '@/components/myModal1'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
+import { authComputed } from "@/store/helpers"
 import axios from 'axios'
 
 export default {
@@ -54,9 +55,13 @@ export default {
        return {
          visible: false,
          visible1: false,
-
+         new_nickname: '',
+         new_password: '',
        }
      },
+       computed: {
+    ...authComputed
+    },  
 
      components: {
       WinRate,
@@ -71,34 +76,62 @@ export default {
 
     methods: {
       nickname: function(){
-          
         this.visible = !this.visible
+
       },
       nick_save: function(){
-
+        // console.log(this.new_nickname)
+        const content = {
+          nickname: this.new_nickname,
+          // userId: this.$store.state.id
+        }
+        this.$store.dispatch('newnickname', content)
+        console.log('loggedIn')
+        console.log(authComputed.loggedIn)
+        console.log('content')
+        console.log(content)
         swal(`닉네임이 변경되었습니다.`)
+        this.visible = false
       },
       password: function(){
         this.visible1 = !this.visible1
 
       },
       pw_save: function(){
+        const content = {
+          // id: this.$store.state.id,
+          passsword: this.$store.state.password,
+          changePassword: this.new_password,
+        }
+        this.$store.dispatch('newpassword', content)
 
+        this.visible = false
         swal(`비밀번호가 변경되었습니다.`)
       },
+
       out: function () {
           console.log(`지금 회원 아이디 ${this.$store.state.id}`)
+
+            axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${this.$store.state.accessToken}`;
+            
           axios.delete(`${SERVER_URL}/users/${this.$store.state.id}`)
           .then(() => {
-
-            this.$store.state.id = null
+            // console.log('loggedIn')
+            // console.log(authComputed)
+            // this.$store.state.id = null
+            // this.$store.state.accessToken = null
+            // authComputed.loggedIn = false
+            // console.log(authComputed.loggedIn)
+            this.$store.dispatch('logout')
             this.$router.push({ name: 'MainPage' })
 
           })
 
       }
-    }
 
+}
 }
   
 

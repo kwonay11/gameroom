@@ -14,8 +14,11 @@ export default new Vuex.Store({
     ],
     state: {
         user: null,
+        // 유저 아이디
         id: null,
         accessToken: null,
+        password: '',
+        // 경험치, 닉네임, 승률
         userData: [],
         nowpage: false,
     },
@@ -27,11 +30,12 @@ export default new Vuex.Store({
 
 
         LOGIN: function(state, credentials) {
-            state.id = credentials.id,
-                state.accessToken = credentials.accessToken
-            axios.defaults.headers.common[
-                "Authorization"
-            ] = `Bearer ${state.accessToken}`;
+            state.id = credentials.id;
+            state.password = credentials.password;
+            state.accessToken = credentials.accessToken;
+            // axios.defaults.headers.common[
+            //     "Authorization"
+            // ] = `Bearer ${state.accessToken}`;
 
         },
         LOGOUT(state) {
@@ -42,11 +46,19 @@ export default new Vuex.Store({
         },
         FETCH_USER: function(state, res) {
             console.log(res.data)
+            console.log('userData')
             state.userData = res.data
         },
         NOWPAGE: function(state, nowpage) {
             state.nowpage = nowpage
             console.log(state.nowpage)
+        },
+        NEW_NICKNAME: function(state, new_nickname) {
+            state.userData.nickname = new_nickname
+        },
+        NEW_PASSWORD: function(state, new_password) {
+            state.password = new_password
+            console.log(state.password)
         }
     },
 
@@ -77,6 +89,34 @@ export default new Vuex.Store({
         },
         nowpage: function({ commit }, nowpage) {
             commit('NOWPAGE', nowpage)
+        },
+        newnickname: function({ commit }, content) {
+            // console.log('store content')
+            // console.log(content)
+            axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${this.state.accessToken}`;
+
+            axios.put(`${SERVER_URL}/users/nickname/${this.state.id}`, content)
+                .then(() => {
+                    console.log('cotent.new_nickname')
+                    console.log(content.nickname)
+                    commit('NEW_NICKNAME', content.nickname)
+                })
+        },
+        newpassword: function({ commit }, content) {
+
+            axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${this.state.accessToken}`;
+
+            console.log(content)
+            axios.put(`${SERVER_URL}/users/${this.state.id}`, content)
+                .then(() => {
+                    console.log('content.changePassword')
+                    console.log(content.changePassword)
+                    commit('NEW_PASSWORD', content.changePassword)
+                })
         }
 
     },
