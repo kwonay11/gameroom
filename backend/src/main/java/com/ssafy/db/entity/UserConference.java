@@ -24,5 +24,4 @@ public class UserConference extends BaseEntity{
     private Conference conference;
 
 
-
 }
