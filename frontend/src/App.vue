@@ -5,11 +5,11 @@
         <navbar />
       </div>
     </div>
-    <div v-else-if="this.$route.name === 'Search'">
+    <!-- <div v-else-if="this.$route.name === 'Search'">
       <div id="search">
         <navbar />
       </div>
-    </div>
+    </div> -->
 
     <div v-else>
       <div id="app">
