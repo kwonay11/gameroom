@@ -83,10 +83,6 @@ export default {
           nickname: this.new_nickname,
         }
         this.$store.dispatch('newnickname', content)
-        console.log('loggedIn')
-        console.log(authComputed.loggedIn)
-        console.log('content')
-        console.log(content)
         swal(`닉네임이 변경되었습니다.`)
         this.visible = false
       },
@@ -107,23 +103,14 @@ export default {
       },
 
       out: function () {
-          console.log(`지금 회원 아이디 ${this.$store.state.id}`)
-
-            axios.defaults.headers.common[
+             axios.defaults.headers.common[
                 "Authorization"
             ] = `Bearer ${this.$store.state.accessToken}`;
             
           axios.delete(`${SERVER_URL}/users/${this.$store.state.id}`)
           .then(() => {
-            // console.log('loggedIn')
-            // console.log(authComputed)
-            // this.$store.state.id = null
-            // this.$store.state.accessToken = null
-            // authComputed.loggedIn = false
-            // console.log(authComputed.loggedIn)
             this.$store.dispatch('logout')
             this.$router.push({ name: 'MainPage' })
-
           })
 
       }
