@@ -102,8 +102,6 @@ export default {
       },
       password: function(){
         this.visible1 = !this.visible1
-        console.log('비번')
-        console.log(this.origin_password)
  
       },
       pw_save: function(){

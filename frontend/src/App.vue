@@ -1,27 +1,22 @@
 <template>
+  <div id='total'>
+    <div v-if="this.$route.name === 'Signup'">
+      <div id="signup">
+        <navbar />
+      </div>
+    </div>
+    <div v-else-if="this.$route.name === 'Search'">
+      <div id="search">
+        <navbar />
+      </div>
+    </div>
 
-<div id='total'>
-
-
-  <div v-if="this.$route.name === 'Signup'">
-    <div id="signup">
-      <navbar />
+    <div v-else>
+      <div id="app">
+        <navbar />
+      </div>
     </div>
   </div>
-  <div v-else-if="this.$route.name === 'Search'">
-    <div id="search">
-      <navbar />
-    </div>
-  </div>
-
-  <div v-else>
-    <div id="app">
-      <navbar />
-    </div>
-  </div>
-
-</div>
-
 </template>
 <script>
 
@@ -62,11 +57,7 @@ export default {
 
 }
 @import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap');
-// nav {
-//   margin: 0 auto;
-//   padding: 30px 0;
-//   background-image: linear-gradient(to right top, #400f55 0%, #0c3957 100%);
-// }
+
 p{
   font-family: 'Gamja Flower', cursive;
 }

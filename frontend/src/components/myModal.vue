@@ -3,11 +3,7 @@
 <transition name="modal" appear>
   <div class="my-modal d-flex align-items-center justify-content-center" 
     v-if="visible" @click.self="handleWrapperClick">
-    <div class="my-modal__dialog ">
-     
-        <!-- update:visible', !visible 모달 바깥을 클릭해서 모달을 닫음 -->
-        
-        
+    <div class="my-modal__dialog ">       
       <div class="my-modal__body">
         <button  @click="$emit('update:visible', !visible)">
           <img class="my-modal__close" src="@/assets/delete.png" alt="닫기">
