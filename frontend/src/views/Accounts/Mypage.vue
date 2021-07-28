@@ -25,8 +25,19 @@
         <div>
           <img style="width:90%" src="@/assets/비번변경.png" alt="img">
           <!-- <h2 style="color:white">현재 닉네임 {{ $store.state.userData.nickname }}</h2> -->
-          <input class="_input" v-model="new_password" placeholder="새비밀번호" type="text" />
-          <button @click="pw_save">
+          <input class="_input" 
+          v-model="origin_password" placeholder="현재 비밀번호" type="text" />
+          <div v-if="origin_password === $store.state.password">
+          <input class="_input" 
+          v-model="new_password" placeholder="새비밀번호" type="text" />
+
+          <input class="_input"
+          v-model="new_password_check" placeholder="새비밀번호 확인" type="text" />
+          </div>
+          <div class="pw_ck" v-if="origin_password === $store.state.password && new_password != new_password_check">불일치</div>
+          <div class="pw_ck" v-if="origin_password === $store.state.password && new_password === new_password_check">일치</div>
+          <button :disabled="new_password != new_password_check"
+          @click="pw_save">
           <img class="save" src="@/assets/save.png" alt="저장">
         </button>
         </div>
@@ -53,10 +64,12 @@ export default {
      name: "Mypage",
      data: function () {
        return {
-         visible: false,
-         visible1: false,
-         new_nickname: '',
-         new_password: '',
+        visible: false,
+        visible1: false,
+        new_nickname: '',
+        origin_password:'',
+        new_password: '',
+        new_password_check: '',
        }
      },
        computed: {
@@ -89,18 +102,18 @@ export default {
       },
       password: function(){
         this.visible1 = !this.visible1
+        console.log('비번')
+        console.log(this.origin_password)
 
       },
       pw_save: function(){
         const content = {
-
-          password: this.$store.state.password,
           changePassword: this.new_password,
+          password: this.$store.state.password,
         }
         this.$store.dispatch('newpassword', content)
-
-        this.visible = false
         swal(`비밀번호가 변경되었습니다.`)
+        this.visible1= false
       },
 
       out: function () {
@@ -142,7 +155,7 @@ export default {
 
 .v26_66 {
   width: 435px;
-  height: 600px;
+  height: 500px;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -227,8 +240,9 @@ export default {
 }
 
 button.learn-more {
-  top:72%;
-  left:10%;
+  top:86%;
+  left:-5%;
+  margin: 1px;
   font-weight: 600;
   color: #382b22;
   padding: 0.7em;
