@@ -1,6 +1,6 @@
 <template lang="">
-  <div>
-    <nav >
+  <div >
+    <nav>
      <ul>
        <li>
          <router-link id="a" :to="{ name: 'Search' }">
@@ -58,7 +58,11 @@ export default {
 }
 </script>
 <style lang="scss">
+nav{
+  text-align: center;
+  // position: float;
 
+}
 nav ul {
   text-align: right;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 75%, rgba(255, 255, 255, 0) 100%);

@@ -20,7 +20,7 @@ export default new Vuex.Store({
         password: '',
         // 경험치, 닉네임, 승률
         userData: [],
-        nowpage: false,
+        nowpage: '',
     },
     mutations: {
 
@@ -33,6 +33,7 @@ export default new Vuex.Store({
             state.id = credentials.id;
             state.password = credentials.password;
             state.accessToken = credentials.accessToken;
+
             // axios.defaults.headers.common[
             //     "Authorization"
             // ] = `Bearer ${state.accessToken}`;
@@ -51,6 +52,7 @@ export default new Vuex.Store({
         },
         NOWPAGE: function(state, nowpage) {
             state.nowpage = nowpage
+            console.log('지금 페이지 이름')
             console.log(state.nowpage)
         },
         NEW_NICKNAME: function(state, new_nickname) {

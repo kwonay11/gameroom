@@ -71,6 +71,7 @@ export default {
     created(){
         const id = this.$store.state.id;
         this.$store.dispatch('fetchUser', id)
+
     },
 
     methods: {
