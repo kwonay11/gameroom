@@ -80,6 +80,7 @@ public class UserServiceImpl implements UserService {
 		if(passwordEncoder.matches(userReq.getPassword(), user.getPassword())) {
 			//보안을 위해서 수정한 유저 패스워드 암호화 하여 디비에 저장.
 			user.setPassword(passwordEncoder.encode(userReq.getChangePassword()));
+			userRepository.save(user);
 			return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", JwtTokenUtil.getToken(id)));
 		}
 		// 유효하지 않는 패스워드인 경우, 인증 실패로 응답.
