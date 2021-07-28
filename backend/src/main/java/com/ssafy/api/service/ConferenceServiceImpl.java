@@ -1,14 +1,8 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.ConferenceRegisterPostReq;
-import com.ssafy.db.entity.Conference;
-import com.ssafy.db.entity.ConferenceHistory;
-import com.ssafy.db.entity.User;
-import com.ssafy.db.entity.UserConference;
-import com.ssafy.db.repository.ConferenceHistoryRepository;
-import com.ssafy.db.repository.ConferenceRepository;
-import com.ssafy.db.repository.UserConferenceRepository;
-import com.ssafy.db.repository.UserRepository;
+import com.ssafy.db.entity.*;
+import com.ssafy.db.repository.*;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,34 +30,37 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Autowired
     UserConferenceRepository userConferenceRepository;
 
+    @Autowired
+    GameCategoryRepository gameCategoryRepository;
+
 
     @Override
     public int register(ConferenceRegisterPostReq dto) {
         User user = userRepository.findByUserId(dto.getUserid()).get();
+        GameCategory gameCategory = gameCategoryRepository.findById(dto.getGamecategory()).get();
         Conference conference = Conference.builder()
                 .owner(user)
+                .gameCategory(gameCategory)
                 .title(dto.getTitle())
                 .password(dto.getPassword())
                 .maxUser(dto.getMaxUser())
                 .build();
-        conferenceRepository.save(conference);
+        Conference result = conferenceRepository.save(conference);
 
-
-        Optional<Conference> byOwner = conferenceRepository.findByOwner(user);
         UserConference userConference = UserConference.builder()
-                .conference(byOwner.get())
+                .conference(result)
                 .user(user)
                 .build();
         userConferenceRepository.save(userConference);
-//
-//        ConferenceHistory conferenceHistory =ConferenceHistory.builder()
-//                .conference(conference)
-//                .user(user)
-//                .action(1)
-//                .build();
-//        conferenceHistoryRepository.save(conferenceHistory);
 
-        return conferenceRepository.save(conference).getMaxUser();
+        ConferenceHistory conferenceHistory =ConferenceHistory.builder()
+                .conference(result)
+                .user(user)
+                .action(0)
+                .build();
+        conferenceHistoryRepository.save(conferenceHistory);
+
+        return result.getMaxUser();
 
 
     }

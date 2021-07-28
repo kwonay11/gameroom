@@ -15,6 +15,8 @@ public class ConferenceRegisterPostReq {
 
     private String userid;
 
+    private Long gamecategory;
+
     private String title;
 
     private String password;
