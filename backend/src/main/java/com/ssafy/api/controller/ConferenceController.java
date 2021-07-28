@@ -1,22 +1,18 @@
 package com.ssafy.api.controller;
 import com.ssafy.api.service.ConferenceService;
+import com.ssafy.api.service.UserConferenceService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Conference;
 import com.ssafy.api.service.ConferenceHistoryService;
-import com.ssafy.api.service.ConferenceService;
-import com.ssafy.api.service.UserConferenceService;
-import com.ssafy.common.auth.SsafyUserDetails;
-import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +31,8 @@ import java.util.Optional;
 public class ConferenceController {
     @Autowired
     ConferenceService conferenceService;
+    @Autowired
+    UserConferenceService userConferenceService;
 
     @Autowired
     ConferenceHistoryService conferenceHistoryService;
@@ -98,5 +96,4 @@ public class ConferenceController {
         conferenceService.exitConference(userid, conferenceid);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "true"));
         }
-
 }

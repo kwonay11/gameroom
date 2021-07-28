@@ -27,14 +27,13 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Autowired
     UserConferenceRepository userConferenceRepository;
 
+    @Override
+    public Optional<Conference> getConferenceById(Long id) {
+        return conferenceRepository.findById(id);
+    }
 
     @Override
     public ConferenceHistory exitConference(String userId, Long conferenceId){
-
-        @Override
-        public Optional<Conference> getConferenceById(Long id) {
-            return conferenceRepository.findById(id);
-        }
         // 방 정보(user_conference) 삭제 (userId, RoomId를 통한 삭제)
         Optional<UserConference> conference = userConferenceRepository.findById(conferenceId);
         User user = userRepositorySupport.findUserByUserId(userId).get();
