@@ -26,13 +26,13 @@
           <img style="width:90%" src="@/assets/비번변경.png" alt="img">
           <!-- <h2 style="color:white">현재 닉네임 {{ $store.state.userData.nickname }}</h2> -->
           <input class="_input" 
-          v-model="origin_password" placeholder="현재 비밀번호" type="text" />
+          v-model="origin_password" placeholder="현재 비밀번호" type="password" />
           <div v-if="origin_password === $store.state.password">
           <input class="_input" 
-          v-model="new_password" placeholder="새비밀번호" type="text" />
+          v-model="new_password" placeholder="새비밀번호" type="password" />
 
           <input class="_input"
-          v-model="new_password_check" placeholder="새비밀번호 확인" type="text" />
+          v-model="new_password_check" placeholder="새비밀번호 확인" type="password" />
           </div>
           <div class="pw_ck" v-if="origin_password === $store.state.password && new_password != new_password_check">불일치</div>
           <div class="pw_ck" v-if="origin_password === $store.state.password && new_password === new_password_check">일치</div>
