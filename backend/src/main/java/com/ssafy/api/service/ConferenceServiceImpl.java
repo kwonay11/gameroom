@@ -1,14 +1,14 @@
 package com.ssafy.api.service;
-
 import com.ssafy.db.entity.ConferenceHistory;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.entity.UserConference;
 import com.ssafy.db.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
+import com.ssafy.db.entity.Conference;
+import com.ssafy.db.repository.ConferenceRepository;
 
 /**
  * 방 관련 비즈니스 로직 처리를 위한 서비스 구현 정의
@@ -30,6 +30,11 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     public ConferenceHistory exitConference(String userId, Long conferenceId){
+
+        @Override
+        public Optional<Conference> getConferenceById(Long id) {
+            return conferenceRepository.findById(id);
+        }
         // 방 정보(user_conference) 삭제 (userId, RoomId를 통한 삭제)
         Optional<UserConference> conference = userConferenceRepository.findById(conferenceId);
         User user = userRepositorySupport.findUserByUserId(userId).get();
@@ -41,5 +46,6 @@ public class ConferenceServiceImpl implements ConferenceService {
                                                 .user(user)
                                                 .build();
         return conferenceHistoryRepository.save(conferenceHistory);
+
     }
 }
