@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor // @Builder를 사용하기 위한 어노테이션
 @EntityListeners(AuditingEntityListener.class)
 @ToString(exclude = {"user","conference"})
-@EntityListeners(AuditingEntityListener.class)
 public class ConferenceHistory extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
