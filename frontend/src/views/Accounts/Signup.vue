@@ -1,5 +1,5 @@
 <template>
-  <div id='signup'>       
+  <div>       
       <form class="signup" @submit.prevent="signup,check">
         <div class="circle"><img class="card__image" src="@/assets/follower (1).png" alt="login"/></div>
         
@@ -28,7 +28,7 @@
           <div class="right">
             <input id="passwordCheck" v-model="credentials.passwordCheck" class="card__input" placeholder="Password Check"  type="password" /></div>
             <div class="pw_ck" v-if="credentials.passwordCheck != credentials.password">불일치</div>
-            <div class="pw_ck" v-if="credentials.passwordCheck == credentials.password">일치</div>
+            <div class="pw_ck" v-if="credentials.passwordCheck === credentials.password">일치</div>
         </div>
       <!-- 빈칸일 때, 패스워드와 확인이 같지 않을 때 버튼 비활성화 -->
         <button :disabled="!credentials.passwordCheck || !credentials.password || credentials.password != credentials.passwordCheck || !credentials.id || !credentials.nickname"
@@ -101,11 +101,11 @@ export default {
 
 <style >
 
-#signup {
+/* #signup {
   background: url("../../assets/desert-5171724_1920.png");
   height: 100vh;
   background-size:100% 100%;
-}
+} */
 
 .signup {
   width: 35%;

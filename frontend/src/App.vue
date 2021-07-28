@@ -1,25 +1,31 @@
 <template>
-  <div id="app">
-    <!-- <div ></div> -->
-    
-    <!-- <div v-if ="$store.state.nowpage != search">
+
+<div id='total'>
+
+
+  <div v-if="this.$route.name === 'Signup'">
+    <div id="signup">
       <navbar />
-      asdfasdfasdfasdf
-    </div> -->
-    <navbar />
-    <!-- <span v-if="$store.state.nowpage === true">
-      aswdfasdfadsf
-    </span> -->
-    <!-- <div v-else>
-      ggggggggg
-    </div> -->
+    </div>
   </div>
+  <div v-else-if="this.$route.name === 'Search'">
+    <div id="search">
+      <navbar />
+    </div>
+  </div>
+
+  <div v-else>
+    <div id="app">
+      <navbar />
+    </div>
+  </div>
+
+</div>
+
 </template>
 <script>
-// import { authComputed } from "@/store/helpers"
-import navbar from '@/components/nav'
 
-// import swal from 'sweetalert';
+import navbar from '@/components/nav'
 
 export default {
   name: 'App',
@@ -27,30 +33,33 @@ export default {
     navbar,
     },
 
-  // computed: {
-  //     ...authComputed
-  //   },
-  // methods: {
-  //   logout() {
-  //     this.$store.dispatch('logout')
-  //     this.$router.push({ name: "MainPage" });
-  //     swal(`로그아웃 되었습니다.`);
-  //   }
-  // }
 };
 
 </script>
 
 <style lang="scss">
-#app {
+
+#total {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #000000;
+  text-align: center;
+}
+
+#app {
   background: url("./assets/landscape-5547401.png");
   height: 100vh;
   background-size:100% 100%;
+}
+#signup {
+  background: url("./assets/desert-5171724_1920.png");
+  height: 100vh;
+  background-size:100% 100%;
+
+}
+#search {
+
 }
 @import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap');
 // nav {

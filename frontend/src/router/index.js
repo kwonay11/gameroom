@@ -35,6 +35,7 @@ const routes = [{
         path: '/mypage',
         name: 'Mypage',
         component: Mypage,
+        params: 'my',
         // meta: { requiresAuth: true } //로그인시 가능
     },
     {
