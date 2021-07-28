@@ -1,42 +1,65 @@
 <template>
-  <div id="app">
-    
-    <nav>
-      <!-- 로그인 전 -->
-     <ul>
-       <li>
-         <router-link id="a" :to="{ name: 'Search' }">
-        <img style="width:30px" src="@/assets/loupe.png" alt="search"></router-link>
-        </li>
-        <li>  
-          <router-link  id="a" :to="{ name: 'Login' }">
-        <img style="width:30px" src="@/assets/check-in.png" alt="login"></router-link>
-        </li>
-        <li>  
-          <router-link  id="a" :to="{ name: 'Signup' }">
-          <img style="width:30px" src="@/assets/add-user.png" alt="Signup"></router-link>
-        </li>
-     </ul>
-     <router-link  id="a" :to="{ name: 'MainPage' }">
-     <img src="@/assets/logo.png" alt="logo"></router-link>
-    </nav>
 
-    <router-view/>
+<div id='total'>
 
-    
+
+  <div v-if="this.$route.name === 'Signup'">
+    <div id="signup">
+      <navbar />
+    </div>
   </div>
+  <div v-else-if="this.$route.name === 'Search'">
+    <div id="search">
+      <navbar />
+    </div>
+  </div>
+
+  <div v-else>
+    <div id="app">
+      <navbar />
+    </div>
+  </div>
+
+</div>
+
 </template>
+<script>
+
+import navbar from '@/components/nav'
+
+export default {
+  name: 'App',
+  components: {
+    navbar,
+    },
+
+};
+
+</script>
 
 <style lang="scss">
-#app {
+
+#total {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #000000;
+  text-align: center;
+}
+
+#app {
   background: url("./assets/landscape-5547401.png");
   height: 100vh;
   background-size:100% 100%;
+}
+#signup {
+  background: url("./assets/desert-5171724_1920.png");
+  height: 100vh;
+  background-size:100% 100%;
+
+}
+#search {
+
 }
 @import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap');
 // nav {
