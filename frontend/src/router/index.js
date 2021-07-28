@@ -11,7 +11,7 @@ import Creatroom from '@/views/Creatroom.vue'
 Vue.use(VueRouter)
 
 const routes = [{
-        path: '/main',
+        path: '/',
         name: 'MainPage',
         component: MainPage
     },
@@ -23,22 +23,26 @@ const routes = [{
     {
         path: '/login',
         name: 'Login',
-        component: Login
+        component: Login,
+
     },
     {
         path: '/signup',
         name: 'Signup',
-        component: Signup
+        component: Signup,
     },
     {
         path: '/mypage',
         name: 'Mypage',
-        component: Mypage
+        component: Mypage,
+        params: 'my',
+        // meta: { requiresAuth: true } //로그인시 가능
     },
     {
         path: '/createroom',
         name: 'Creatroom',
-        component: Creatroom
+        component: Creatroom,
+        // meta: { requiresAuth: true } //로그인시 가능
     },
 
 ]

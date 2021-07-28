@@ -5,7 +5,7 @@
       <div class="id_pw">
         <div class="id_left"><img class="left_image" src="@/assets/profile.png" alt="user"/></div>
         <div class="id_right">
-          <input id="id" class="card__input" v-model="credentials.userid" placeholder="ID"  type="text" />
+          <input id="id" class="card__input" v-model="credentials.id" placeholder="ID"  type="text" />
         </div>
       </div>
       <div class="id_pw">
@@ -16,7 +16,7 @@
       </div>
       <div class="login_button">
         <!-- <router-link :to="{ name: 'MainPage' }" class='signup_text'>Login</router-link> -->
-        <button class='signup_text' @click="login(credentials)">
+        <button class='signup_text' @click="login()">
               Login
         </button>
       </div>
@@ -28,45 +28,40 @@
 </template>
 
 <script>
-const SERVER_URL = 'http://localhost:8080'
+
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import axios from 'axios'
+// import swal from 'sweetalert';
 
 export default {
      name: "Login",
      data: function () {
        return {
          credentials: {
-           userid: '',
+           id: '',
            password: '',
            loginSuccess: false,
+           accessToken: null,
          }
        }
      },
      methods: {
-       login: function (res) {
-        // 입력 아이디랑 비밀번호 콘솔창에 띄워지고
-         console.log(res)
-        //  서버에서 요청 받아온게 res로 들어가게 되어있음
-         axios.post(`${SERVER_URL}/users/login`, this.credentials)
-         .then((userinfo) => {
-          //  들어온 userinfo 콘솔에서 확인하고
-          console.log(userinfo)
-          // 로그인 성공이면 변수 값 바꾸기
-          
-          if (res.status === 200) {
-            this.credentials.loginSuccess = true
-          }
-          // res에 뭐들어오는지 확인하고 userinfo 이름 변수명 바꾸고
-          if ( this.credentials.loginSuccess) {
-            this.$storethis.$store.dispatch('Login', userinfo);
-          }
-           this.credentials.loginSuccess = false
-         })
-         .catch((err) => {
-            console.log(err)
-         })         
-       }
-       
+      login: function () {
+        axios.post(`${SERVER_URL}/users/login`, this.credentials)
+        .then((res) => {
+          console.log(res.data)
+          localStorage.setItem('jwt', res.data.token)
+          this.credentials.accessToken = res.data.accessToken
+          console.log(this.credentials.accessToken)
+          this.$emit('login')
+          this.$store.dispatch('login', this.credentials)
+          this.$router.push({ name: 'MainPage' })
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      }
+
      }
 }
 

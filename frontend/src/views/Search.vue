@@ -13,11 +13,27 @@
 
 <script>
 
+
+
 export default {
      name: "Search",
+     data: function () {
+       return{
+         nowpage: 'search',
+       }
+     },
       components: {
       
     },
+
+    created(){
+        console.log('라우터')
+        console.log(this.$route.name)
+        const nowpage = this.nowpage
+        this.$store.dispatch('nowpage', nowpage)
+
+    },
+
 }
 </script>
 
