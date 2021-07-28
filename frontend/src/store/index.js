@@ -60,6 +60,7 @@ export default new Vuex.Store({
         },
         NEW_PASSWORD: function(state, new_password) {
             state.password = new_password
+            console.log('바뀐비밀번호')
             console.log(state.password)
         }
     },
