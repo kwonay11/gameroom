@@ -1,50 +1,66 @@
 <template>
-  <div id="app">
-    
-    <nav>
-      <!-- 로그인 전 -->
-     <ul>
-       <li>
-         <router-link id="a" :to="{ name: 'Search' }">
-        <img style="width:30px" src="@/assets/loupe.png" alt="search"></router-link>
-        </li>
-        <li>  
-          <router-link  id="a" :to="{ name: 'Login' }">
-        <img style="width:30px" src="@/assets/check-in.png" alt="login"></router-link>
-        </li>
-        <li>  
-          <router-link  id="a" :to="{ name: 'Signup' }">
-          <img style="width:30px" src="@/assets/add-user.png" alt="Signup"></router-link>
-        </li>
-     </ul>
-     <router-link  id="a" :to="{ name: 'MainPage' }">
-     <img src="@/assets/logo.png" alt="logo"></router-link>
-    </nav>
+  <div id='total'>
+    <div v-if="this.$route.name === 'Signup'">
+      <div id="signup">
+        <navbar />
+      </div>
+    </div>
+    <!-- <div v-else-if="this.$route.name === 'Search'">
+      <div id="search">
+        <navbar />
+      </div>
+    </div> -->
 
-    <router-view/>
-
-    
+    <div v-else>
+      <div id="app">
+        <navbar />
+      </div>
+    </div>
   </div>
 </template>
+<script>
+
+import navbar from '@/components/nav'
+
+export default {
+  name: 'App',
+  components: {
+    navbar,
+    },
+
+};
+
+</script>
 
 <style lang="scss">
-#app {
+
+#total {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #000000;
+  text-align: center;
+}
+
+#app {
   background: url("./assets/landscape-5547401.png");
   height: 100vh;
   background-size:100% 100%;
 }
+#signup {
+  background: url("./assets/desert-5171724_1920.png");
+  height: 100vh;
+  background-size:100% 100%;
 
-// nav {
-//   margin: 0 auto;
-//   padding: 30px 0;
-//   background-image: linear-gradient(to right top, #400f55 0%, #0c3957 100%);
-// }
+}
+#search {
 
+}
+@import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap');
+
+p{
+  font-family: 'Gamja Flower', cursive;
+}
 nav ul {
   text-align: right;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 75%, rgba(255, 255, 255, 0) 100%);
@@ -70,5 +86,6 @@ nav ul li #a:hover {
   background: rgba(255, 255, 255, 0.1);
   color: rgba(0, 35, 122, 0.7);
 }
+
 
 </style>

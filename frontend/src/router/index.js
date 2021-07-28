@@ -4,13 +4,14 @@ import MainPage from '../views/MainPage.vue'
 import Search from '@/views/Search.vue'
 import Login from '@/views/Accounts/Login.vue'
 import Signup from '@/views/Accounts/Signup.vue'
-import MyPage from '@/views/Accounts/Mypage.vue'
+import Mypage from '@/views/Accounts/Mypage.vue'
+import Creatroom from '@/views/Creatroom.vue'
 
 
 Vue.use(VueRouter)
 
 const routes = [{
-        path: '/main',
+        path: '/',
         name: 'MainPage',
         component: MainPage
     },
@@ -22,17 +23,26 @@ const routes = [{
     {
         path: '/login',
         name: 'Login',
-        component: Login
+        component: Login,
+
     },
     {
         path: '/signup',
         name: 'Signup',
-        component: Signup
+        component: Signup,
     },
     {
         path: '/mypage',
         name: 'Mypage',
-        component: MyPage
+        component: Mypage,
+        params: 'my',
+        // meta: { requiresAuth: true } //로그인시 가능
+    },
+    {
+        path: '/createroom',
+        name: 'Creatroom',
+        component: Creatroom,
+        // meta: { requiresAuth: true } //로그인시 가능
     },
 
 ]
