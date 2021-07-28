@@ -1,17 +1,7 @@
 <template>
   
   <div>
-     <!-- <div class="back mt-5"> -->
-       <!-- <div class="back2"></div> -->
-       
-     <!-- <div class="v14_252">
-       <div class="room_img"></div>
-      
-     <div class="btn_1"></div><span class="v14_255">시작하기</span><span class="text">글자 맞추기</span>
-     <div class="v92_74"></div></div> -->
-     
- 
-  <!-- </div> -->
+
   <p class="head">처음에 시작할 게임을 선택하고 시작하기 버튼을 눌러주세요.<br>
   게임중에 게임을 변경할 수 있습니다.</p>
   <div class="cols mt-5">

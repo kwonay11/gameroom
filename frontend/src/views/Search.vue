@@ -6,8 +6,6 @@
           solo
         ></v-autocomplete>
       </div>
-  
-
   </div>
 </template>
 
@@ -22,16 +20,10 @@ export default {
          nowpage: 'search',
        }
      },
-      components: {
-      
-    },
 
     created(){
-        console.log('라우터')
-        console.log(this.$route.name)
         const nowpage = this.nowpage
         this.$store.dispatch('nowpage', nowpage)
-
     },
 
 }

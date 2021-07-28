@@ -76,17 +76,13 @@ export default {
         
         axios.post(`${SERVER_URL}/users/check`,this.credentials)
          .then((res) => {
-           console.log(res);
            if (res.status === 200) {
             this.id_check = true
             swal(`사용 가능한 아이디입니다.`);
-            console.log('중복안함')
           }
          })
          .catch(() => {
              swal(`이미 있는 아이디입니다.`);
-             console.log('중복')
-             
           })
 
       }

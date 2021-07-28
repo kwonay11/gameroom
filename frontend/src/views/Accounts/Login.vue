@@ -31,7 +31,7 @@
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import axios from 'axios'
-// import swal from 'sweetalert';
+import swal from 'sweetalert';
 
 export default {
      name: "Login",
@@ -40,7 +40,6 @@ export default {
          credentials: {
            id: '',
            password: '',
-           loginSuccess: false,
            accessToken: null,
          }
        }
@@ -49,16 +48,14 @@ export default {
       login: function () {
         axios.post(`${SERVER_URL}/users/login`, this.credentials)
         .then((res) => {
-          console.log(res.data)
           localStorage.setItem('jwt', res.data.token)
           this.credentials.accessToken = res.data.accessToken
-          console.log(this.credentials.accessToken)
           this.$emit('login')
           this.$store.dispatch('login', this.credentials)
           this.$router.push({ name: 'MainPage' })
         })
-        .catch((err) => {
-          console.log(err)
+        .catch(() => {
+          swal(`로그인에 실패하였습니다.`);
         })
       }
 
