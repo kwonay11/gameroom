@@ -11,7 +11,7 @@ import com.ssafy.db.repository.UserRepositorySupport;
  */
 
 public interface ConferenceService {
-    ConferenceHistory exitConference(String userId, Long ConferenceId); //방 나가기
+    ConferenceHistory exitConference(User user, Long ConferenceId); //방 나가기
 
     Optional<Conference> getConferenceById(Long id);
 

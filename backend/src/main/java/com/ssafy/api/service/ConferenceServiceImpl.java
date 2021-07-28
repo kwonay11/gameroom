@@ -49,10 +49,9 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public ConferenceHistory exitConference(String userId, Long conferenceId){
+    public ConferenceHistory exitConference(User user, Long conferenceId){
         // 방 정보(user_conference) 삭제 (userId, RoomId를 통한 삭제)
-        Optional<UserConference> conference = userConferenceRepository.findById(conferenceId);
-        User user = userRepositorySupport.findUserByUserId(userId).get();
+        Optional<UserConference> conference = userConferenceRepository.findByUserId(user.getId());
         userConferenceRepository.delete(conference.get());
         //컨퍼런스 테이블에 남겨두기 , create(0), join(1), exit(2)
         ConferenceHistory conferenceHistory = ConferenceHistory.builder()

@@ -11,4 +11,7 @@ import java.util.List;
 
 public interface UserConferenceRepository extends JpaRepository<UserConference,Long> {
     List<UserConference> findByConferenceId(long conferenceId);
+
+    Optional<UserConference> findByUserId(long userId);
+
 }

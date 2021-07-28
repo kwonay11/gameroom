@@ -104,9 +104,9 @@ public class ConferenceController {
                                              @ApiIgnore Authentication authentication){
         //Token이용해 userid가져오기
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
-        String userid = userDetails.getUsername();
+        User user = userDetails.getUser();
         //관련 confencehistory삭제 & history저장
-        conferenceService.exitConference(userid, conferenceid);
+        conferenceService.exitConference(user, conferenceid);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "true"));
         }
     
