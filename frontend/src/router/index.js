@@ -6,6 +6,7 @@ import Login from '@/views/Accounts/Login.vue'
 import Signup from '@/views/Accounts/Signup.vue'
 import Mypage from '@/views/Accounts/Mypage.vue'
 import Creatroom from '@/views/Creatroom.vue'
+import Room from '@/views/Room'
 
 
 Vue.use(VueRouter)
@@ -43,6 +44,11 @@ const routes = [{
         name: 'Creatroom',
         component: Creatroom,
         // meta: { requiresAuth: true } //로그인시 가능
+    },
+    {
+        path: '/gameroom/:roomid',
+        name: 'Room',
+        component: Room,
     },
 
 ]
