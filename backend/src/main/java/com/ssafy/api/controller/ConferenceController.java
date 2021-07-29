@@ -126,7 +126,7 @@ public class ConferenceController {
         String userId = userDetails.getUsername();
 
         registerPostReq.setUserid(userId);
-        int result = conferenceService.register(registerPostReq);
+        Long result = conferenceService.register(registerPostReq);
 
         return ResponseEntity.ok(ConferenceRes.of(201,"Success",result));
 

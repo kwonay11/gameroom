@@ -15,7 +15,7 @@ public interface ConferenceService {
 
     Optional<Conference> getConferenceById(Long id);
 
-    int register(ConferenceRegisterPostReq dto);
+    Long register(ConferenceRegisterPostReq dto);
 }
 
 

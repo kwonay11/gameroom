@@ -13,9 +13,9 @@ import java.util.List;
 @ApiModel("ConferenceResponse")
 public class ConferenceRes extends BaseResponseBody {
     @ApiModelProperty(name="")
-    private int roomId;
+    private Long roomId;
 
-    public static ConferenceRes of(Integer statusCode, String message, int roomId) {
+    public static ConferenceRes of(Integer statusCode, String message, Long roomId) {
         ConferenceRes res = new ConferenceRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);

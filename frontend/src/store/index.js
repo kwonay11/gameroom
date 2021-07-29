@@ -21,6 +21,9 @@ export default new Vuex.Store({
         // 경험치, 닉네임, 승률
         userData: [],
         nowpage: '',
+        // conference 방 번호
+        conferenceid: null,
+
     },
     mutations: {
 
@@ -51,6 +54,9 @@ export default new Vuex.Store({
         },
         NEW_PASSWORD: function(state, new_password) {
             state.password = new_password
+        },
+        CONFERENCE_ID: function(state,conferenceid){
+            state.conferenceid = conferenceid
         }
     },
 
@@ -102,7 +108,22 @@ export default new Vuex.Store({
                 .then(() => {
                     commit('NEW_PASSWORD', content.changePassword)
                 })
+        },
+        joinSession: function({ commit}, contents) {
+            axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${this.state.accessToken}`;
+
+            axios.post(`${SERVER_URL}/conferences`, contents)
+                .then((res) => {
+                    // console.log('sdsdsdsd')
+                    // console.log(commit);
+                    // console.log(res.data.roomId)
+                    commit('CONFERENCE_ID', res.data.roomId)
+                })
+
         }
+
 
     },
     getters: {

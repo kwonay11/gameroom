@@ -19,7 +19,7 @@
                 <span class="circle" aria-hidden="true">
                   <span class="icon arrow"></span>
                 </span>
-                <span class="button-text">start</span>
+                <span class="button-text" @click="joinSession()">start</span>
               </button>
             </div>
           </div>
@@ -132,8 +132,38 @@
 </template>
 
 <script>
+import swal from 'sweetalert';
 export default {
-    name:"Creatroom"
+    name:"Creatroom",
+    components:{
+      
+    },
+    data(){
+       return{
+        //  방생성을 위한 하드코딩임. 변경 필요 
+        contents: {
+          title:'방제목',
+          password:'1234',
+          maxUser: '6',
+          gamecategory: '1',
+          },
+       }
+     },
+     methods: {
+      joinSession:function() {
+        this.$store
+          .dispatch("joinSession", this.contents)
+          .then(() => {
+            this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid }});
+            // swal(`회원가입에 성공하였습니다.`);
+          })
+          .catch(() => {
+             swal(`잘못된 정보입니다.`);
+          })
+      },
+    },
+
+
 
 }
 </script>
