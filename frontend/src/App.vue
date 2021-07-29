@@ -3,18 +3,20 @@
     <div v-if="this.$route.name === 'Signup'">
       <div id="signup">
         <navbar />
+        <router-view/>
       </div>
     </div>
 
     <div v-else-if="this.$route.name === 'Room'">
       <div id="room">
-
+        <router-view/>
       </div>
     </div>
 
     <div v-else>
       <div id="app">
         <navbar />
+        <router-view/>
       </div>
     </div>
   </div>
@@ -55,7 +57,7 @@ export default {
 
 }
 #room {
-  background: url("./assets/sky-5114501_1920.jpg");
+  // background: url("./assets/sky-5114501_1920.jpg");
   height: 100vh;
   background-size:100% 100%;
 }

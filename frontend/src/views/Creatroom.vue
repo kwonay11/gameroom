@@ -142,7 +142,7 @@ export default {
        return{
         //  방생성을 위한 하드코딩임. 변경 필요 
         contents: {
-          title:'방제목',
+          title:'title',
           password:'1234',
           maxUser: '6',
           gamecategory: '1',
