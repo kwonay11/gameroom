@@ -20,28 +20,20 @@
 			</div>
 		</div>
 
-		<!-- <div id="session" v-if="session"> -->
-		<div  v-if="session">
-			<div class="participation">
-				<!-- <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
-				<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/> -->
-
+		<div id="session" v-if="session">
+			<div class='participation'>
+				<div id="video-container" class="">
+					<user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
+					<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
+				</div>
 			</div>
-			<!-- <div id="session-header">
-				<h1 id="session-title">{{ mySessionId }}</h1> -->
-				<!-- <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Leave session"> -->
-			<!-- </div> -->
-			<div id="video-container" class="participation_video">
+			<!-- <div id="video-container" class="col-md-2">
 				<user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
 				<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
+			</div> -->
+			<div id="main-video" class="col-md-6">
+				<user-video :stream-manager="mainStreamManager"/>
 			</div>
-			</div>
-
-			<div v-if="session">
-				<h1>mainvideo</h1>
-				<div id="main-video" class="box col-md-6">
-					<user-video :stream-manager="mainStreamManager"/>
-				</div>
 		</div>
 	</div>
 </template>
@@ -222,27 +214,248 @@ export default {
 }
 </script>
 
-<style scoped>
-#main-container {
-	padding-bottom: 80px;
-	
-}
-.box { 
-	width: 70%;
-	border-radius: 5px;
-	border-color:red;
-}
+<style>
 
 .participation {
-
   margin: 5vh 2.5vw;
   width: 95vw;
 	height: 22vh;
-	text-align: justify;
+	/* text-align: justify; */
   border: 3px solid #ffa500;
+	/* display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-around;  */
+
 
 }
-.participation_video {
-text-align: justify;
+
+
+
+#main-container {
+	padding-bottom: 80px;
+}
+
+/*vertical-center {
+	position: relative;
+	top: 30%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}*/
+
+.horizontal-center {
+	margin: 0 auto;
+}
+
+.form-control {
+	color: #0088aa;
+	font-weight: bold;
+}
+
+.form-control:focus {
+	border-color: #0088aa;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 136, 170, 0.6);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 136, 170, 0.6);
+}
+
+input.btn {
+	font-weight: bold;
+}
+
+.btn {
+	font-weight: bold !important;
+}
+
+.btn-success {
+	background-color: #06d362 !important;
+	border-color: #06d362;
+}
+
+.btn-success:hover {
+	background-color: #1abd61 !important;
+	border-color: #1abd61;
+}
+
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 60px;
+	background-color: #4d4d4d;
+}
+
+.footer .text-muted {
+	margin: 20px 0;
+	float: left;
+	color: #ccc;
+}
+
+.openvidu-logo {
+	height: 35px;
+	float: right;
+	margin: 12px 0;
+	-webkit-transition: all 0.1s ease-in-out;
+	-moz-transition: all 0.1s ease-in-out;
+	-o-transition: all 0.1s ease-in-out;
+	transition: all 0.1s ease-in-out;
+}
+
+.openvidu-logo:hover {
+	-webkit-filter: grayscale(0.5);
+	filter: grayscale(0.5);
+}
+
+.demo-logo {
+	margin: 0;
+	height: 22px;
+	float: left;
+	padding-right: 8px;
+}
+
+a:hover .demo-logo {
+	-webkit-filter: brightness(0.7);
+	filter: brightness(0.7);
+}
+
+#join-dialog {
+	margin-left: auto;
+    margin-right: auto;
+    max-width: 70%;
+}
+
+#join-dialog h1 {
+	color: #4d4d4d;
+	font-weight: bold;
+	text-align: center;
+}
+
+#img-div {
+	text-align: center;
+	margin-top: 3em;
+	margin-bottom: 3em;
+	/*position: relative;
+	top: 20%;
+	left: 50%;
+	transform: translate(-50%, -50%);*/
+}
+
+#img-div img {
+	height: 15%;
+}
+
+#join-dialog label {
+	color: #0088aa;
+}
+
+#join-dialog input.btn {
+	margin-top: 15px;
+}
+
+#session-header {
+	margin-bottom: 20px;
+}
+
+#session-title {
+	display: inline-block;
+}
+
+#buttonLeaveSession {
+	float: right;
+	margin-top: 20px;
+}
+
+#video-container video {
+	position: relative;
+	float: left;
+	width: 50%;
+	cursor: pointer;
+}
+
+#video-container video + div {
+	float: left;
+	width: 50%;
+	position: relative;
+	margin-left: -50%;
+}
+
+#video-container p {
+	display: inline-block;
+	background: #f8f8f8;
+	padding-left: 5px;
+	padding-right: 5px;
+	color: #777777;
+	font-weight: bold;
+	border-bottom-right-radius: 4px;
+}
+
+video {
+	width: 100%;
+	height: auto;
+}
+
+#main-video p {
+	position: absolute;
+	display: inline-block;
+	background: #f8f8f8;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 22px;
+	color: #777777;
+	font-weight: bold;
+	border-bottom-right-radius: 4px;
+}
+
+#session img {
+	width: 100%;
+	height: auto;
+	display: inline-block;
+	object-fit: contain;
+	vertical-align: baseline;
+}
+
+#session #video-container img {
+	position: relative;
+	float: left;
+	width: 50%;
+	cursor: pointer;
+	object-fit: cover;
+	height: 180px;
+}
+
+
+/* xs ans md screen resolutions*/
+
+@media screen and (max-width: 991px) and (orientation: portrait) {
+	#join-dialog {
+		max-width: inherit;
+	}
+	#img-div img {
+		height: 10%;
+	}
+	#img-div {
+		margin-top: 2em;
+		margin-bottom: 2em;
+	}
+	.container-fluid>.navbar-collapse, .container-fluid>.navbar-header, .container>.navbar-collapse, .container>.navbar-header {
+		margin-right: 0;
+		margin-left: 0;
+	}
+	.navbar-header i.fa {
+		font-size: 30px;
+	}
+	.navbar-header a.nav-icon {
+		padding: 7px 3px 7px 3px;
+	}
+}
+
+@media only screen and (max-height: 767px) and (orientation: landscape) {
+	#img-div {
+		margin-top: 1em;
+		margin-bottom: 1em;
+	}
+	#join-dialog {
+		max-width: inherit;
+	}
 }
 </style>
+
