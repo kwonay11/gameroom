@@ -20,7 +20,7 @@
 			</div>
 		</div>
 
-		<div id="session" v-if="session">
+		<div  v-if="session">
 			<div class='participation'>
 				<div id="video-container" class="">
 					<user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
@@ -219,13 +219,13 @@ export default {
 .participation {
   margin: 5vh 2.5vw;
   width: 95vw;
-	height: 22vh;
+	/* height: 22vh; */
 	/* text-align: justify; */
   border: 3px solid #ffa500;
-	/* display: flex;
+	display: flex;
 	flex-direction: row;
-	align-items: center;
-	justify-content: space-around;  */
+	/* align-items: center;
+	justify-content: space-around;   */
 
 
 }
@@ -276,41 +276,7 @@ input.btn {
 	border-color: #1abd61;
 }
 
-.footer {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	height: 60px;
-	background-color: #4d4d4d;
-}
 
-.footer .text-muted {
-	margin: 20px 0;
-	float: left;
-	color: #ccc;
-}
-
-.openvidu-logo {
-	height: 35px;
-	float: right;
-	margin: 12px 0;
-	-webkit-transition: all 0.1s ease-in-out;
-	-moz-transition: all 0.1s ease-in-out;
-	-o-transition: all 0.1s ease-in-out;
-	transition: all 0.1s ease-in-out;
-}
-
-.openvidu-logo:hover {
-	-webkit-filter: grayscale(0.5);
-	filter: grayscale(0.5);
-}
-
-.demo-logo {
-	margin: 0;
-	height: 22px;
-	float: left;
-	padding-right: 8px;
-}
 
 a:hover .demo-logo {
 	-webkit-filter: brightness(0.7);
@@ -351,13 +317,6 @@ a:hover .demo-logo {
 	margin-top: 15px;
 }
 
-#session-header {
-	margin-bottom: 20px;
-}
-
-#session-title {
-	display: inline-block;
-}
 
 #buttonLeaveSession {
 	float: right;
@@ -367,8 +326,9 @@ a:hover .demo-logo {
 #video-container video {
 	position: relative;
 	float: left;
-	width: 50%;
+	width: 30%;
 	cursor: pointer;
+	margin: 0 2%;
 }
 
 #video-container video + div {
@@ -405,13 +365,7 @@ video {
 	border-bottom-right-radius: 4px;
 }
 
-#session img {
-	width: 100%;
-	height: auto;
-	display: inline-block;
-	object-fit: contain;
-	vertical-align: baseline;
-}
+
 
 #session #video-container img {
 	position: relative;
@@ -424,7 +378,7 @@ video {
 
 
 /* xs ans md screen resolutions*/
-
+/* 
 @media screen and (max-width: 991px) and (orientation: portrait) {
 	#join-dialog {
 		max-width: inherit;
@@ -456,6 +410,6 @@ video {
 	#join-dialog {
 		max-width: inherit;
 	}
-}
+} */
 </style>
 
