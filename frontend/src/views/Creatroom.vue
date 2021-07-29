@@ -167,7 +167,6 @@ export default {
 
 }
 </script>
-
 <style>
 .cols{
   display: -webkit-box;

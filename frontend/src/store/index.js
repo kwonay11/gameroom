@@ -110,18 +110,23 @@ export default new Vuex.Store({
                 })
         },
         joinSession: function({ commit }, contents) {
-            axios.defaults.headers.common[
-                "Authorization"
-            ] = `Bearer ${this.state.accessToken}`;
+            return new Promise((resolve, reject) => {
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${this.state.accessToken}`;
 
-            axios.post(`${SERVER_URL}/conferences`, contents)
-                .then((res) => {
-                    // console.log('sdsdsdsd')
-                    // console.log(commit);
-                    // console.log(res.data.roomId)
-                    commit('CONFERENCE_ID', res.data.roomId)
-                })
-
+                axios.post(`${SERVER_URL}/conferences`, contents)
+                    .then((res) => {
+                        // console.log('sdsdsdsd')
+                        // console.log(commit);
+                        console.log(res.data.roomId)
+                        commit('CONFERENCE_ID', res.data.roomId)
+                        resolve();
+                    })
+                    .catch(() => {
+                        reject();
+                    })
+            })
         }
 
 
