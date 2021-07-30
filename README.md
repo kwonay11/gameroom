@@ -92,7 +92,7 @@
 - 회의를 통해 기능 추가
   * Sprint를 시작할 때 이슈의 Story point와 담당자를 정한다.
 
-![image-20210730101558309](README.assets/image-20210730101558309.png)
+![image-20210730101558309](README.assets/image-20210730003324695.png)
 
 ## 개발 환경
 
