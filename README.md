@@ -1,4 +1,54 @@
-# Convention
+# 🎈 방구석 게임방
+
+> 화상 기반 랜선 게임 플랫폼 
+
+
+
+## 📆 프로젝트 개요 
+
+- **진행 기간** : 2021.07.21~ 진행중
+- 목표
+  - 온라인으로 서로 소통하며 게임을 즐길 수 있는 화상 게임 서비스를 개발합니다. 
+  - 온라인 화상으로도 게임의 즐거움을 충분히 느낄 수 있도록 UX/UI를 설계합니다.
+  
+
+
+
+- **Wireframe**
+  
+  - [와이어프레임 링크](https://www.figma.com/file/baTkJLA1PJCApXCzz7GJdZ/방구석게임방?node-id=0%3A1) 
+  
+  ![KakaoTalk_20210730_005358499](README.assets/KakaoTalk_20210730_005358499.gif)
+  
+  ![image-20210730101432568](README.assets/image-20210730101432568.png)
+  
+  
+
+
+- **ERD**
+
+	- [ERD 링크](https://www.erdcloud.com/d/i2m7SoQ4TDpcjARp3)
+	
+	![image-20210730002623867](README.assets/image-20210730002623867.png)
+
+
+- **API** 
+
+	- [API 링크](https://docs.google.com/spreadsheets/d/1Hv3eXslcOPa4mkrRWPYeclXQUAdBnyGK2AVYatX1-eU/edit#gid=1154573824)
+	
+	![image-20210730101522727](README.assets/image-20210730101522727.png)
+
+- **Notion**
+
+- [notion 링크](https://spangle-dive-0b6.notion.site/36b6e17ba1a346d5a94bb6e3292e1268?v=ff7c138d2781458b889691b19d78bb6f)
+
+- ![image-20210730003525462](README.assets/image-20210730003525462.png)
+
+
+
+
+
+
 
 ## Git Commit Convention
 
@@ -41,3 +91,22 @@
 - 깃 커밋에 들어갈 이슈번호는 '스토리' 이슈 단위로 작성한다.
 - 회의를 통해 기능 추가
   * Sprint를 시작할 때 이슈의 Story point와 담당자를 정한다.
+
+![image-20210730101558309](README.assets/image-20210730101558309.png)
+
+## 개발 환경
+
+### Front-end
+
+- **Framework** : Vue.js
+- **지원 환경** : Web
+- **담당자** : `권예빈`,`김보민`
+
+
+
+### Back-end
+
+- **Framework** : Spring boot 
+- **Database** : MySQL
+- **담당자** :  `김윤빈`, `정동원`
+
