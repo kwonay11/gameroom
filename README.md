@@ -10,7 +10,6 @@
 - 목표
   - 온라인으로 서로 소통하며 게임을 즐길 수 있는 화상 게임 서비스를 개발합니다. 
   - 온라인 화상으로도 게임의 즐거움을 충분히 느낄 수 있도록 UX/UI를 설계합니다.
-  
 
 
 
@@ -18,7 +17,7 @@
   
   - [와이어프레임 링크](https://www.figma.com/file/baTkJLA1PJCApXCzz7GJdZ/방구석게임방?node-id=0%3A1) 
   
-  ![KakaoTalk_20210730_005358499](README.assets/KakaoTalk_20210730_005358499.gif)
+  ![방구석게임방-와이어프래임](README.assets/방구석게임방_와이어프레임.gif)
   
   ![image-20210730101432568](README.assets/image-20210730101432568.png)
   
