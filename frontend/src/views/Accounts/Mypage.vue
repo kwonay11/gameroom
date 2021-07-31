@@ -16,8 +16,8 @@
       <div>
         <img style="width:90%" src="@/assets/닉네임변경.png" alt="img">
         <input class="_input" v-model="new_nickname" placeholder="새로운 닉네임" type="text" />
-        <button @click="nick_save">
-          <img class="save" src="@/assets/save.png" alt="저장">
+        <div v-if="!new_nickname" style="color:white">변경할 닉네임을 입력해 주세요.</div>
+        <button v-if="new_nickname" @click="nick_save" class="btn-animate">확인
         </button>
       </div>
     </app-my-modal>
@@ -35,11 +35,11 @@
           <input class="_input"
           v-model="new_password_check" placeholder="새비밀번호 확인" type="password" />
           </div>
-          <div class="pw_ck" v-if="origin_password === $store.state.password && new_password != new_password_check">불일치</div>
-          <div class="pw_ck" v-if="origin_password === $store.state.password && new_password === new_password_check">일치</div>
-          <button :disabled="new_password != new_password_check"
-          @click="pw_save">
-          <img class="save" src="@/assets/save.png" alt="저장">
+          <div class="pw_ck" v-if="origin_password != $store.state.password && origin_password">현재 비밀번호와 불일치합니다.</div>
+          <div class="pw_ck" v-if="new_password != new_password_check">새 비밀번호와 불일치합니다.</div>
+          <div v-if="new_password != new_password_check || !origin_password || !new_password || !new_password_check" style="color:white">모두 입력해 주세요.</div>
+          <button :disabled="new_password != new_password_check || !origin_password || !new_password" 
+          @click="pw_save" class="btn-animate">확인
         </button>
         </div>
       </app-my-modal>
@@ -51,10 +51,10 @@
           <img style="width:90%" src="@/assets/회원탈퇴.png" alt="img">
           <input class="_input" 
           v-model="origin_password" placeholder="비밀번호 확인" type="password" />
-          <div v-if="origin_password != $store.state.password" style="color:white">비밀번호가 불일치합니다.</div>
-          <button v-if="origin_password === $store.state.password" @click="out_save">
-            <img class="save" src="@/assets/save.png" alt="저장">
-          </button>
+          <div v-if="!origin_password" style="color:white">비밀번호를 입력해 주세요.</div>
+          <div v-else-if="origin_password != $store.state.password" style="color:white">비밀번호가 불일치합니다.</div>
+          <button v-if="origin_password === $store.state.password" @click="out_save" class="btn-animate">탈퇴 확인</button>
+    
           
         </div>
       </app-my-modal>
@@ -345,5 +345,63 @@ button.learn-more:active::before {
   font-weight: bold;
   color:white;
 } */
+
+.btn-animate {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0px 16px 47px -15px #cda6ee;
+  background: none;
+  transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+  border-radius: 8px;
+  overflow: hidden;
+  outline: none;
+  transform: translateZ(0);
+}
+.btn-animate span {
+  position: relative;
+  z-index: 2;
+}
+.btn-animate:before, .btn-animate:after {
+  border-radius: 8px;
+  content: "";
+  z-index: -1;
+  background: linear-gradient(100deg, #a6c1ee, #cc96eb);
+  
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.btn-animate:after {
+  
+  background: linear-gradient(100deg, #560a9b, #9e158f);
+
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  transition-delay: 0.1s;
+}
+.btn-animate:hover {
+  box-shadow: 0px 16px 47px -15px  #cda6ee;
+}
+.btn-animate:hover:after {
+  transform: scaleY(1);
+  transform-origin: bottom;
+  transition-delay: 0s;
+}
+.btn-animate:active {
+  transform: translateY(4px) translateZ(0);
+  box-shadow: 0px 8px 10px -6px  #cda6ee;
+}
 
 </style>
