@@ -9,28 +9,29 @@
     <div class="v26_62"></div>
     <span class="v26_63">lev. {{ parseInt(($store.state.userData.exp)/100) }} </span>
     <span class="v26_64">{{ $store.state.userData.nickname }}</span>
+
+    <!-- 닉네임 변경 -->
     <button class="v113_111" @click="nickname"><img style="width:90%" src="@/assets/연필1.png" alt="img"></button>
     <app-my-modal :visible.sync="visible">
       <div>
         <img style="width:90%" src="@/assets/닉네임변경.png" alt="img">
-        <!-- <h2 style="color:white">현재 닉네임 {{ $store.state.userData.nickname }}</h2> -->
         <input class="_input" v-model="new_nickname" placeholder="새로운 닉네임" type="text" />
         <button @click="nick_save">
           <img class="save" src="@/assets/save.png" alt="저장">
         </button>
       </div>
     </app-my-modal>
+
+    <!-- 비밀번호 변경 -->
     <button class="learn-more" @click="password">비밀번호 변경</button>
       <app-my-modal :visible.sync="visible1">
         <div>
           <img style="width:90%" src="@/assets/비번변경.png" alt="img">
-          <!-- <h2 style="color:white">현재 닉네임 {{ $store.state.userData.nickname }}</h2> -->
           <input class="_input" 
           v-model="origin_password" placeholder="현재 비밀번호" type="password" />
           <div v-if="origin_password === $store.state.password">
           <input class="_input" 
           v-model="new_password" placeholder="새비밀번호" type="password" />
-
           <input class="_input"
           v-model="new_password_check" placeholder="새비밀번호 확인" type="password" />
           </div>
@@ -43,7 +44,21 @@
         </div>
       </app-my-modal>
 
-    <button class="learn-more" @click="out">회원탈퇴</button>
+      <!-- 회원 탈퇴 -->
+      <button class="learn-more" @click="out">회원탈퇴</button>
+      <app-my-modal :visible.sync="visible2">
+        <div>
+          <img style="width:90%" src="@/assets/회원탈퇴.png" alt="img">
+          <input class="_input" 
+          v-model="origin_password" placeholder="비밀번호 확인" type="password" />
+          <div v-if="origin_password != $store.state.password" style="color:white">비밀번호가 불일치합니다.</div>
+          <button v-if="origin_password === $store.state.password" @click="out_save">
+            <img class="save" src="@/assets/save.png" alt="저장">
+          </button>
+          
+        </div>
+      </app-my-modal>
+
     </div>
 
     <WinRate />
@@ -51,7 +66,7 @@
   </div>
 </template>
 
-<script>
+<script scoped>
 import swal from 'sweetalert';
 import WinRate from '@/components/WinRate'
 import myModal from '@/components/myModal'
@@ -66,6 +81,7 @@ export default {
        return {
         visible: false,
         visible1: false,
+        visible2: false,
         new_nickname: '',
         origin_password:'',
         new_password: '',
@@ -113,8 +129,10 @@ export default {
         swal(`비밀번호가 변경되었습니다.`)
         this.visible1= false
       },
-
-      out: function () {
+      out:function(){
+        this.visible2 = !this.visible2
+      },
+      out_save: function () {
              axios.defaults.headers.common[
                 "Authorization"
             ] = `Bearer ${this.$store.state.accessToken}`;
@@ -123,6 +141,7 @@ export default {
           .then(() => {
             this.$store.dispatch('logout')
             swal(`탈퇴되었습니다.`)
+            this.visible2= false
             this.$router.push({ name: 'MainPage' })
           })
 
@@ -316,5 +335,15 @@ button.learn-more:active::before {
 .bluetop th:last-child, .bluetop td:last-child {
   border-right: 0;
 }
+
+/* .btn1 {
+  background: rgba(196,196,196,0.30000001192092896);
+  width: 345px;
+  height: 68px;
+  border: 1px solid rgb(252, 252, 252);
+  border-radius:20px;
+  font-weight: bold;
+  color:white;
+} */
 
 </style>
