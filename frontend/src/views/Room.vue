@@ -10,15 +10,33 @@
             <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
          </div>
       </div>
-      <div class='row'>
+      <div class='row m-4'>
          <div id="main-video" class="col-md-8">
             <div class="player">
                <user-video :stream-manager="mainStreamManager"/>
+               <div class="answer"><input class="input_answer" placeholder="답을 입력해주세요." type="text" /></div>
             </div>
          </div>
          <div class="col-md-4">
             <div class='player'>
-               dfddf
+               <div class="link">
+               <img style="width:8%" src="@/assets/link.png" alt="link">
+               </div>
+               <span class="buttons">
+               <img class="m-4" style="width:13%" src="@/assets/microphone (3).png" alt="mike">
+               </span>
+               <span class="buttons">
+               <img class="m-4" style="width:13%" src="@/assets/video-player.png" alt="video">
+               </span>
+               <span class="buttons">
+               <img class="m-4" style="width:13%" src="@/assets/delete.png" alt="delete">
+               </span>
+               <span class="buttons">
+               <img class="m-4" style="width:13%" src="@/assets/question.png" alt="tutorial">
+               </span>
+            </div>
+            <div class='player'>
+               채팅
             </div>
          </div>
       </div>
@@ -225,17 +243,50 @@ export default {
 
 <style>
 
+.input_answer {
+  color: #000000;
+  height: 86px;
+  display: block;
+  font-size: 1.2rem;
+  letter-spacing: 0.15rem;
+  padding: 20px;
+  width: 100%;
+  margin-bottom:10px;
+}
+.answer{
+  
+width: 485px;
+height: 87px;
+margin: 0% 29% 1% 29%;
+
+background: rgba(20, 17, 151, 0.47);
+border: 1px solid #FFFFFF;
+box-sizing: border-box;
+/* border-radius: 20px; */
+}
+
+.link {
+   right:-40%;
+   cursor: pointer;
+   position: relative;
+   
+
+}
+.buttons{
+  cursor: pointer;
+  position: relative;
+}
 .participation {
-  margin: 0 2.5vw;
+  margin: 0 2.2vw;
   padding: 2.5vh;
   /* width: 95vw; */
-	/* height: 22vh; */
-	/* text-align: justify; */
+   /* height: 22vh; */
+   /* text-align: justify; */
   border: 3px solid #ffa500;
-	display: flex;
-	flex-direction: row;
-	/* align-items: center;
-	justify-content: space-around;   */
+   display: flex;
+   flex-direction: row;
+   /* align-items: center;
+   justify-content: space-around;   */
 }
 
 .player {
@@ -243,16 +294,16 @@ export default {
 }
 
 #video-container video {
-	/* position: relative; */
-	float: left;
-	width: 16%;
-	margin-left:0.6%;
-	border:4px solid;
-	border-color:rgb(255, 230, 0);
-	/* cursor: pointer; */
-	/* margin:  2%;  */
-	/* margin-left: 5%; */
-	display: flex;
+   /* position: relative; */
+   float: left;
+   width: 16%;
+   margin-left:0.6%;
+   border:4px solid;
+   border-color:rgb(255, 230, 0);
+   /* cursor: pointer; */
+   /* margin:  2%;  */
+   /* margin-left: 5%; */
+   display: flex;
    align-items: center;
    justify-content: space-around;
 }
@@ -261,44 +312,43 @@ export default {
   
   text-align: center;
   /* line-height: 75px; */
-	float: left;
-	width: 28%;
-	position: relative;
-	margin-left:-28%;
+   float: left;
+   width: 28%;
+   position: relative;
+   margin-left:-28%;
    /* display: flex; */
    /* justify-content: space-around; */
 }
 
 #video-container p {
-	display: inline-block;
-	background: #f8f8f8;
-	padding-left: 5px;
-	padding-right: 5px;
-	color: #777777;
-	font-weight: bold;
-	border-bottom-right-radius: 4px;
+   display: inline-block;
+   background: #f8f8f8;
+   padding-left: 5px;
+   padding-right: 5px;
+   color: #777777;
+   font-weight: bold;
+   border-bottom-right-radius: 4px;
 }
 
 video {
    margin-top:2.5vh;
-	/* 맨 아래에 나오는 카메라화면 */
-	width: 45%;
-	height: auto;
+   /* 맨 아래에 나오는 카메라화면 */
+   width: 45%;
+   height: auto;
 
 }
 
 #main-video p {
-	/* position: absolute; */
-	display: inline-block;
-	background: #f8f8f8;
-	padding-left: 5px;
-	padding-right: 5px;
-	font-size: 22px;
-	color: #777777;
-	font-weight: bold;
-	border-bottom-right-radius: 4px;
+   /* position: absolute; */
+   display: inline-block;
+   background: #f8f8f8;
+   padding-left: 5px;
+   padding-right: 5px;
+   font-size: 22px;
+   color: #777777;
+   font-weight: bold;
+   border-bottom-right-radius: 4px;
 }
 
 
 </style>
-
