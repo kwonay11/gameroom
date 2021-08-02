@@ -14,37 +14,36 @@
       <div class="row_box">
         <div class="left"></div>
         <div class="right">
-          <input id='title' v-model="contents.title" class="card__input " placeholder="방 이름" type="text" />
+          <v-app id="inspire">
+                <v-container fluid>
+                      <v-select
+                        :items="items"
+                        filled
+                        label="인원수"
+                      ></v-select>
+                </v-container>
+          </v-app>
+
         </div>
       </div>
 
-      <!-- <div class="v362_54">
-        <div class="v362_55"></div>
-        <div class="v362_56"></div>
-        <span class="v362_57">인원수</span>
-        <div class="v362_58"></div>
+      <div class="row_box">
+            <v-card-text>
+              <v-row align="center">
+                <v-checkbox
+                  v-model="enabled"
+                  hide-details
+                  class="shrink mr-2 mt-0"
+                  label="비밀방"
+                ></v-checkbox>
+                <v-text-field
+                  :disabled="!enabled"
+                  label="I only work if you check the box"
+                ></v-text-field>
+              </v-row>
+            </v-card-text>
       </div>
-      <div class="v362_59">
-        <div class="v362_60"></div>
-        <div class="v362_61"></div>
-        <span class="v362_62">인원수</span>
-        <div class="v362_63"></div>
-      </div>
-      <div class="v362_64">
-        <div class="v362_65"></div>
-        <div class="v362_66"></div>
-        <span class="v362_67">비밀번호</span>
-        <div class="v362_68"></div>
-      </div>
-      <span class="v362_69">비공개 방</span>
-      <div class="v362_70"></div>
-      <div class="v362_71"></div>
-      <div class="v362_72"></div>
-      <span class="v362_73">START</span>
-      <div class="name"></div>
-      <div class="name"></div> -->
-
-
+      
     </form>
   </div>
 </template>
@@ -55,6 +54,9 @@ export default {
   name: 'CreateRoomModal',
   data: function() {
     return {
+        items: ['2','3','4','5','6'],
+        includeFiles: true,
+        enabled: false,
         contents: {
           title:'',
           password:'',
@@ -94,11 +96,16 @@ export default {
 }
 .left {
   height: 60px;
-
 }
 .right {
   height: 60px;
 }
+
+.left_pw {
+  height: 60px;
+}
+
+
 
 
 
