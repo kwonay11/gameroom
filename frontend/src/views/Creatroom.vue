@@ -4,8 +4,9 @@
 
   <p class="head">처음에 시작할 게임을 선택하고 시작하기 버튼을 눌러주세요.<br>
   게임중에 게임을 변경할 수 있습니다.</p>
+           <div v-for="value in games" v-bind:key="value.id">
   <div class="cols mt-5">
-      <div class="col" ontouchstart="this.classList.toggle('hover');">
+      <!-- <div class="col" ontouchstart="this.classList.toggle('hover');">
         <div class="container">
           <div class="front" style="background-image: url(https://unsplash.it/500/500/)">
             <div class="inner">
@@ -132,15 +133,43 @@
             </div>
           </div>
         </div>
-     
+      </div> -->
+
+
+ 
+      <div class="col" ontouchstart="this.classList.toggle('hover');">
+        <div class="container" style='flex'>
+              <div class="front" style="background-image: url(https://unsplash.it/505/505/)">
+                <div class="inner">
+                  {{ value.name }}
+                </div>
+              </div>
+              <div class="back">
+                <div class="inner">
+                  {{ value.summary }}
+                  <router-link :to="{ name: 'CreateRoomModal' }">
+                    <button class="start" @click='category'>
+                      <span class="circle" aria-hidden="true">
+                        <span class="icon arrow"></span>
+                      </span>
+                      <span class="button-text">start</span>
+                    </button>
+                  </router-link>
+                </div>
+              </div>
+
+          </div>
+        </div>
       </div>
+
+
      </div>
   </div>
 </template>
 
 <script>
-import swal from 'sweetalert';
-import myModal from '@/components/myModal'
+// import swal from 'sweetalert';
+// import myModal from '@/components/myModal'
 // import CreateRoomModal from '@/components/CreateRoomModal'
 import axios from 'axios'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
@@ -148,7 +177,7 @@ const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
     name:"Creatroom",
     components:{
-      myModal,
+      // myModal,
       // CreateRoomModal,
     },
     data(){
@@ -166,12 +195,9 @@ export default {
      },
 
     created(){
-      axios.get(`${SERVER_URL}/games`)
+      axios.get(`${SERVER_URL}/games/`)
       .then((res) => {
-
-        console.log('game')
-        console.log(res)
-        this.games = res
+        this.games = res.data
       })
 
     },
@@ -180,17 +206,21 @@ export default {
         this.visible2 = !this.visible2
   
       },
-      joinSession: function() {
+      // joinSession: function() {
+      //   this.$store
+      //     .dispatch("joinSession", this.contents)
+      //     .then(() => {
+      //       this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid }});
+      //       // swal(`회원가입에 성공하였습니다.`);
+      //     })
+      //     .catch(() => {
+      //        swal(`잘못된 정보입니다.`);
+      //     })
+      // },
+      category: function() {
         this.$store
-          .dispatch("joinSession", this.contents)
-          .then(() => {
-            this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid }});
-            // swal(`회원가입에 성공하였습니다.`);
-          })
-          .catch(() => {
-             swal(`잘못된 정보입니다.`);
-          })
-      },
+          .dispatch("gamecategory", this.games.id)
+      }
       
     },
 

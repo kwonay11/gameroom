@@ -14,14 +14,31 @@
       <div class="row_box">
         <div class="left"></div>
         <div class="right">
-          <select class="card__input " >
-            <option >인원수</option>
-            <option value="volvo">2</option>
-            <option value="volvo">3</option>
-            <option value="volvo">4</option>
-            <option value="volvo">5</option>
-            <option value="volvo">6</option>
+                    <!-- <v-CreateRoomModal >
+                <v-container >
+                      <v-select
+                        :items="items"
+                        class='card__input'
+                        label="인원수"
+                        required
+                      ></v-select>
+                </v-container>
+          </v-CreateRoomModal> -->
+          <select  v-model="contents.maxUser" class="card__input " >
+            <option disabled value="">인원수</option>
+            <option >2</option>
+            <option >3</option>
+            <option >4</option>
+            <option >5</option>
+            <option >6</option>
           </select>
+
+                      <!-- <v-select
+                        :items="items"
+                        class='card__input'
+                        label="인원수"
+                        required
+                      ></v-select> -->
 
           <!-- <v-app id="inspire">
                 <v-container >
@@ -36,7 +53,6 @@
 
         </div>
       </div>
-
       <div class="pw_box">
         <v-checkbox
           v-model="enabled"
@@ -61,11 +77,10 @@
           </div>
       </div>
 
-  <!-- //////////////////////////////////////////////////////////////// -->
-       <button @click="joinSession()">
-         <router-link :to="{ name: 'Room' }" class='btn-animate'>START</router-link>
-       </button>
-      
+      <button @click="joinSession()">
+        <router-link :to="{ name: 'Room' }" class='btn-animate'>START</router-link>
+      </button>
+
     </form>
   </div>
 </template>
@@ -97,6 +112,7 @@ export default {
           .dispatch("joinSession", this.contents)
           .then(() => {
             console.log('dffsdfsdf')
+            console.log(this.contents.maxUser)
             console.log(this.contents)
             this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid }});
             // swal(`회원가입에 성공하였습니다.`);
