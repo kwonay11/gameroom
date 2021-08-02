@@ -22,6 +22,10 @@
       </div>
     </app-my-modal>
 
+
+
+
+    </div>
     <!-- 비밀번호 변경 -->
     <button class="learn-more" @click="password">비밀번호 변경</button>
       <app-my-modal :visible.sync="visible1">
@@ -43,9 +47,8 @@
         </button>
         </div>
       </app-my-modal>
-
       <!-- 회원 탈퇴 -->
-      <button class="learn-more" @click="out">회원탈퇴</button>
+      <button class="out" @click="out">회원탈퇴</button>
       <app-my-modal :visible.sync="visible2">
         <div>
           <img style="width:90%" src="@/assets/회원탈퇴.png" alt="img">
@@ -54,19 +57,14 @@
           <div v-if="!origin_password" style="color:white">비밀번호를 입력해 주세요.</div>
           <div v-else-if="origin_password != $store.state.password" style="color:white">비밀번호가 불일치합니다.</div>
           <button v-if="origin_password === $store.state.password" @click="out_save" class="btn-animate">탈퇴 확인</button>
-    
-          
         </div>
       </app-my-modal>
-
-    </div>
-
     <WinRate />
 
   </div>
 </template>
 
-<script scoped>
+<script>
 import swal from 'sweetalert';
 import WinRate from '@/components/WinRate'
 import myModal from '@/components/myModal'
@@ -154,10 +152,6 @@ export default {
 </script>
 
 <style>
-.save{
-  width: 10%;
-  margin: 10px;
-}
 ._input {
   border-radius: 20px;
   box-sizing: border-box;
@@ -172,8 +166,8 @@ export default {
 }
 
 .v26_66 {
-  width: 435px;
-  height: 500px;
+  width: 370px;
+  height: 450px;
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
@@ -258,9 +252,10 @@ export default {
 }
 
 button.learn-more {
-  top:86%;
-  left:-5%;
-  margin: 1px;
+  position: absolute;
+  width: 8%;
+  top: 72%;
+  left:18%;
   font-weight: 600;
   color: #382b22;
   padding: 0.7em;
@@ -268,7 +263,6 @@ button.learn-more {
   border: 2px solid #9da1da;
   border-radius: 0.75em;
   transform-style: preserve-3d;
-   width: 40%;
   transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1);
 }
 button.learn-more::before {
@@ -299,6 +293,55 @@ button.learn-more:active {
   transform: translate(0em, 0.75em);
 }
 button.learn-more:active::before {
+  box-shadow: 0 0 0 1px #8985b1, 0 0 #8985b1;
+  transform: translate3d(0, 0, -1em);
+}
+
+button.out {
+  position: absolute;
+  width: 7%;
+  height: 45px;
+  bottom: 40px;
+  right: 5%;
+  margin: 1px;
+  font-weight: 600;
+  color: #382b22;
+  padding: 0.7em;
+  background: #bcb7e6;
+  border: 2px solid #9da1da;
+  border-radius: 0.75em;
+  transform-style: preserve-3d;
+   /* width: 10%; */
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), background 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+button.out::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 90%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #7c6ebb;
+  border-radius: inherit;
+  box-shadow: 0 0 0 1px #8985b1, 0 0.625em 0 0 #8985b1;
+  transform: translate3d(0, 0.75em, -1em);
+  transition: transform 150ms cubic-bezier(0, 0, 0.58, 1), box-shadow 150ms cubic-bezier(0, 0, 0.58, 1);
+}
+button.out:hover {
+  background: #ffe9e9;
+  transform: translate(0, 0.25em);
+}
+button.out:hover::before {
+  box-shadow: 0 0 0 1px #8985b1, 0 0.5em 0 0 #ffe3e2;
+  transform: translate3d(0, 0.5em, -1em);
+}
+button.out:active {
+  background: #ffe9e9;
+  transform: translate(0em, 0.75em);
+}
+button.out:active::before {
   box-shadow: 0 0 0 1px #8985b1, 0 0 #8985b1;
   transform: translate3d(0, 0, -1em);
 }
@@ -335,16 +378,6 @@ button.learn-more:active::before {
 .bluetop th:last-child, .bluetop td:last-child {
   border-right: 0;
 }
-
-/* .btn1 {
-  background: rgba(196,196,196,0.30000001192092896);
-  width: 345px;
-  height: 68px;
-  border: 1px solid rgb(252, 252, 252);
-  border-radius:20px;
-  font-weight: bold;
-  color:white;
-} */
 
 .btn-animate {
   color: #fff;
