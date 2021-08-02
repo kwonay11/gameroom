@@ -14,4 +14,5 @@ public interface UserConferenceRepository extends JpaRepository<UserConference,L
 
     Optional<UserConference> findByUserId(long userId);
 
+    long countByConferenceId(long conferenceId);
 }

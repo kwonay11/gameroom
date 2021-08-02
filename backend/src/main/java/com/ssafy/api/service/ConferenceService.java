@@ -1,6 +1,9 @@
 package com.ssafy.api.service;
+import com.ssafy.api.response.ConferenceMapping;
 import com.ssafy.db.entity.ConferenceHistory;
 import com.ssafy.db.entity.Conference;
+
+import java.util.List;
 import java.util.Optional;
 import com.ssafy.api.request.ConferenceRegisterPostReq;
 import com.ssafy.db.entity.User;
@@ -14,7 +17,7 @@ public interface ConferenceService {
     ConferenceHistory exitConference(User user, Long ConferenceId); //방 나가기
 
     Optional<Conference> getConferenceById(Long id);
-
+    Optional<List<ConferenceMapping>> getConferenceByActiveTrue();
     int register(ConferenceRegisterPostReq dto);
 }
 

@@ -21,4 +21,9 @@ public class UserConferenceServiceImpl implements UserConferenceService {
     public void addUserConference(UserConference userConference) {
         userConferenceRepository.save(userConference);
     }
+
+    @Override
+    public Long countByConferenceId(long conferenceId) {
+        return userConferenceRepository.countByConferenceId(conferenceId);
+    }
 }

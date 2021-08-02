@@ -31,7 +31,7 @@ public class Conference extends BaseEntity implements Serializable {
 
     private String title; // 방제목
     @Builder.Default
-    private boolean isActive = true; //방 활성화여부(default = true)
+    private boolean active = true; //방 활성화여부(default = true)
 
     private String password; // 비밀방사용시 비밀번호 설정용 .... 물어볼 것 암호화처리해야되요?
 
