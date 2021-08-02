@@ -1,21 +1,29 @@
 <template>
-	<div id="main-container" >
-		<div  v-if="session">
-			<div class='participation'>
-				<div id="video-container" class="col-lg-12">
-					<user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
-					<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
-				</div>
-			</div>
-			<!-- <div id="video-container" class="col-md-2">
-				<user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
-				<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
-			</div> -->
-			<div id="main-video" class="col-md-6">
-				<user-video :stream-manager="mainStreamManager"/>
-			</div>
-		</div>
-	</div>
+
+   <div  v-if="session">
+      <div class='participation'>
+         <div id="video-container" class="col-lg-12">
+         <!-- <div id="video-container" class=""> -->
+            <!-- 메인 스트리머 -->
+            <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
+            <!-- 참가자들 -->
+            <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
+         </div>
+      </div>
+      <div class='row'>
+         <div id="main-video" class="col-md-8">
+            <div class="player">
+               <user-video :stream-manager="mainStreamManager"/>
+            </div>
+         </div>
+         <div class="col-md-4">
+            <div class='player'>
+               dfddf
+            </div>
+         </div>
+      </div>
+   </div>
+
 </template>
 
 <script>
@@ -218,7 +226,8 @@ export default {
 <style>
 
 .participation {
-  margin: 5vh 2.5vw;
+  margin: 0 2.5vw;
+  padding: 2.5vh;
   /* width: 95vw; */
 	/* height: 22vh; */
 	/* text-align: justify; */
@@ -227,101 +236,10 @@ export default {
 	flex-direction: row;
 	/* align-items: center;
 	justify-content: space-around;   */
-
-
 }
 
-
-
-#main-container {
-	padding-bottom: 80px;
-}
-
-/*vertical-center {
-	position: relative;
-	top: 30%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-}*/
-
-.horizontal-center {
-	margin: 0 auto;
-}
-
-.form-control {
-	color: #0088aa;
-	font-weight: bold;
-}
-
-.form-control:focus {
-	border-color: #0088aa;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 136, 170, 0.6);
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 136, 170, 0.6);
-}
-
-input.btn {
-	font-weight: bold;
-}
-
-.btn {
-	font-weight: bold !important;
-}
-
-.btn-success {
-	background-color: #06d362 !important;
-	border-color: #06d362;
-}
-
-.btn-success:hover {
-	background-color: #1abd61 !important;
-	border-color: #1abd61;
-}
-
-
-
-a:hover .demo-logo {
-	-webkit-filter: brightness(0.7);
-	filter: brightness(0.7);
-}
-
-#join-dialog {
-	margin-left: auto;
-    margin-right: auto;
-    max-width: 70%;
-}
-
-#join-dialog h1 {
-	color: #4d4d4d;
-	font-weight: bold;
-	text-align: center;
-}
-
-#img-div {
-	text-align: center;
-	margin-top: 3em;
-	margin-bottom: 3em;
-	/*position: relative;
-	top: 20%;
-	left: 50%;
-	transform: translate(-50%, -50%);*/
-}
-
-#img-div img {
-	height: 15%;
-}
-
-#join-dialog label {
-	color: #0088aa;
-}
-
-#join-dialog input.btn {
-	margin-top: 15px;
-}
-
-
-#buttonLeaveSession {
-	float: right;
-	margin-top: 20px;
+.player {
+   border: 3px solid #ffa500;
 }
 
 #video-container video {
@@ -334,8 +252,9 @@ a:hover .demo-logo {
 	/* cursor: pointer; */
 	/* margin:  2%;  */
 	/* margin-left: 5%; */
-	/* display: flex;
-  justify-content: flex-start; */
+	display: flex;
+   align-items: center;
+   justify-content: space-around;
 }
 
 #video-container video + div {
@@ -346,6 +265,8 @@ a:hover .demo-logo {
 	width: 28%;
 	position: relative;
 	margin-left:-28%;
+   /* display: flex; */
+   /* justify-content: space-around; */
 }
 
 #video-container p {
@@ -359,13 +280,15 @@ a:hover .demo-logo {
 }
 
 video {
+   margin-top:2.5vh;
 	/* 맨 아래에 나오는 카메라화면 */
-	width: 80%;
+	width: 45%;
 	height: auto;
+
 }
 
 #main-video p {
-	position: absolute;
+	/* position: absolute; */
 	display: inline-block;
 	background: #f8f8f8;
 	padding-left: 5px;
@@ -377,50 +300,5 @@ video {
 }
 
 
-
-#session #video-container img {
-	position: relative;
-	float: left;
-	width: 50%;
-	cursor: pointer;
-	object-fit: cover;
-	height: 180px;
-}
-
-
-/* xs ans md screen resolutions*/
-/* 
-@media screen and (max-width: 991px) and (orientation: portrait) {
-	#join-dialog {
-		max-width: inherit;
-	}
-	#img-div img {
-		height: 10%;
-	}
-	#img-div {
-		margin-top: 2em;
-		margin-bottom: 2em;
-	}
-	.container-fluid>.navbar-collapse, .container-fluid>.navbar-header, .container>.navbar-collapse, .container>.navbar-header {
-		margin-right: 0;
-		margin-left: 0;
-	}
-	.navbar-header i.fa {
-		font-size: 30px;
-	}
-	.navbar-header a.nav-icon {
-		padding: 7px 3px 7px 3px;
-	}
-}
-
-@media only screen and (max-height: 767px) and (orientation: landscape) {
-	#img-div {
-		margin-top: 1em;
-		margin-bottom: 1em;
-	}
-	#join-dialog {
-		max-width: inherit;
-	}
-} */
 </style>
 
