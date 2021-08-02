@@ -120,12 +120,15 @@
           <div class="back">
             <div class="inner">
               <p>구멍뚫린 단어를 맞춰라!</p>
-              <button class="start">
-                <span class="circle" aria-hidden="true">
-                  <span class="icon arrow"></span>
-                </span>
-                <span class="button-text">start</span>
-              </button>
+              <router-link :to="{ name: 'CreateRoomModal' }">
+                <button class="start">
+                  <span class="circle" aria-hidden="true">
+                    <span class="icon arrow"></span>
+                  </span>
+                  <span class="button-text">start</span>
+
+                </button>
+              </router-link>
             </div>
           </div>
         </div>
@@ -138,10 +141,12 @@
 <script>
 import swal from 'sweetalert';
 import myModal from '@/components/myModal'
+// import CreateRoomModal from '@/components/CreateRoomModal'
 export default {
     name:"Creatroom",
     components:{
       myModal,
+      // CreateRoomModal,
     },
     data(){
        return{
