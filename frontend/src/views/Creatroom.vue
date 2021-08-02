@@ -142,6 +142,9 @@
 import swal from 'sweetalert';
 import myModal from '@/components/myModal'
 // import CreateRoomModal from '@/components/CreateRoomModal'
+import axios from 'axios'
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+
 export default {
     name:"Creatroom",
     components:{
@@ -158,8 +161,20 @@ export default {
           maxUser: '6',
           gamecategory: '1',
           },
+        games:[],
        }
      },
+
+    created(){
+      axios.get(`${SERVER_URL}/games`)
+      .then((res) => {
+
+        console.log('game')
+        console.log(res)
+        this.games = res
+      })
+
+    },
      methods: {
        catchmind: function(){
         this.visible2 = !this.visible2
@@ -176,6 +191,7 @@ export default {
              swal(`잘못된 정보입니다.`);
           })
       },
+      
     },
 
 

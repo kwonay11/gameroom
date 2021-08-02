@@ -86,7 +86,7 @@ export default {
         contents: {
           title:'',
           password:'',
-          maxUser: '3',
+          maxUser: '',
           gamecategory: '6',
         },
        }
