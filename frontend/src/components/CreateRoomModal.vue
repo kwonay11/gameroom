@@ -7,15 +7,13 @@
       <div class="row_box">
         <div class="left"></div>
         <div class="right">
-          <input id='title' v-model="contents.title" class="card__input " placeholder="방 이름" type="text" />
+          <input v-model="contents.title" class="card__input " placeholder="방 이름" type="text" />
         </div>
       </div>
 
       <div class="row_box">
         <div class="left"></div>
         <div class="right">
-
-
           <select class="card__input " >
             <option >인원수</option>
             <option value="volvo">2</option>
@@ -39,31 +37,34 @@
         </div>
       </div>
 
-        <div class="pw_box">
-          <v-checkbox
-            v-model="enabled"
-            hide-details
-            class="shrink mr-2 mt-0 "
-            label="비밀방"
-          ></v-checkbox>
-        </div>
+      <div class="pw_box">
+        <v-checkbox
+          v-model="enabled"
+          hide-details
+          class="shrink mr-2 mt-0 "
+          label="비밀방"
+        ></v-checkbox>
+      </div>
 
-        <div v-if="enabled" >
-            <div class="row_box">
-                  <div class="row_box">
-                    <div class='left'></div>
-                    <div class='pw_right'>
-                      <v-text-field
-                        :disabled="!enabled"
-                        type=password
-                      ></v-text-field>
-                    </div>
+      <div v-if="enabled" >
+          <div class="row_box">
+                <div class="row_box">
+                  <div class='left'></div>
+                  <div class='pw_right'>
+                    <v-text-field
+                      :disabled="!enabled"
+                      type=password
+                      v-model='contents.password'
+                    ></v-text-field>
                   </div>
-            </div>
-        </div>
+                </div>
+          </div>
+      </div>
 
   <!-- //////////////////////////////////////////////////////////////// -->
-       <button class="btn-animate">START</button>
+       <button @click="joinSession()">
+         <router-link :to="{ name: 'Room' }" class='btn-animate'>START</router-link>
+       </button>
       
     </form>
   </div>
@@ -71,26 +72,41 @@
 
 
 <script>
+// import axios from 'axios'
+// const SERVER_URL = process.env.VUE_APP_SERVER_URL
+import swal from 'sweetalert';
 
 export default {
   name: 'CreateRoomModal',
   data: function() {
     return {
         items: ['2','3','4','5','6'],
-        includeFiles: true,
         enabled: false,
 
         contents: {
           title:'',
           password:'',
-          maxUser: '',
-          gamecategory: '',
+          maxUser: '3',
+          gamecategory: '6',
         },
        }
     },
-  components: {
-    // Dropdown,
-  },
+    methods: {
+      joinSession: function() {
+        this.$store
+          .dispatch("joinSession", this.contents)
+          .then(() => {
+            console.log('dffsdfsdf')
+            console.log(this.contents)
+            this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid }});
+            // swal(`회원가입에 성공하였습니다.`);
+          })
+          .catch(() => {
+             swal(`잘못된 정보입니다.`);
+          })
+      },
+    }
+
   }
 
 </script>
@@ -152,6 +168,64 @@ export default {
 
 .pw_box /deep/ v-checkbox{
   color: #fff;
+}
+
+.btn-animate {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0px 16px 47px -15px #cda6ee;
+  background: none;
+  transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+  border-radius: 8px;
+  overflow: hidden;
+  outline: none;
+  transform: translateZ(0);
+}
+.btn-animate span {
+  position: relative;
+  z-index: 2;
+}
+.btn-animate:before, .btn-animate:after {
+  border-radius: 8px;
+  content: "";
+  z-index: -1;
+  background: linear-gradient(100deg, #a6c1ee, #cc96eb);
+  
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.btn-animate:after {
+  
+  background: linear-gradient(100deg, #560a9b, #9e158f);
+
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  transition-delay: 0.1s;
+}
+.btn-animate:hover {
+  box-shadow: 0px 16px 47px -15px  #cda6ee;
+}
+.btn-animate:hover:after {
+  transform: scaleY(1);
+  transform-origin: bottom;
+  transition-delay: 0s;
+}
+.btn-animate:active {
+  transform: translateY(4px) translateZ(0);
+  box-shadow: 0px 8px 10px -6px  #cda6ee;
 }
 
 </style>
