@@ -1,4 +1,5 @@
 package com.ssafy.api.service;
+import com.ssafy.api.response.ConferenceMapping;
 import com.ssafy.db.entity.ConferenceHistory;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.entity.UserConference;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityListeners;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -47,6 +49,9 @@ public class ConferenceServiceImpl implements ConferenceService {
     public Optional<Conference> getConferenceById(Long id) {
         return conferenceRepository.findById(id);
     }
+
+    @Override
+    public Optional<List<ConferenceMapping>> getConferenceByActiveTrue() { return conferenceRepository.findByActiveTrue(); }
 
     @Override
     public ConferenceHistory exitConference(User user, Long conferenceId){

@@ -2,13 +2,11 @@ package com.ssafy.db.entity;
 
 
 import lombok.*;
-import org.graalvm.compiler.lir.LIRInstruction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity //해당 클래스가 엔티티를 위한 크래스이며, 해당 클래스의 인스턴스들이 jpa로 관리되는 엔티티 객체라는 것을 의미
@@ -33,7 +31,7 @@ public class Conference extends BaseEntity implements Serializable {
 
     private String title; // 방제목
     @Builder.Default
-    private boolean isActive = true; //방 활성화여부(default = true)
+    private boolean active = true; //방 활성화여부(default = true)
 
     private String password; // 비밀방사용시 비밀번호 설정용 .... 물어볼 것 암호화처리해야되요?
 
