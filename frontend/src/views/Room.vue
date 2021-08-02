@@ -22,7 +22,7 @@
 
 		<div  v-if="session">
 			<div class='participation'>
-				<div id="video-container" class="">
+				<div id="video-container" class="col-lg-12">
 					<user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
 					<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
 				</div>
@@ -239,7 +239,7 @@ export default {
 
 .participation {
   margin: 5vh 2.5vw;
-  width: 95vw;
+  /* width: 95vw; */
 	/* height: 22vh; */
 	/* text-align: justify; */
   border: 3px solid #ffa500;
@@ -345,18 +345,27 @@ a:hover .demo-logo {
 }
 
 #video-container video {
-	position: relative;
+	/* position: relative; */
 	float: left;
-	width: 30%;
-	cursor: pointer;
-	margin: 0 2%;
+	width: 16%;
+	margin-left:0.6%;
+	border:4px solid;
+	border-color:rgb(255, 230, 0);
+	/* cursor: pointer; */
+	/* margin:  2%;  */
+	/* margin-left: 5%; */
+	/* display: flex;
+  justify-content: flex-start; */
 }
 
 #video-container video + div {
+  
+  text-align: center;
+  /* line-height: 75px; */
 	float: left;
-	width: 50%;
+	width: 28%;
 	position: relative;
-	margin-left: -50%;
+	margin-left:-28%;
 }
 
 #video-container p {
@@ -370,7 +379,8 @@ a:hover .demo-logo {
 }
 
 video {
-	width: 100%;
+	/* 맨 아래에 나오는 카메라화면 */
+	width: 80%;
 	height: auto;
 }
 

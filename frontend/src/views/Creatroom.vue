@@ -35,11 +35,15 @@
           <div class="back">
             <div class="inner">
               <p>한 사람이 그림으로 그려 다른 사람들이 맞추는 게임</p>
-              <button class="start">
-                <span class="circle" aria-hidden="true">
-                  <span class="icon arrow"></span>
-                </span>
-                <span class="button-text">start</span>
+              <button class="start" @click="catchmind">
+                <div >
+                    <span class="circle" aria-hidden="true">
+                      <span class="icon arrow"></span>
+                    </span>
+                    <span class="button-text">start</span>
+                </div>
+                <myModal :visible.sync="visible2">
+                </myModal>
               </button>
             </div>
           </div>
@@ -133,13 +137,15 @@
 
 <script>
 import swal from 'sweetalert';
+import myModal from '@/components/myModal'
 export default {
     name:"Creatroom",
     components:{
-      
+      myModal,
     },
     data(){
        return{
+         visible2: false,
         //  방생성을 위한 하드코딩임. 변경 필요 
         contents: {
           title:'title',
@@ -150,7 +156,11 @@ export default {
        }
      },
      methods: {
-      joinSession:function() {
+       catchmind: function(){
+        this.visible2 = !this.visible2
+  
+      },
+      joinSession: function() {
         this.$store
           .dispatch("joinSession", this.contents)
           .then(() => {
@@ -167,7 +177,8 @@ export default {
 
 }
 </script>
-<style>
+
+<style scoped>
 .cols{
   display: -webkit-box;
   display: -ms-flexbox;
