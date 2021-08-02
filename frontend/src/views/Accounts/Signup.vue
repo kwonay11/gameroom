@@ -176,7 +176,8 @@ export default {
   
 }
 .card__input {
-  border-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
   box-sizing: border-box;
   color: #000000;
   display: block;
@@ -187,7 +188,8 @@ export default {
 }
 .card__input:focus, .card__input:active {
   background: rgba(254, 254, 254, 0.08);
-  
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
   outline: none;
 }
 

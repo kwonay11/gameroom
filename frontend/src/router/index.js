@@ -6,6 +6,7 @@ import Login from '@/views/Accounts/Login.vue'
 import Signup from '@/views/Accounts/Signup.vue'
 import Mypage from '@/views/Accounts/Mypage.vue'
 import Creatroom from '@/views/Creatroom.vue'
+import CreateRoomModal from '@/components/CreateRoomModal'
 import Room from '@/views/Room'
 
 
@@ -37,19 +38,23 @@ const routes = [{
         name: 'Mypage',
         component: Mypage,
         params: 'my',
-        // meta: { requiresAuth: true } //로그인시 가능
     },
     {
         path: '/createroom',
         name: 'Creatroom',
         component: Creatroom,
-        // meta: { requiresAuth: true } //로그인시 가능
     },
     {
         path: '/gameroom/:roomid',
         name: 'Room',
         component: Room,
     },
+    {
+        path: '/room_info',
+        name: 'CreateRoomModal',
+        component: CreateRoomModal,
+    },
+
 
 ]
 
