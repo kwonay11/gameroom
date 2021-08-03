@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "lodash": "^4.17.21",
     "openvidu-browser": "^2.19.0",
     "sweetalert": "^2.1.2",
     "vee-validate": "^3.4.11",

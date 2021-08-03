@@ -14,16 +14,6 @@
       <div class="row_box">
         <div class="left"></div>
         <div class="right">
-                    <!-- <v-CreateRoomModal >
-                <v-container >
-                      <v-select
-                        :items="items"
-                        class='card__input'
-                        label="인원수"
-                        required
-                      ></v-select>
-                </v-container>
-          </v-CreateRoomModal> -->
           <select  v-model="contents.maxUser" class="card__input " >
             <option disabled value="">인원수</option>
             <option >2</option>
@@ -32,27 +22,9 @@
             <option >5</option>
             <option >6</option>
           </select>
-
-                      <!-- <v-select
-                        :items="items"
-                        class='card__input'
-                        label="인원수"
-                        required
-                      ></v-select> -->
-
-          <!-- <v-app id="inspire">
-                <v-container >
-                      <v-select
-                        :items="items"
-                        
-                        label="인원수"
-                        required
-                      ></v-select>
-                </v-container>
-          </v-app> -->
-
         </div>
       </div>
+
       <div class="pw_box">
         <v-checkbox
           v-model="enabled"
@@ -95,31 +67,30 @@ export default {
   name: 'CreateRoomModal',
   data: function() {
     return {
-        items: ['2','3','4','5','6'],
         enabled: false,
 
         contents: {
           title:'',
           password:'',
           maxUser: '',
-          gamecategory: '6',
+          gamecategory: '',
         },
        }
     },
     methods: {
       joinSession: function() {
-        this.$store
-          .dispatch("joinSession", this.contents)
-          .then(() => {
-            console.log('dffsdfsdf')
-            console.log(this.contents.maxUser)
-            console.log(this.contents)
-            this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid }});
-            // swal(`회원가입에 성공하였습니다.`);
-          })
+        this.contents.gamecategory = this.$store.state.gamecategory
+        
+          this.$store
+            .dispatch("joinSession", this.contents)
+            .then(() => {
+              this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid }});
+              // swal(`회원가입에 성공하였습니다.`);
+            })
           .catch(() => {
              swal(`잘못된 정보입니다.`);
           })
+
       },
     }
 
