@@ -1,4 +1,5 @@
 module.exports = {
+  /* 배포할때 사용함 */
   configureWebpack: {
     
   },
