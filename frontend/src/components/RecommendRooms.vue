@@ -1,14 +1,20 @@
 <template lang="">
   <div>
-    
-  </div>
+
+</div>
 </template>
+
+
 <script>
+
+
 export default {
-  name:'RecommendRooms'
-  
+  name:'RecommendRooms',
+
 }
 </script>
-<style lang="">
-  
+
+
+<style>
+
 </style>
