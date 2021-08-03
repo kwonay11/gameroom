@@ -95,7 +95,7 @@ export default {
 }
 </script>
 
-<style >
+<style scoped>
 
 /* #signup {
   background: url("../../assets/desert-5171724_1920.png");
@@ -138,6 +138,16 @@ export default {
   align-items: center;
   
 }
+.id_left {
+
+  width: 77px;
+  height: 55px;
+  background: rgba(49,46,46,0.5);
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  
+}
 .left {
   width: 77px;
   height: 50px;
@@ -145,6 +155,10 @@ export default {
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.left_image {
+  max-width: 50%;
+  padding-top: 8px;
 }
 .right {
   width: 405px;
@@ -200,4 +214,5 @@ export default {
   color: #ffffff;
   margin:3px;
 }
+
 </style>
