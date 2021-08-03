@@ -7,69 +7,128 @@
       <div class="row_box">
         <div class="left"></div>
         <div class="right">
-          <input id='title' v-model="contents.title" class="card__input " placeholder="방 이름" type="text" />
+          <input v-model="contents.title" class="card__input " placeholder="방 이름" type="text" />
         </div>
       </div>
 
       <div class="row_box">
         <div class="left"></div>
         <div class="right">
-          <v-app id="inspire">
-                <v-container fluid>
+                    <!-- <v-CreateRoomModal >
+                <v-container >
                       <v-select
                         :items="items"
-                        filled
+                        class='card__input'
                         label="인원수"
+                        required
                       ></v-select>
                 </v-container>
-          </v-app>
+          </v-CreateRoomModal> -->
+          <select  v-model="contents.maxUser" class="card__input " >
+            <option disabled value="">인원수</option>
+            <option >2</option>
+            <option >3</option>
+            <option >4</option>
+            <option >5</option>
+            <option >6</option>
+          </select>
+
+                      <!-- <v-select
+                        :items="items"
+                        class='card__input'
+                        label="인원수"
+                        required
+                      ></v-select> -->
+
+          <!-- <v-app id="inspire">
+                <v-container >
+                      <v-select
+                        :items="items"
+                        
+                        label="인원수"
+                        required
+                      ></v-select>
+                </v-container>
+          </v-app> -->
 
         </div>
       </div>
-
-      <div class="row_box">
-            <v-card-text>
-              <v-row align="center">
-                <v-checkbox
-                  v-model="enabled"
-                  hide-details
-                  class="shrink mr-2 mt-0"
-                  label="비밀방"
-                ></v-checkbox>
-                <v-text-field
-                  :disabled="!enabled"
-                  label="I only work if you check the box"
-                ></v-text-field>
-              </v-row>
-            </v-card-text>
+      <div class="pw_box">
+        <v-checkbox
+          v-model="enabled"
+          hide-details
+          class="shrink mr-2 mt-0 "
+          label="비밀방"
+        ></v-checkbox>
       </div>
-      
+
+      <div v-if="enabled" >
+          <div class="row_box">
+                <div class="row_box">
+                  <div class='left'></div>
+                  <div class='pw_right'>
+                    <v-text-field
+                      :disabled="!enabled"
+                      type=password
+                      v-model='contents.password'
+                    ></v-text-field>
+                  </div>
+                </div>
+          </div>
+      </div>
+
+      <button @click="joinSession()">
+        <router-link :to="{ name: 'Room' }" class='btn-animate'>START</router-link>
+      </button>
+
     </form>
   </div>
 </template>
 
 
 <script>
+// import axios from 'axios'
+// const SERVER_URL = process.env.VUE_APP_SERVER_URL
+import swal from 'sweetalert';
+
 export default {
   name: 'CreateRoomModal',
   data: function() {
     return {
         items: ['2','3','4','5','6'],
-        includeFiles: true,
         enabled: false,
+
         contents: {
           title:'',
           password:'',
           maxUser: '',
-          gamecategory: '',
+          gamecategory: '6',
         },
        }
+    },
+    methods: {
+      joinSession: function() {
+        this.$store
+          .dispatch("joinSession", this.contents)
+          .then(() => {
+            console.log('dffsdfsdf')
+            console.log(this.contents.maxUser)
+            console.log(this.contents)
+            this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid }});
+            // swal(`회원가입에 성공하였습니다.`);
+          })
+          .catch(() => {
+             swal(`잘못된 정보입니다.`);
+          })
+      },
     }
+
   }
 
 </script>
 
-<style scoped>
+
+<style scoped >
 
 .room_box {
   width: 38%;
@@ -100,289 +159,89 @@ export default {
 .right {
   height: 60px;
 }
-
-.left_pw {
+.pw_box {
+  width: 482px;
+  height: 30px;
+  /* background: rgba(219,219,219,0.6000000238418579); */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.pw_right {
   height: 60px;
-}
-
-
-
-
-
-/* .card__input {
-
-
-
-
-
-
-
-
-.v362_53 {
-  width: 159px;
-  color: rgba(0,0,0,1);
-  position: absolute;
-  top: 27px;
-  left: 108px;
-  font-family: Roboto;
-  font-weight: Regular;
-  font-size: 30px;
-  opacity: 1;
-  text-align: left;
-}
-.v362_54 {
-  width: 515px;
-  height: 82px;
-  /* background: url("../images/v362_54.png"); */
-  /* background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  opacity: 1;
-  position: absolute;
-  top: 292px;
-  left: 217px;
-  overflow: hidden;
-} */
-.v362_55 {
+  padding: 0 15px;
   width: 405px;
-  height: 68px;
   background: rgba(219,219,219,0.6000000238418579);
-  opacity: 1;
-  position: absolute;
-  top: 8px;
-  left: 92px;
-  border: 1px solid rgba(219,219,219,0);
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
-  overflow: hidden;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
-.v362_56 {
-  width: 77px;
-  height: 68px;
-  background: rgba(49,46,46,0.5);
-  opacity: 1;
-  position: absolute;
-  top: 8px;
-  left: 15px;
-  border: 1px solid rgba(219,219,219,0.6000000238418579);
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  overflow: hidden;
+
+
+.pw_box /deep/ label {
+  color: rgb(194, 194, 194);
 }
-.v362_57 {
-  width: 159px;
-  color: rgba(0,0,0,1);
-  position: absolute;
-  top: 27px;
-  left: 108px;
-  font-family: Roboto;
-  font-weight: Regular;
-  font-size: 30px;
-  opacity: 1;
-  text-align: left;
-}
-.v362_58 {
-  width: 25px;
-  height: 19px;
-  background: rgba(196,196,196,1);
-  opacity: 1;
-  position: absolute;
-  top: 54px;
-  left: 65px;
-  transform: rotate(-178deg);
-}
-.v362_59 {
-  width: 515px;
-  height: 82px;
-  /* background: url("../images/v362_59.png"); */
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  opacity: 1;
-  position: absolute;
-  top: 292px;
-  left: 217px;
-  overflow: hidden;
-}
-.v362_60 {
-  width: 405px;
-  height: 68px;
-  background: rgba(219,219,219,0.6000000238418579);
-  opacity: 1;
-  position: absolute;
-  top: 8px;
-  left: 92px;
-  border: 1px solid rgba(219,219,219,0);
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  overflow: hidden;
-}
-.v362_61 {
-  width: 77px;
-  height: 68px;
-  background: rgba(49,46,46,0.5);
-  opacity: 1;
-  position: absolute;
-  top: 8px;
-  left: 15px;
-  border: 1px solid rgba(219,219,219,0.6000000238418579);
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  overflow: hidden;
-}
-.v362_62 {
-  width: 159px;
-  color: rgba(0,0,0,1);
-  position: absolute;
-  top: 27px;
-  left: 108px;
-  font-family: Roboto;
-  font-weight: Regular;
-  font-size: 30px;
-  opacity: 1;
-  text-align: left;
-}
-.v362_63 {
-  width: 25px;
-  height: 19px;
-  background: rgba(196,196,196,1);
-  opacity: 1;
-  position: absolute;
-  top: 54px;
-  left: 65px;
-  transform: rotate(-178deg);
-}
-.v362_64 {
-  width: 515px;
-  height: 82px;
-  /* background: url("../images/v362_64.png"); */
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  opacity: 1;
-  position: absolute;
-  top: 452px;
-  left: 219px;
-  overflow: hidden;
-}
-.v362_65 {
-  width: 405px;
-  height: 68px;
-  background: rgba(219,219,219,0.6000000238418579);
-  opacity: 1;
-  position: absolute;
-  top: 8px;
-  left: 92px;
-  border: 1px solid rgba(219,219,219,0);
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  overflow: hidden;
-}
-.v362_66 {
-  width: 77px;
-  height: 68px;
-  background: rgba(49,46,46,0.5);
-  opacity: 1;
-  position: absolute;
-  top: 8px;
-  left: 15px;
-  border: 1px solid rgba(219,219,219,0.6000000238418579);
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  overflow: hidden;
-}
-.v362_67 {
-  width: 159px;
-  color: rgba(0,0,0,1);
-  position: absolute;
-  top: 27px;
-  left: 108px;
-  font-family: Roboto;
-  font-weight: Regular;
-  font-size: 30px;
-  opacity: 1;
-  text-align: left;
-}
-.v362_68 {
-  width: 50px;
-  height: 46px;
-  /* background: url("../images/v362_68.png"); */
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  opacity: 1;
-  position: absolute;
-  top: 18px;
-  left: 29px;
-  overflow: hidden;
-}
-.v362_69 {
-  width: 128px;
-  color: rgba(255,255,255,1);
-  position: absolute;
-  top: 400px;
-  left: 261px;
-  font-family: Roboto;
-  font-weight: Regular;
-  font-size: 30px;
-  opacity: 1;
-  text-align: left;
-}
-.v362_70 {
-  width: 26px;
-  height: 28px;
-  background: rgba(196,196,196,1);
-  opacity: 1;
-  position: absolute;
-  top: 400px;
-  left: 219px;
-  overflow: hidden;
-}
-.v362_71 {
-  width: 605px;
-  height: 297px;
-  /* background: url("../images/v362_71.png"); */
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
-  opacity: 1;
-  position: absolute;
-  top: 30px;
-  left: 175px;
-  overflow: hidden;
-}
-.v362_72 {
-  width: 345px;
-  height: 68px;
-  background: rgba(196,196,196,0.30000001192092896);
-  opacity: 1;
-  position: absolute;
-  top: 557px;
-  left: 305px;
-  border: 1px solid rgba(255,250,250,1);
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  border-bottom-left-radius: 20px;
-  border-bottom-right-radius: 20px;
-  overflow: hidden;
-}
-.v362_73 {
-  width: 108px;
-  color: rgba(0,0,0,1);
-  position: absolute;
-  top: 570px;
-  left: 421px;
-  font-family: Roboto;
-  font-weight: Regular;
-  font-size: 36px;
-  opacity: 1;
-  text-align: center;
-}
-.name {
+
+.pw_box /deep/ v-checkbox{
   color: #fff;
 }
-.name {
+
+.btn-animate {
   color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 4px;
+  box-shadow: 0px 16px 47px -15px #cda6ee;
+  background: none;
+  transition: all 0.2s cubic-bezier(0.19, 1, 0.22, 1);
+  border-radius: 8px;
+  overflow: hidden;
+  outline: none;
+  transform: translateZ(0);
+}
+.btn-animate span {
+  position: relative;
+  z-index: 2;
+}
+.btn-animate:before, .btn-animate:after {
+  border-radius: 8px;
+  content: "";
+  z-index: -1;
+  background: linear-gradient(100deg, #a6c1ee, #cc96eb);
+  
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.btn-animate:after {
+  
+  background: linear-gradient(100deg, #560a9b, #9e158f);
+
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  transition-delay: 0.1s;
+}
+.btn-animate:hover {
+  box-shadow: 0px 16px 47px -15px  #cda6ee;
+}
+.btn-animate:hover:after {
+  transform: scaleY(1);
+  transform-origin: bottom;
+  transition-delay: 0s;
+}
+.btn-animate:active {
+  transform: translateY(4px) translateZ(0);
+  box-shadow: 0px 8px 10px -6px  #cda6ee;
 }
 
 </style>

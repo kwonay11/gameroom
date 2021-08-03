@@ -1,4 +1,6 @@
 package com.ssafy.api.controller;
+import com.ssafy.api.response.ConferenceInfoRes;
+import com.ssafy.api.response.ConferenceMapping;
 import com.ssafy.api.service.ConferenceService;
 import com.ssafy.api.service.UserConferenceService;
 import com.ssafy.common.auth.SsafyUserDetails;
@@ -19,17 +21,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
-import java.util.List;
-import java.util.Optional;
+
+import java.util.*;
+
 import com.ssafy.api.request.ConferenceRegisterPostReq;
-import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.response.ConferenceRes;
 import com.ssafy.api.response.UserLoginPostRes;
-import com.ssafy.api.service.UserService;
 import com.ssafy.db.entity.User;
-import com.ssafy.db.repository.UserRepository;
 import io.swagger.annotations.ApiParam;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -49,6 +48,49 @@ public class ConferenceController {
 
     @Autowired
     ConferenceHistoryService conferenceHistoryService;
+
+    @GetMapping("/")
+    @ApiOperation(value = "대기 방 조회", notes = "인원 수가 많이 충족된 방 순으로 response")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 404, message = "대기 중인 방 없음"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getConferences() {
+        /**
+         * conference 테이블에서 is_active가 true인 모든 방 검색
+         * user_conference 테이블을 이용하여 방마다 인원을 구함
+         * max_user - 인원 수가 적은 테이블을 우선으로 list를 정렬한 후 response 해줌
+         */
+        Optional<List<ConferenceMapping>> conferenceMappings = conferenceService.getConferenceByActiveTrue();
+        if(!conferenceMappings.isPresent()) // active가 true인 방이 없을 경우
+            return ResponseEntity.status(401).body(BaseResponseBody.of(404, "fail"));
+        List<ConferenceMapping> list = conferenceMappings.get();
+        List<Object[]> list2 = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++) {
+            ConferenceMapping conferenceMapping = list.get(i);
+            list2.add(new Object[]{conferenceMapping, conferenceMapping.getMaxUser() - userConferenceService.countByConferenceId(conferenceMapping.getId())});
+        }
+        Collections.sort(list2, (o1, o2) -> (long)o1[1] > (long)o2[1] ? 1 : -1);
+        List<ConferenceInfoRes> res = new ArrayList<ConferenceInfoRes>();
+        for(int i = 0; i < list.size(); i++) {
+            if((long)list2.get(i)[1] <= 0)
+                continue;
+            ConferenceMapping conferenceMapping = (ConferenceMapping) list2.get(i)[0];
+            // 방 정보를 conferenceInfoRes 객체에 저장 후 response 시켜줌
+            ConferenceInfoRes conferenceInfoRes = new ConferenceInfoRes();
+
+            conferenceInfoRes.setId(conferenceMapping.getId());
+            conferenceInfoRes.setOwnerNickname(conferenceMapping.getOwner().getNickname());
+            conferenceInfoRes.setTitle(conferenceMapping.getTitle());
+            conferenceInfoRes.setGameName(conferenceMapping.getGameCategory().getName());
+            conferenceInfoRes.setMaxUser(conferenceMapping.getMaxUser());
+            conferenceInfoRes.setNowUser(conferenceMapping.getMaxUser() - (long)list2.get(i)[1]);
+
+            res.add(conferenceInfoRes);
+        }
+        return ResponseEntity.status(200).body(res);
+    }
 
     @GetMapping("/{conferenceId}")
     @ApiOperation(value = "게임 방 접속", notes = "인원 수에 여유가 있다면 게임 방에 접속")
@@ -120,13 +162,13 @@ public class ConferenceController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<ConferenceRes> register(
-            @RequestBody @ApiParam(value = "회원가입 정보", required = true) ConferenceRegisterPostReq registerPostReq,
+            @RequestBody @ApiParam(value = "방 정보", required = true) ConferenceRegisterPostReq registerPostReq,
             @ApiIgnore Authentication authentication) {
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
         String userId = userDetails.getUsername();
 
         registerPostReq.setUserid(userId);
-        Long result = conferenceService.register(registerPostReq);
+        int result = conferenceService.register(registerPostReq);
 
         return ResponseEntity.ok(ConferenceRes.of(201,"Success",result));
 

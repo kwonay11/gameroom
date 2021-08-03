@@ -1,4 +1,5 @@
 package com.ssafy.api.service;
+import com.ssafy.api.response.ConferenceMapping;
 import com.ssafy.db.entity.ConferenceHistory;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.entity.UserConference;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityListeners;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -49,6 +51,9 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
+    public Optional<List<ConferenceMapping>> getConferenceByActiveTrue() { return conferenceRepository.findByActiveTrue(); }
+
+    @Override
     public ConferenceHistory exitConference(User user, Long conferenceId){
         // 방 정보(user_conference) 삭제 (userId, RoomId를 통한 삭제)
         Optional<UserConference> conference = userConferenceRepository.findByUserId(user.getId());
@@ -64,7 +69,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public Long register(ConferenceRegisterPostReq dto) {
+    public int register(ConferenceRegisterPostReq dto) {
         User user = userRepository.findByUserId(dto.getUserid()).get();
         GameCategory gameCategory = gameCategoryRepository.findById(dto.getGamecategory()).get();
         Conference conference = Conference.builder()
@@ -89,7 +94,7 @@ public class ConferenceServiceImpl implements ConferenceService {
                 .build();
         conferenceHistoryRepository.save(conferenceHistory);
 
-        return result.getId();
+        return result.getMaxUser();
 
 
     }

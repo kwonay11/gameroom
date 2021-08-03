@@ -23,6 +23,8 @@ export default new Vuex.Store({
         nowpage: '',
         // conference 방 번호
         conferenceid: null,
+        gamecategory: null,
+
 
     },
     mutations: {
@@ -30,8 +32,6 @@ export default new Vuex.Store({
         SET_USER_DATA(state, data) {
             state.user = data;
         },
-
-
         LOGIN: function(state, credentials) {
             state.id = credentials.id;
             state.password = credentials.password;
@@ -57,6 +57,10 @@ export default new Vuex.Store({
         },
         CONFERENCE_ID: function(state, conferenceid) {
             state.conferenceid = conferenceid
+        },
+        GAMECATEGORY: function(state, gamecategory_id) {
+            state.conferenceid = gamecategory_id
+            console.log(state.gamecategory)
         }
     },
 
@@ -68,17 +72,12 @@ export default new Vuex.Store({
                     commit("SET_USER_DATA", data);
                 });
         },
-
-
         login: function({ commit }, credentials) {
             commit('LOGIN', credentials)
         },
-
-
         logout({ commit }) {
             commit("LOGOUT");
         },
-
         fetchUser: function({ commit }, id) {
             axios.get(`${SERVER_URL}/users/${id}`)
                 .then((res) => {
@@ -127,8 +126,10 @@ export default new Vuex.Store({
                         reject();
                     })
             })
-        }
-
+        },
+        gamecategory: function({ commit }, gamecategory_id) {
+            commit('GAMECATEGORY', gamecategory_id)
+        },
 
     },
     getters: {
