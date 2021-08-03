@@ -22,6 +22,8 @@
   </div>
   
 </template>
+
+
 <script>
 import VueHorizontalList from "vue-horizontal-list";
 export default {
