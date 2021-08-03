@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h5 class="list_title">대기방</h5>
     <div id="waiting">
+    <h5 class="list_title">대기방</h5>
     <vue-horizontal-list :items="items" :options="options" class="m-5">
       <template v-slot:default="{ item }">
         <div>
@@ -101,11 +101,11 @@ export default {
 </script>
 <style scoped>
 #waiting{
-  height: 350px;
+  height: 300px;
 }
 .list_title{
-  /* float:left;
-  margin-left:10; */
+  /* text-align: left;
+  */
 }
  p {
   /* margin-top: 6px; */
@@ -116,7 +116,7 @@ export default {
   /* margin-top: 8px; */
   /* margin-bottom: 6px; */
   display: flex;
-  margin-left: 10%;
+  margin-left: 15%;
   /* justify-content: space-between; */
   /* font-size: 14px; */
   /* font-weight: 500; */
@@ -128,7 +128,7 @@ export default {
   width: 70%;
   /* 패딩 탑으로 직사각형으로 이미지 */
   padding-top: 40%;
-  margin-left: 10%;
+  margin-left: 15%;
 }
 img {
   object-fit: cover;
