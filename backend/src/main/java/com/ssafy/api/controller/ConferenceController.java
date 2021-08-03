@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
-@RequestMapping("/conferences")
+@RequestMapping("/api/conferences")
 public class ConferenceController {
     @Autowired
     ConferenceService conferenceService;
@@ -111,7 +111,7 @@ public class ConferenceController {
         }
     
 
-    @PostMapping()
+    @PostMapping() 
     @ApiOperation(value = "방 정보생성", notes = "컨퍼런스 방 정보 생성 한다. ")
     @ApiResponses({
             @ApiResponse(code = 201, message = "성공", response = UserLoginPostRes.class),
