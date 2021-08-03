@@ -59,8 +59,7 @@ export default new Vuex.Store({
             state.conferenceid = conferenceid
         },
         GAMECATEGORY: function(state, gamecategory_id) {
-            state.conferenceid = gamecategory_id
-            console.log(state.gamecategory)
+            state.gamecategory = gamecategory_id
         }
     },
 

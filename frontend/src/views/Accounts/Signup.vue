@@ -95,7 +95,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style >
 
 /* #signup {
   background: url("../../assets/desert-5171724_1920.png");

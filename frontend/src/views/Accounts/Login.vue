@@ -66,7 +66,7 @@ export default {
 
 </script>
 
-<style scoped>
+<style>
 
 
 .login_box {
