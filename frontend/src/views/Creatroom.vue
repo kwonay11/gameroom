@@ -4,8 +4,31 @@
 
   <p class="head">처음에 시작할 게임을 선택하고 시작하기 버튼을 눌러주세요.<br>
   게임중에 게임을 변경할 수 있습니다.</p>
-           <div v-for="value in games" v-bind:key="value.id">
   <div class="cols mt-5">
+    <div v-for="value in games" v-bind:key="value.id">
+      <div class="col" ontouchstart="this.classList.toggle('hover');">
+        <div class="container" style='flex'>
+              <div class="front" style="background-image: url(https://unsplash.it/505/505/)">
+                <div class="inner">
+                  {{ value.name }}
+                </div>
+              </div>
+              <div class="back">
+                <div class="inner">
+                  {{ value.summary }}
+                  <router-link :to="{ name: 'CreateRoomModal' }">
+                    <button class="start" @click='category'>
+                      <span class="circle" aria-hidden="true">
+                        <span class="icon arrow"></span>
+                      </span>
+                      <span class="button-text">start</span>
+                    </button>
+                  </router-link>
+                </div>
+              </div>
+
+          </div>
+        </div>
       <!-- <div class="col" ontouchstart="this.classList.toggle('hover');">
         <div class="container">
           <div class="front" style="background-image: url(https://unsplash.it/500/500/)">
@@ -137,29 +160,7 @@
 
 
  
-      <div class="col" ontouchstart="this.classList.toggle('hover');">
-        <div class="container" style='flex'>
-              <div class="front" style="background-image: url(https://unsplash.it/505/505/)">
-                <div class="inner">
-                  {{ value.name }}
-                </div>
-              </div>
-              <div class="back">
-                <div class="inner">
-                  {{ value.summary }}
-                  <router-link :to="{ name: 'CreateRoomModal' }">
-                    <button class="start" @click='category'>
-                      <span class="circle" aria-hidden="true">
-                        <span class="icon arrow"></span>
-                      </span>
-                      <span class="button-text">start</span>
-                    </button>
-                  </router-link>
-                </div>
-              </div>
 
-          </div>
-        </div>
       </div>
 
 
@@ -197,6 +198,7 @@ export default {
     created(){
       axios.get(`${SERVER_URL}/games/`)
       .then((res) => {
+        console.log(res.data)
         this.games = res.data
       })
 
