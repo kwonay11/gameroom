@@ -238,7 +238,7 @@ export default {
       flex-wrap: wrap;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
-          justify-content: center;
+          justify-content: space-around;
 }
 
 .col{
