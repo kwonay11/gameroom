@@ -8,10 +8,11 @@
         <div class="left"></div>
         <div class="right">
           <input v-model="contents.title" class="card__input " placeholder="방 이름" type="text" />
+        <p v-if="!contents.title" style="color:white">방 이름을 입력해주세요.</p>
         </div>
       </div>
 
-      <div class="row_box">
+      <div class="row_box row">
         <div class="left"></div>
         <div class="right">
           <select  v-model="contents.maxUser" class="card__input " >
@@ -23,6 +24,7 @@
             <option >6</option>
           </select>
         </div>
+          <p v-if="!contents.maxUser" style="color:white">방 최대 정원을 선택해주세요.</p>
       </div>
 
       <div class="pw_box">
@@ -47,9 +49,9 @@
                   </div>
                 </div>
           </div>
+          <p v-if="!contents.password" style="color:white">비밀번호를 입력해주세요.</p>
       </div>
-
-      <button @click="joinSession()">
+      <button v-if="contents.title && contents.maxUser" @click="joinSession()" >
         <router-link :to="{ name: 'Room' }" class='btn-animate'>START</router-link>
       </button>
 
@@ -85,7 +87,7 @@ export default {
             .dispatch("joinSession", this.contents)
             .then(() => {
               this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid }});
-              // swal(`회원가입에 성공하였습니다.`);
+              swal(`즐거운 게임하세요!`);
             })
           .catch(() => {
              swal(`잘못된 정보입니다.`);

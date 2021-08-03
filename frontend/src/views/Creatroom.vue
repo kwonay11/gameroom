@@ -62,7 +62,7 @@ export default {
       for (var i=0; i<6; i++) {
         this.image_url.push(`url(https://unsplash.it/${url_value[i]}/${url_value[i]}/)`)
       }
-      console.log(this.image_url)
+      // console.log(this.image_url)
 
       
       axios.get(`${SERVER_URL}/games/`)
