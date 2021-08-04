@@ -6,7 +6,6 @@
       <template v-slot:default="{ item }">
           <div class="image-container">
 
-            <!-- <img :src="image_url[item.gameId-1]" /> -->
             <div v-if="item.gameName === 'game1'">
               <img :src="image_url[0]" />
             </div>
@@ -25,6 +24,8 @@
             <div v-else>
               <img :src="image_url[5]" />
             </div> 
+            <!-- <img class="card" :src="image_url[item.id-1]" /> -->
+
 
             <div class="roominfo">
               <p>{{item.nowUser}}/{{item.maxUser}}</p>
@@ -32,19 +33,26 @@
               <p>방 : {{ item.title }}</p>
               <p>방장 : {{ item.ownerNickname }}</p>
             </div>
+
             <!-- 비밀방일 때 열쇠 띄워줌 v-if 처리 해주기 -->
-            <!-- <div v-if="item.privateRooms"> -->
-            <img class="key" src="@/assets/key.png" alt="key">
-            <!-- </div> -->
+          <!-- <div v-if="item.privateRooms"> -->
+          <img class="key" src="@/assets/key.png" alt="key">
+          <!-- </div> -->
+
             <div class="btn">
                 <router-link class="btn_text" :to="{ name: '#' }">
                   <div class="button button--brightness">입장</div>
                 </router-link>
             </div>
+
+            </div>
           </div>
+
+        <!-- </div> -->
       </template>
-    </vue-horizontal-list> 
-  </div>
+    </vue-horizontal-list>
+    </div>
+
 </template>
 
 
@@ -61,7 +69,6 @@ export default {
     },
     data() {
     return {
-
       options: {
         responsive: [
           { end: 576, size: 1 },
@@ -69,6 +76,14 @@ export default {
           { start: 768, end: 992, size: 3 },
           { size: 4 },
         ],
+        autoplay: {
+          // enable/disable playing slideshow
+          play: true,
+          // the delay duration between slides in milliseconds
+          speed: 5000,
+          // if setup, the slideshow will be in the loop.
+          repeat: true,
+        },
       },
         waiting_games: [],
         image_url: [],
@@ -81,9 +96,13 @@ export default {
       this.waiting_games = res.data
 
       const url_value=_.sampleSize(_.range(500,600),6)
+
       for (var i=0; i<6; i++) {
         this.image_url.push(`https://unsplash.it/${url_value[i]}/${url_value[i]}/`)
       }
+      console.log('ffffffffff')
+      console.log(this.image_url)
+
 
     })
   },
@@ -141,5 +160,6 @@ img {
   left:85%;
   filter: brightness(100%);
 }
+
 
 </style>

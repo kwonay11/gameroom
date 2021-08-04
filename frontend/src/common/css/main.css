@@ -22,9 +22,15 @@
     margin: auto;
     font-weight: 600;
     position: absolute;
+<<<<<<< HEAD
     background-color: rgba(50, 113, 196, 0.76);
     top: 72%;
     left: 10.3vw;
+=======
+    background-color:rgba(50, 113, 196, 0.76);
+    top:72%;
+    left:10.3vw;
+>>>>>>> FE_yebeen
     font-size: 1em;
     text-decoration: none;
 }
