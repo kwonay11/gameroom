@@ -2,15 +2,17 @@
 
     <div id="recommend">
     <div class="list_title">추천방 - 추천 방에 참여해요! </div>
-    <vue-horizontal-list :items="items" :options="options" class="abc">
+    <vue-horizontal-list :items="recommend_games" :options="options" class="abc">
       <template v-slot:default="{ item }">
         <div>
           <div class="image-container">
-            <img class="card" :src="item.image" />
+            <img class="card" :src="image_url[item.id-1]" />
             <div class="content">
           <div class="roominfo">
-            <p>3/5</p>
-            <h5 class="title">{{ item.title }}</h5>
+            <p>{{item.nowUser}}/{{item.maxUser}}</p>
+            <p>게임 : {{ item.gameName }}</p>
+            <p>방 : {{ item.title }}</p>
+            <p>방장 : {{ item.ownerNickname }}</p>
           </div>
               <div class="btn">
                   <router-link class="btn_text" :to="{ name: '#' }">
@@ -32,7 +34,11 @@
 
 
 <script>
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import VueHorizontalList from "vue-horizontal-list";
+import axios from 'axios'
+import _ from "lodash"
+
 export default {
   name:'RecommendRooms',
   components: {
@@ -40,62 +46,7 @@ export default {
     },
     data() {
     return {
-      items: [
-        {
-          title: "몸으로 말해요",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas non sagittis leo. Vestibulum sit amet metus nec neque dignissim dapibus.",
-          image: "https://picsum.photos/id/1015/600/600",
-        },
-        {
-          title: "Curabitur sit amet nunc",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec id mollis erat. Aliquam erat volutpat. Nunc erat lacus, rhoncus nec.",
-          image: "https://picsum.photos/id/1019/600/600",
-        },
-        {
-          title: "Proin pharetra, ante metus",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ac diam ac ex efficitur posuere. Pellentesque cursus pellentesque risus, non.",
-          image: "https://picsum.photos/id/1039/600/600",
-        },
-        {
-          title: "Cras pharetra non enim a",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi malesuada varius nibh, a malesuada nisi feugiat eget. Aenean convallis semper.",
-          image: "https://picsum.photos/id/1042/600/600",
-        },
-        {
-          title: "Proin vulputate, augue eu accumsan",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas fringilla tempor libero sit amet mollis. Praesent quis leo erat. Integer.",
-          image: "https://picsum.photos/id/1044/600/600",
-        },
-        {
-          title: "Maecenas feugiat magna sapien in",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sit amet fringilla ante. Quisque at ipsum non lacus consequat dictum.",
-          image: "https://picsum.photos/id/1057/600/600",
-        },
-        {
-          title: "Donec commodo sed enim at",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc eu condimentum risus. Praesent dignissim, neque nec pharetra vestibulum, libero odio.",
-          image: "https://picsum.photos/id/1063/600/600",
-        },
-        {
-          title: "In bibendum urna et turpis",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse vitae ante volutpat leo vulputate volutpat et sed ex. Vivamus eu.",
-          image: "https://picsum.photos/id/1076/600/600",
-        },
-        {
-          title: "Phasellus iaculis dignissim erat at",
-          content:
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla mattis quam scelerisque, eleifend purus gravida, scelerisque orci. Ut et turpis.",
-          image: "https://picsum.photos/id/1083/600/600",
-        },
-      ],
+
       options: {
         responsive: [
           { end: 576, size: 1 },
@@ -104,7 +55,30 @@ export default {
           { size: 4 },
         ],
       },
+        recommend_games: [],
+        image_url: [],
     };
+  },
+
+    created(){
+    axios.get(`${SERVER_URL}/conferences/`)
+    .then((res) => {
+      this.recommend_games = res.data
+      console.log('dfdfddd')
+      console.log(this.recommend_games)
+      console.log(this.recommend_games)
+      console.log(this.recommend_games[0])
+
+
+      const url_value=_.sampleSize(_.range(1000,1100),this.recommend_games.length)
+
+      for (var i=0; i<this.recommend_games.length; i++) {
+        this.image_url.push(`https://picsum.photos/id/${url_value[i]}/600/600/`)
+      }
+      console.log(this.image_url)
+
+
+    })
   },
 }
 </script>
@@ -124,6 +98,7 @@ export default {
   margin-left: 15%;
   margin-right: 15%;
   text-align:initial;
+  top: 0.8vh;
   
   
 }
