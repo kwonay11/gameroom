@@ -6,6 +6,7 @@
       <template v-slot:default="{ item }">
           <div class="image-container">
 
+            <!-- <img :src="image_url[item.gameId-1]" /> -->
             <div v-if="item.gameName === 'game1'">
               <img :src="image_url[0]" />
             </div>
@@ -24,7 +25,6 @@
             <div v-else>
               <img :src="image_url[5]" />
             </div> 
-            <!-- <img class="card" :src="image_url[item.id-1]" /> -->
 
 
             <div class="roominfo">
@@ -83,11 +83,8 @@ export default {
           start: 0,
         },
       autoplay: {
-        // enable/disable playing slideshow
         play: true,
-        // the delay duration between slides in milliseconds
         speed: 4000,
-        // if setup, the slideshow will be in the loop.
         repeat: true,
       },
       },
@@ -104,8 +101,7 @@ export default {
       for (var i=0; i<6; i++) {
         this.image_url.push(`https://unsplash.it/${url_value[i]}/${url_value[i]}/`)
       }
-      console.log('ffffffffff')
-      console.log(this.image_url)
+
 
 
     })

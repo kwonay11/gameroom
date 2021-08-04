@@ -84,11 +84,8 @@ export default {
           start: 0,
         },
       autoplay: {
-        // enable/disable playing slideshow
         play: true,
-        // the delay duration between slides in milliseconds
         speed: 5000,
-        // if setup, the slideshow will be in the loop.
         repeat: true,
       },
       },
@@ -99,20 +96,12 @@ export default {
     axios.get(`${SERVER_URL}/conferences/`)
     .then((res) => {
       this.recommend_games = res.data
-      console.log('dfdfddd')
-      console.log(this.recommend_games)
-      console.log(this.recommend_games)
-      console.log(this.recommend_games[0])
-
 
       const url_value=_.sampleSize(_.range(500,600),6)
 
       for (var i=0; i<6; i++) {
         this.image_url.push(`https://unsplash.it/${url_value[i]}/${url_value[i]}/`)
       }
-      console.log('ffffffffff')
-      console.log(this.image_url)
-
 
     })
   },
