@@ -1,8 +1,8 @@
 <template>
-  <div>
+
     <div id="recommend">
     <h5>추천방</h5>
-    <vue-horizontal-list :items="items" :options="options" class="m-5">
+    <vue-horizontal-list :items="items" :options="options" class="abc">
       <template v-slot:default="{ item }">
         <div>
           <div class="image-container">
@@ -19,7 +19,7 @@
       </template>
     </vue-horizontal-list>
     </div>
-  </div>
+
   
 </template>
 
@@ -102,22 +102,17 @@ export default {
 }
 </script>
 <style scoped>
+
 #recommend{
-  height: 350px;
+  height: 28vh;
 }
  p {
-  /* margin-top: 6px; */
-  margin:2%;
+  padding :2%;
   font-size: 20px;
 }
 .roominfo {
-  /* margin-top: 8px; */
-  /* margin-bottom: 6px; */
   display: flex;
   margin-left: 15%;
-  /* justify-content: space-between; */
-  /* font-size: 14px; */
-  /* font-weight: 500; */
 }
 .image-container {
   border-radius: 10px;
@@ -125,7 +120,7 @@ export default {
   position: relative;
   width: 70%;
   /* 패딩 탑으로 직사각형으로 이미지 */
-  padding-top: 45%;
+  padding-top: 40%;
   margin-left: 15%;
 }
 img {
@@ -137,6 +132,11 @@ img {
   bottom: 0;
   left: 0;
   right: 0;
+}
+
+.abc {
+  margin: 0 5rem;
+  height: 24vh;
 }
 
 </style>

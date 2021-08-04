@@ -2,7 +2,7 @@
   <div>
     <div id="waiting">
     <h5 class="list_title">대기방</h5>
-    <vue-horizontal-list :items="items" :options="options" class="m-5">
+    <vue-horizontal-list :items="items" :options="options" class="abc">
       <template v-slot:default="{ item }">
         <div>
           <div class="image-container">
@@ -100,26 +100,17 @@ export default {
 }
 </script>
 <style scoped>
+
 #waiting{
-  height: 300px;
-}
-.list_title{
-  /* text-align: left;
-  */
+  height: 28vh;
 }
  p {
-  /* margin-top: 6px; */
-  margin:2%;
+  padding :2%;
   font-size: 20px;
 }
 .roominfo {
-  /* margin-top: 8px; */
-  /* margin-bottom: 6px; */
   display: flex;
   margin-left: 15%;
-  /* justify-content: space-between; */
-  /* font-size: 14px; */
-  /* font-weight: 500; */
 }
 .image-container {
   border-radius: 10px;
@@ -139,6 +130,10 @@ img {
   bottom: 0;
   left: 0;
   right: 0;
+}
+.abc {
+  margin: 0 5rem;
+  height: 24vh;
 }
 
 </style>

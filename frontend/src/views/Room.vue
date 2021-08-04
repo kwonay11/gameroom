@@ -10,11 +10,13 @@
             <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
          </div>
       </div>
-      <div class='row m-4'>
+      <div class='row p-4'>
          <div id="main-video" class="col-md-8">
             <div class="player">
                <user-video :stream-manager="mainStreamManager"/>
-               <div class="answer"><input class="input_answer" placeholder="답을 입력해주세요." type="text" /></div>
+               <div class="answer">
+                  <input class="input_answer" placeholder="답을 입력해주세요." type="text" />
+               </div>
             </div>
          </div>
          <div class="col-md-4">
@@ -254,11 +256,11 @@ export default {
   margin-bottom:10px;
 }
 .answer{
-  
-width: 485px;
-height: 87px;
-margin: 0% 29% 1% 29%;
-
+display: inline-block;
+width: 30vw;
+height: 80px;
+/* margin-left: 10vw; */
+position: relative;
 background: rgba(20, 17, 151, 0.47);
 border: 1px solid #FFFFFF;
 box-sizing: border-box;
@@ -291,6 +293,8 @@ box-sizing: border-box;
 
 .player {
    border: 3px solid #ffa500;
+   /* display: flex; */
+   align-items: center;
 }
 
 #video-container video {
