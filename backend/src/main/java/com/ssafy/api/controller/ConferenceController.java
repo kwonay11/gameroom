@@ -49,7 +49,7 @@ public class ConferenceController {
     @Autowired
     ConferenceHistoryService conferenceHistoryService;
 
-    @GetMapping("/")
+    @GetMapping()
     @ApiOperation(value = "대기 방 조회", notes = "인원 수가 많이 충족된 방 순으로 response")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
@@ -72,7 +72,7 @@ public class ConferenceController {
             list2.add(new Object[]{conferenceMapping, conferenceMapping.getMaxUser() - userConferenceService.countByConferenceId(conferenceMapping.getId())});
         }
         Collections.sort(list2, (o1, o2) -> (long)o1[1] > (long)o2[1] ? 1 : -1);
-        List<ConferenceInfoRes> res = new ArrayList<ConferenceInfoRes>();
+        List<ConferenceInfoRes> res = new ArrayList<>();
         for(int i = 0; i < list.size(); i++) {
             if((long)list2.get(i)[1] <= 0)
                 continue;
@@ -136,7 +136,7 @@ public class ConferenceController {
     }
 
     @DeleteMapping(value = "/{conferenceid}")
-    @ApiOperation(value = "회원 방 정보 삭제")
+    @ApiOperation(value = "게임 방 나가기")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),
             @ApiResponse(code = 401, message = "인증 실패"),
@@ -161,11 +161,16 @@ public class ConferenceController {
             @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<ConferenceRes> register(
+    public ResponseEntity<?> register(
             @RequestBody @ApiParam(value = "방 정보", required = true) ConferenceRegisterPostReq registerPostReq,
             @ApiIgnore Authentication authentication) {
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
         String userId = userDetails.getUsername();
+
+        if(registerPostReq.getMaxUser() < 2 ||  // 최대 인원 수가 2 이하거나
+                registerPostReq.getTitle() == null ||  // 방제가 null 이거나
+                registerPostReq.getTitle().equals(""))  // 공백일 경우 방을 만들지 않고 401 response
+            return ResponseEntity.ok(ConferenceRes.of(401,"fail"));
 
         registerPostReq.setUserid(userId);
         int result = conferenceService.register(registerPostReq);

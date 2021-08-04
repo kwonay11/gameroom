@@ -107,10 +107,6 @@ public class UserController {
 		return ResponseEntity.status(200).body(res);
 	}
 
-
-
-
-
 	@DeleteMapping(value = "/{id}")
 	@ApiOperation(value = "회원 본인 정보 삭제", notes = "로그인한 회원 본인의 정보를 삭제한다.")
 	@ApiResponses({
@@ -128,8 +124,6 @@ public class UserController {
 			return ResponseEntity.status(200).body(BaseResponseBody.of(200, "Success"));
 		}
 		return ResponseEntity.status(401).body(BaseResponseBody.of(401,"fail"));
-
-
 	}
 	@PutMapping(value = "/nickname/{id}")
 	@ApiOperation(value = "회원 본인 닉네임 수정", notes = "로그인한 회원 본인의 닉네임을 수정한다.")
