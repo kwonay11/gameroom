@@ -40,8 +40,8 @@
           <img class="key" src="@/assets/key.png" alt="key">
           <!-- </div> -->
 
-            <div class="btn">
-                <router-link class="btn_text" :to="{ name: '#' }">
+            <div class="btn" id="enter">
+                <router-link class="btn_text" :to="`/gameroom/${item.id}`">
                   <div class="button button--brightness">입장</div>
                 </router-link>
             </div>
@@ -87,7 +87,7 @@ export default {
         // enable/disable playing slideshow
         play: true,
         // the delay duration between slides in milliseconds
-        speed: 4000,
+        speed: 5000,
         // if setup, the slideshow will be in the loop.
         repeat: true,
       },
