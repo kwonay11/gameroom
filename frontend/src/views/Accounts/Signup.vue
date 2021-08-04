@@ -138,6 +138,16 @@ export default {
   align-items: center;
   
 }
+.id_left {
+
+  width: 77px;
+  height: 55px;
+  background: rgba(49,46,46,0.5);
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  
+}
 .left {
   width: 77px;
   height: 50px;
@@ -145,6 +155,10 @@ export default {
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.left_image {
+  max-width: 50%;
+  padding-top: 8px;
 }
 .right {
   width: 405px;
@@ -176,7 +190,8 @@ export default {
   
 }
 .card__input {
-  border-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
   box-sizing: border-box;
   color: #000000;
   display: block;
@@ -187,7 +202,8 @@ export default {
 }
 .card__input:focus, .card__input:active {
   background: rgba(254, 254, 254, 0.08);
-  
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
   outline: none;
 }
 
@@ -198,4 +214,5 @@ export default {
   color: #ffffff;
   margin:3px;
 }
+
 </style>

@@ -2,6 +2,7 @@ package com.ssafy.db.entity;
 
 
 import lombok.*;
+//import org.graalvm.compiler.lir.LIRInstruction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 

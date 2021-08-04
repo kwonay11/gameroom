@@ -35,7 +35,7 @@
      <router-link  id="a" :to="{ name: 'MainPage' }">
      <img src="@/assets/logo.png" alt="logo"></router-link>
     </nav>
-    <router-view/>
+    
   </div>
 </template>
 <script>
