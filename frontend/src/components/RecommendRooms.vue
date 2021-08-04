@@ -35,6 +35,11 @@
               <p>방장 : {{ item.ownerNickname }}</p>
             </div>
 
+            <!-- 비밀방일 때 열쇠 띄워줌 v-if 처리 해주기 -->
+          <!-- <div v-if="item.privateRooms"> -->
+          <img class="key" src="@/assets/key.png" alt="key">
+          <!-- </div> -->
+
             <div class="btn">
                 <router-link class="btn_text" :to="{ name: '#' }">
                   <div class="button button--brightness">입장</div>
@@ -72,6 +77,14 @@ export default {
           { start: 768, end: 992, size: 3 },
           { size: 4 },
         ],
+        autoplay: {
+          // enable/disable playing slideshow
+          play: true,
+          // the delay duration between slides in milliseconds
+          speed: 4000,
+          // if setup, the slideshow will be in the loop.
+          repeat: true,
+        },
       },
         recommend_games: [],
         image_url: [],
@@ -145,6 +158,13 @@ img {
 .abc {
   margin: 0 5rem;
   /* height: 24vh; */
+}
+.key {
+  width:20px;
+  height:20px;
+  top: 10%;
+  left:85%;
+  filter: brightness(100%);
 }
 
 
