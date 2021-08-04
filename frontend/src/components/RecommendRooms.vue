@@ -6,30 +6,49 @@
       <template v-slot:default="{ item }">
         <div>
           <div class="image-container">
-            <img class="card" :src="image_url[item.id-1]" />
-            <div class="content">
-          <div class="roominfo">
-            <p>{{item.nowUser}}/{{item.maxUser}}</p>
-            <p>게임 : {{ item.gameName }}</p>
-            <p>방 : {{ item.title }}</p>
-            <p>방장 : {{ item.ownerNickname }}</p>
-          </div>
-              <div class="btn">
-                  <router-link class="btn_text" :to="{ name: '#' }">
-                    <div class="button button--brightness">입장</div>
-                  </router-link>
-              </div>
+
+            <div v-if="item.gameName === 'game1'">
+              <img :src="image_url[0]" />
+            </div>
+            <div v-else-if="item.gameName === 'game2'">
+              <img :src="image_url[1]" />
+            </div>
+            <div v-else-if="item.gameName === 'game3'">
+              <img :src="image_url[2]" />
+            </div>
+            <div v-else-if="item.gameName === 'game4'">
+              <img :src="image_url[3]" />
+            </div>
+            <div v-else-if="item.gameName === 'game5'">
+              <img :src="image_url[4]" />
+            </div>
+            <div v-else>
+              <img :src="image_url[5]" />
+            </div> 
+            <!-- <img class="card" :src="image_url[item.id-1]" /> -->
+
+
+            <div class="roominfo">
+              <p>{{item.nowUser}}/{{item.maxUser}}</p>
+              <p>게임 : {{ item.gameName }}</p>
+              <p>방 : {{ item.title }}</p>
+              <p>방장 : {{ item.ownerNickname }}</p>
+            </div>
+
+            <div class="btn">
+                <router-link class="btn_text" :to="{ name: '#' }">
+                  <div class="button button--brightness">입장</div>
+                </router-link>
+            </div>
+
             </div>
           </div>
 
-
-          
-        </div>
+        <!-- </div> -->
       </template>
     </vue-horizontal-list>
     </div>
 
-  
 </template>
 
 
@@ -46,7 +65,6 @@ export default {
     },
     data() {
     return {
-
       options: {
         responsive: [
           { end: 576, size: 1 },
@@ -70,11 +88,12 @@ export default {
       console.log(this.recommend_games[0])
 
 
-      const url_value=_.sampleSize(_.range(1000,1100),this.recommend_games.length)
+      const url_value=_.sampleSize(_.range(500,600),6)
 
-      for (var i=0; i<this.recommend_games.length; i++) {
-        this.image_url.push(`https://picsum.photos/id/${url_value[i]}/600/600/`)
+      for (var i=0; i<6; i++) {
+        this.image_url.push(`https://unsplash.it/${url_value[i]}/${url_value[i]}/`)
       }
+      console.log('ffffffffff')
       console.log(this.image_url)
 
 
