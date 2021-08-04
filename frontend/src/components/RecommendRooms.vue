@@ -7,6 +7,7 @@
         <div>
           <div class="image-container">
 
+            <!-- <img :src="image_url[item.gameId-1]" /> -->
             <div v-if="item.gameName === 'game1'">
               <img :src="image_url[0]" />
             </div>
@@ -25,7 +26,6 @@
             <div v-else>
               <img :src="image_url[5]" />
             </div> 
-            <!-- <img class="card" :src="image_url[item.id-1]" /> -->
 
 
             <div class="roominfo">
@@ -34,6 +34,11 @@
               <p>방 : {{ item.title }}</p>
               <p>방장 : {{ item.ownerNickname }}</p>
             </div>
+
+            <!-- 비밀방일 때 열쇠 띄워줌 v-if 처리 해주기 -->
+            <!-- <div v-if="item.privateRooms"> -->
+              <img class="key" src="@/assets/key.png" alt="key">
+            <!-- </div> -->
 
             <div class="btn">
                 <router-link class="btn_text" :to="{ name: '#' }">
@@ -145,6 +150,13 @@ img {
 .abc {
   margin: 0 5rem;
   /* height: 24vh; */
+}
+.key {
+  width:20px;
+  height:20px;
+  top: 10%;
+  left:85%;
+  filter: brightness(100%);
 }
 
 
