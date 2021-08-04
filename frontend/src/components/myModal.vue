@@ -71,7 +71,8 @@ $module: 'my-modal';
     padding: 25px;
   }
   &__body {
-    padding: 25px;
+    padding: 40px;
+
   }
   
 }

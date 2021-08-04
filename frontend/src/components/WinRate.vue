@@ -39,6 +39,7 @@ table {
 .bluetop tr th {
   height: 50px;
   border: 1px solid #ddd;
+  text-align: center;
 }
 .bluetop tr td {
   height: 60px;
