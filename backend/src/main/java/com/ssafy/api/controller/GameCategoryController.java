@@ -23,7 +23,7 @@ public class GameCategoryController {
     @Autowired
     GameCategoryService gameService;
 
-    @GetMapping("/")
+    @GetMapping()
     @ApiOperation(value = "게임 이름과 설명 조회", notes = "게임 이름과 게임 설명을 response함")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공"),

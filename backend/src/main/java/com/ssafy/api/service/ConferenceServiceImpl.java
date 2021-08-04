@@ -65,7 +65,6 @@ public class ConferenceServiceImpl implements ConferenceService {
                                                 .user(user)
                                                 .build();
         return conferenceHistoryRepository.save(conferenceHistory);
-
     }
 
     @Override
