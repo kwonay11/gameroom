@@ -1,31 +1,40 @@
-<template>         
+<template>
+
     <div id="waiting">
-    <div class="list_title">대기방 - 대기중인 방에 참여해요! </div>
+    <div class="list_title">추천방 - 추천 방에 참여해요! </div>
     <vue-horizontal-list :items="waiting_games" :options="options" class="abc">
       <template v-slot:default="{ item }">
         <div>
           <div class="image-container">
-            <img :src="image_url[item.id-1]" />
-          </div>
-
+            <img class="card" :src="image_url[item.id-1]" />
+            <div class="content">
           <div class="roominfo">
             <p>{{item.nowUser}}/{{item.maxUser}}</p>
             <p>게임 : {{ item.gameName }}</p>
             <p>방 : {{ item.title }}</p>
             <p>방장 : {{ item.ownerNickname }}</p>
           </div>
-
-          <div class="btn">
-              <router-link class="btn_text" :to="{ name: '#' }">
-                <div class="button button--brightness">입장</div>
-              </router-link>
+          <!-- 비밀방일 때 열쇠 띄워줌 v-if 처리 해주기 -->
+          <!-- <div v-if="item.privateRooms"> -->
+          <img class="key" src="@/assets/key.png" alt="key">
+          <!-- </div> -->
+      
+              <div class="btn">
+                  <router-link class="btn_text" :to="{ name: '#' }">
+                    <div class="button button--brightness">입장</div>
+                  </router-link>
+              </div>
+            </div>
           </div>
+
+
           
         </div>
       </template>
     </vue-horizontal-list>
     </div>
 
+  
 </template>
 
 
@@ -40,23 +49,23 @@ export default {
   components: {
      VueHorizontalList
     },
-    data: function() {
-        return {
-          options: {
-            responsive: [
-              { end: 576, size: 1 },
-              { start: 576, end: 768, size: 2 },
-              { start: 768, end: 992, size: 3 },
-              { size: 4 },
-            ],
-          },
-          waiting_games: [],
-          image_url: [],
-        };
+    data() {
+    return {
 
+      options: {
+        responsive: [
+          { end: 576, size: 1 },
+          { start: 576, end: 768, size: 2 },
+          { start: 768, end: 992, size: 3 },
+          { size: 4 },
+        ],
+      },
+        waiting_games: [],
+        image_url: [],
+    };
   },
 
-  created(){
+    created(){
     axios.get(`${SERVER_URL}/conferences/`)
     .then((res) => {
       this.waiting_games = res.data
@@ -94,6 +103,7 @@ export default {
   margin-left: 15%;
   margin-right: 15%;
   text-align:initial;
+  top: 0.8vh;
   
   
 }
@@ -122,6 +132,12 @@ img {
   margin: 0 5rem;
   /* height: 24vh; */
 }
-
+.key {
+  width:20px;
+  height:20px;
+  top: 10%;
+  left:85%;
+  filter: brightness(100%);
+}
 
 </style>

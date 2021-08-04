@@ -22,12 +22,11 @@
     margin: auto;
     font-weight: 600;
     position: absolute;
-    background-color:rgba(37, 93, 139, 0.76);
-    top:42%;
-    left:38%;
-    right:38%;
+    background-color:rgba(50, 113, 196, 0.76);
+    top:72%;
+    left:70%;
     font-size: 1em;
-    /* text-decoration: none; */
+    text-decoration: none;
     
   }
   .btn span {
@@ -92,3 +91,4 @@
     color:white;
   
   }
+  
