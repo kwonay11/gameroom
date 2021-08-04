@@ -69,6 +69,9 @@ export default {
     },
     data() {
     return {
+      waiting_games: [0],
+      image_url: [],
+
       options: {
         responsive: [
           { end: 576, size: 1 },
@@ -76,17 +79,18 @@ export default {
           { start: 768, end: 992, size: 3 },
           { size: 4 },
         ],
-        autoplay: {
-          // enable/disable playing slideshow
-          play: true,
-          // the delay duration between slides in milliseconds
-          speed: 5000,
-          // if setup, the slideshow will be in the loop.
-          repeat: true,
+      position: {
+          start: 0,
         },
+      autoplay: {
+        // enable/disable playing slideshow
+        play: true,
+        // the delay duration between slides in milliseconds
+        speed: 5000,
+        // if setup, the slideshow will be in the loop.
+        repeat: true,
       },
-        waiting_games: [],
-        image_url: [],
+      },
     };
   },
 
