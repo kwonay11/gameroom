@@ -1,27 +1,36 @@
 <template>
-  <div>
+
     <div id="waiting">
-    <h5 class="list_title">대기방</h5>
+    <div class="list_title">대기방 - 대기중인 방에 참여해요! </div>
     <vue-horizontal-list :items="items" :options="options" class="abc">
       <template v-slot:default="{ item }">
         <div>
           <div class="image-container">
-            <img :src="item.image" />
-          </div>
-
+            <img class="card" :src="item.image" />
+            <div class="content">
           <div class="roominfo">
             <p>3/5</p>
-            <p>{{ item.title }}</p>
+            <h5 class="title">{{ item.title }}</h5>
           </div>
+              <div class="btn">
+                  <router-link class="btn_text" :to="{ name: '#' }">
+                    <div class="button button--brightness">입장</div>
+                  </router-link>
+              </div>
+            </div>
+          </div>
+
 
           
         </div>
       </template>
     </vue-horizontal-list>
     </div>
-  </div>
+
   
 </template>
+
+
 <script>
 import VueHorizontalList from "vue-horizontal-list";
 export default {
@@ -33,7 +42,7 @@ export default {
     return {
       items: [
         {
-          title: "Sed non ante non cras amet",
+          title: "몸으로 말해요",
           content:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas non sagittis leo. Vestibulum sit amet metus nec neque dignissim dapibus.",
           image: "https://picsum.photos/id/1015/600/600",
@@ -100,17 +109,23 @@ export default {
 }
 </script>
 <style scoped>
-
+@import './../common/css/main.css';
 #waiting{
   height: 28vh;
 }
- p {
-  padding :2%;
+ p,h5 {
+  /* padding :2%; */
   font-size: 20px;
+  color:white;
 }
 .roominfo {
-  display: flex;
+  /* display: flex; */
+  position: absolute;
   margin-left: 15%;
+  margin-right: 15%;
+  text-align:initial;
+  
+  
 }
 .image-container {
   border-radius: 10px;
@@ -118,8 +133,9 @@ export default {
   position: relative;
   width: 70%;
   /* 패딩 탑으로 직사각형으로 이미지 */
-  padding-top: 40%;
+  padding-top: 20%;
   margin-left: 15%;
+ 
 }
 img {
   object-fit: cover;
@@ -130,10 +146,12 @@ img {
   bottom: 0;
   left: 0;
   right: 0;
+  filter: brightness(40%);
 }
 .abc {
   margin: 0 5rem;
-  height: 24vh;
+  /* height: 24vh; */
 }
+
 
 </style>
