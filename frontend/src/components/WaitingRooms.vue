@@ -1,7 +1,7 @@
 <template>
 
   <div id="waiting">
-    <div class="list_title">추천방 - 추천 방에 참여해요! </div>
+    <div class="list_title">대기방 - 대기중인 방에 참여해요! </div>
     <vue-horizontal-list :items="waiting_games" :options="options" class="abc">
       <template v-slot:default="{ item }">
           <div class="image-container">
@@ -40,7 +40,7 @@
           <!-- </div> -->
 
             <div class="btn">
-                <router-link class="btn_text" :to="{ name: '#' }">
+                <router-link class="btn_text" :to="`/gameroom/${item.id}`">
                   <div class="button button--brightness">입장</div>
                 </router-link>
             </div>
@@ -86,7 +86,7 @@ export default {
         // enable/disable playing slideshow
         play: true,
         // the delay duration between slides in milliseconds
-        speed: 5000,
+        speed: 4000,
         // if setup, the slideshow will be in the loop.
         repeat: true,
       },
