@@ -254,8 +254,8 @@ export default {
 button.learn-more {
   position: absolute;
   width: 8%;
-  top: 72%;
-  left:18%;
+  top: 68vh;
+  left:16%;
   font-weight: 600;
   color: #382b22;
   padding: 0.7em;

@@ -95,7 +95,7 @@ export default {
     axios.get(`${SERVER_URL}/conferences/`)
     .then((res) => {
       this.waiting_games = res.data
-
+      // console.log(this.waiting_games)
       const url_value=_.sampleSize(_.range(500,600),6)
 
       for (var i=0; i<6; i++) {
@@ -136,7 +136,7 @@ export default {
   /* 패딩 탑으로 직사각형으로 이미지 */
   padding-top: 20%;
   margin-left: 15%;
- 
+  box-shadow: 0px 6px 6px rgba(56, 56, 56, 0.753);
 }
 img {
   object-fit: cover;
@@ -148,6 +148,7 @@ img {
   left: 0;
   right: 0;
   filter: brightness(40%);
+  
 }
 .abc {
   margin: 0 5rem;

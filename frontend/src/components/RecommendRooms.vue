@@ -3,10 +3,13 @@
     <div id="recommend">
     <div class="list_title">추천방 - 추천 방에 참여해요! </div>
     <vue-horizontal-list :items="recommend_games" :options="options" class="abc">
+       <!-- v-for="value in $store.state.userData.winRateList" v-bind:key="value.id" -->
+
       <template v-slot:default="{ item }">
         <div>
           <div class="image-container">
 
+            <!-- 이미지 지정 -->
             <!-- <img :src="image_url[item.gameId-1]" /> -->
             <div v-if="item.gameName === 'game1'">
               <img :src="image_url[0]" />
@@ -26,6 +29,7 @@
             <div v-else>
               <img :src="image_url[5]" />
             </div> 
+            <!-- 이미지 끝 -->
 
 
             <div class="roominfo">
@@ -95,7 +99,16 @@ export default {
     created(){
     axios.get(`${SERVER_URL}/conferences/`)
     .then((res) => {
-      this.recommend_games = res.data
+      //전체 방갯수에서 다섯개만 랜덤으로 뽑음
+      const numbers = _.range(0, res.data.length-1);
+      const sampleNums = _.sampleSize(numbers, 5);
+ 
+      for (const key in sampleNums) {
+            this.recommend_games.push(res.data[sampleNums[key]])  
+            // console.log(sampleNums[key])
+        }
+        this.recommend_games.shift(); //맨앞에 빈값 들어와서 하나 제거
+        // console.log(this.recommend_games)
 
       const url_value=_.sampleSize(_.range(500,600),6)
 
@@ -135,7 +148,7 @@ export default {
   /* 패딩 탑으로 직사각형으로 이미지 */
   padding-top: 20%;
   margin-left: 15%;
- 
+  box-shadow: 0px 6px 6px rgba(56, 56, 56, 0.753);
 }
 img {
   object-fit: cover;
@@ -147,6 +160,7 @@ img {
   left: 0;
   right: 0;
   filter: brightness(40%);
+  
 }
 .abc {
   margin: 0 5rem;
