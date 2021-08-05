@@ -92,10 +92,16 @@ export default {
     };
   },
 
-    created(){
+created(){
     axios.get(`${SERVER_URL}/conferences/`)
     .then((res) => {
-      this.recommend_games = res.data
+      const numbers =_.range(0, res.data.length-1);
+      const sampleNums =_.sampleSize(numbers, 5);
+
+      for (const key in sampleNums) {
+            this.recommend_games.push(res.data[sampleNums[key]])
+        }
+        this.recommend_games.shift(); //맨앞에 빈값 들어와서 하나 제거
 
       const url_value=_.sampleSize(_.range(500,600),6)
 
