@@ -64,7 +64,6 @@
 // import axios from 'axios'
 // const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import swal from 'sweetalert';
-
 export default {
   name: 'CreateRoomModal',
   data: function() {
@@ -83,18 +82,20 @@ export default {
       joinSession: function() {
         this.contents.gamecategory = this.$store.state.gamecategory
         
-          this.$store
-            .dispatch("joinSession", this.contents)
+          this.$store.dispatch("createConference", this.contents)
             .then(() => {
-              this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid }});
+              
+              this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid}});
               swal(`즐거운 게임하세요!`);
             })
-          .catch(() => {
-             swal(`잘못된 정보입니다.`);
-          })
+            .catch(() => {
+              
+              swal(`잘못된 정보입니다.`);
+            })
 
       },
-    }
+    },
+    
 
   }
 

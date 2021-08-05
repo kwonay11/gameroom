@@ -173,7 +173,7 @@ public class ConferenceController {
             return ResponseEntity.ok(ConferenceRes.of(401,"fail"));
 
         registerPostReq.setUserid(userId);
-        int result = conferenceService.register(registerPostReq);
+        Long result = conferenceService.register(registerPostReq);
 
         return ResponseEntity.ok(ConferenceRes.of(201,"Success",result));
 
