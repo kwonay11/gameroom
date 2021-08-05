@@ -33,7 +33,8 @@ import springfox.documentation.annotations.ApiIgnore;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-	
+
+
 	@Autowired
 	UserService userService;
 
