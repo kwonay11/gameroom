@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiResponse;
  */
 @Api(value = "인증 API", tags = {"Auth."})
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class AuthController {
 	@Autowired
 	UserService userService;
@@ -36,7 +36,7 @@ public class AuthController {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	//로그인 관련 부분
-	@PostMapping("/login")
+	@PostMapping("/api/login")
 	@ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.") 
     @ApiResponses({
         @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
