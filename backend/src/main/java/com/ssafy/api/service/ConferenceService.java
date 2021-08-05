@@ -18,7 +18,7 @@ public interface ConferenceService {
 
     Optional<Conference> getConferenceById(Long id);
     Optional<List<ConferenceMapping>> getConferenceByActiveTrue();
-    int register(ConferenceRegisterPostReq dto);
+    Long register(ConferenceRegisterPostReq dto);
 }
 
 

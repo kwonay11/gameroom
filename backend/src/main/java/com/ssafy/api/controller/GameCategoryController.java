@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Api(value = "게임 API", tags = {"Games"})
 @RestController
-@RequestMapping("/games")
+@RequestMapping("/api/games")
 public class GameCategoryController {
 
     @Autowired
