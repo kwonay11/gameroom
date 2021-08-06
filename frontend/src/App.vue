@@ -61,11 +61,11 @@ export default {
   height: 100vh;
   background-size:100% 100%;
 }
-@import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap');
 
-p{
-  font-family: 'Gamja Flower', cursive;
-}
+// p{
+//   font-family: 'Gamja Flower', cursive;
+// }
 nav ul {
   text-align: right;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 75%, rgba(255, 255, 255, 0) 100%);

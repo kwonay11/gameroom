@@ -11,19 +11,19 @@
 
             <!-- 이미지 지정 -->
             <!-- <img :src="image_url[item.gameId-1]" /> -->
-            <div v-if="item.gameName === 'game1'">
+            <div v-if="item.gameName === '몸으로 말해요'">
               <img :src="image_url[0]" />
             </div>
-            <div v-else-if="item.gameName === 'game2'">
+            <div v-else-if="item.gameName === '캐치마인드'">
               <img :src="image_url[1]" />
             </div>
-            <div v-else-if="item.gameName === 'game3'">
+            <div v-else-if="item.gameName === '고요속의 외침'">
               <img :src="image_url[2]" />
             </div>
-            <div v-else-if="item.gameName === 'game4'">
+            <div v-else-if="item.gameName === '노래방'">
               <img :src="image_url[3]" />
             </div>
-            <div v-else-if="item.gameName === 'game5'">
+            <div v-else-if="item.gameName === '순간포착'">
               <img :src="image_url[4]" />
             </div>
             <div v-else>
@@ -41,7 +41,7 @@
 
             <!-- 비밀방일 때 열쇠 띄워줌 v-if 처리 해주기 -->
           <!-- <div v-if="item.privateRooms"> -->
-          <img class="key" src="@/assets/key.png" alt="key">
+          <!-- <img class="key" src="@/assets/key.png" alt="key"> -->
           <!-- </div> -->
 
             <div class="btn" id="enter">

@@ -79,8 +79,8 @@ export default {
    created: function () {
       this.mySessionId = this.$route.params.roomid
       this.myUserName = this.$store.state.id
-      console.log(this.mySessionId)
-      console.log(this.myUserName)
+      // console.log(this.mySessionId)
+      // console.log(this.myUserName)
       this.OV = new OpenVidu();
          // --- Init a session ---
          this.session = this.OV.initSession();
