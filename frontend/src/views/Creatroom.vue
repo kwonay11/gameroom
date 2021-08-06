@@ -13,7 +13,9 @@
                 </div>
                 <div class="back">
                   <div class="inner">
+                
                     {{ value.summary }}
+                    <br>
                     <router-link :to="{ name: 'CreateRoomModal' }">
                       <button class="start" @click='category(value.id)'>
                         <span class="circle" aria-hidden="true">
@@ -65,7 +67,7 @@ export default {
       // console.log(this.image_url)
 
       
-      axios.get(`${SERVER_URL}/games/`)
+      axios.get(`${SERVER_URL}/games`)
       .then((res) => {
         this.games = res.data
       })

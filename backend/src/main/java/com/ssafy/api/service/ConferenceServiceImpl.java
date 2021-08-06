@@ -80,11 +80,11 @@ public class ConferenceServiceImpl implements ConferenceService {
                 .build();
         Conference result = conferenceRepository.save(conference);
 
-        UserConference userConference = UserConference.builder()
-                .conference(result)
-                .user(user)
-                .build();
-        userConferenceRepository.save(userConference);
+//        UserConference userConference = UserConference.builder()
+//                .conference(result)
+//                .user(user)
+//                .build();
+//        userConferenceRepository.save(userConference);
 
         ConferenceHistory conferenceHistory =ConferenceHistory.builder()
                 .conference(result)
@@ -94,8 +94,6 @@ public class ConferenceServiceImpl implements ConferenceService {
         conferenceHistoryRepository.save(conferenceHistory);
 
         return result.getId();
-
-
     }
 }
 

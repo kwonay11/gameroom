@@ -2,18 +2,22 @@
   <div>
     <form class="room_box">
       
-      <img class="card__image" src="@/assets/roomcreate.png" alt="roomcreate"/>
+      <img class="card__image" src="@/assets/방 만들기.png" alt="roomcreate"/>
       
       <div class="row_box">
-        <div class="left"></div>
+        <div class="left">
+          <img class="room_img" src="@/assets/방제목.png" alt="방제목">
+        </div>
         <div class="right">
           <input v-model="contents.title" class="card__input " placeholder="방 이름" type="text" />
-        <p v-if="!contents.title" style="color:white">방 이름을 입력해주세요.</p>
+            <p v-if="!contents.title" style="color:white; margin-top:10px;">방 이름을 입력해주세요.</p>
         </div>
       </div>
 
       <div class="row_box row">
-        <div class="left"></div>
+        <div class="left">
+          <img class="room_img1" src="@/assets/방인원.png" alt="인원수">
+        </div>
         <div class="right">
           <select  v-model="contents.maxUser" class="card__input " >
             <option disabled value="">인원수</option>
@@ -23,8 +27,8 @@
             <option >5</option>
             <option >6</option>
           </select>
+          <p v-if="!contents.maxUser" style="color:white" class="mt-2">방 최대 정원을 선택해주세요.</p>
         </div>
-          <p v-if="!contents.maxUser" style="color:white">방 최대 정원을 선택해주세요.</p>
       </div>
 
       <div class="pw_box">
@@ -37,19 +41,21 @@
       </div>
 
       <div v-if="enabled" >
-          <div class="row_box">
+          <div class="row_box" style="margin-bottom:10px">
                 <div class="row_box">
-                  <div class='left'></div>
+                  <div class='left'>
+                    <img class="room_img2" src="@/assets/key1.png" alt="key">
+                  </div>
                   <div class='pw_right'>
                     <v-text-field
                       :disabled="!enabled"
                       type=password
                       v-model='contents.password'
                     ></v-text-field>
+                    <p v-if="!contents.password" style="color:white;" >비밀번호를 입력해주세요.</p>
                   </div>
                 </div>
           </div>
-          <p v-if="!contents.password" style="color:white">비밀번호를 입력해주세요.</p>
       </div>
       <button v-if="contents.title && contents.maxUser" @click="joinSessions()" >
         <span class='btn-animate'>START</span>
@@ -151,6 +157,18 @@ export default {
 }
 .left {
   height: 60px;
+}
+.room_img {
+  max-width: 50%;
+  padding-top: 10px;
+}
+.room_img1 {
+  max-width: 90%;
+  padding-top: 8px;
+}
+.room_img2 {
+  max-width: 71%;
+  padding-top: 4px;
 }
 .right {
   height: 60px;

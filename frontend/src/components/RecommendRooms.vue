@@ -3,33 +3,62 @@
     <div id="recommend">
     <div class="list_title">추천방 - 추천 방에 참여해요! </div>
     <vue-horizontal-list :items="recommend_games" :options="options" class="abc">
+       <!-- v-for="value in $store.state.userData.winRateList" v-bind:key="value.id" -->
+
       <template v-slot:default="{ item }">
         <div>
           <div class="image-container">
-            <img class="card" :src="image_url[item.id-1]" />
-            <div class="content">
-          <div class="roominfo">
-            <p>{{item.nowUser}}/{{item.maxUser}}</p>
-            <p>게임 : {{ item.gameName }}</p>
-            <p>방 : {{ item.title }}</p>
-            <p>방장 : {{ item.ownerNickname }}</p>
+
+            <!-- 이미지 지정 -->
+            <img :src="image_url[item.gameId-1]" />
+            <!-- <div v-if="item.gameName === '몸으로 말해요'">
+              <img :src="image_url[0]" />
+            </div>
+            <div v-else-if="item.gameName === '캐치마인드'">
+              <img :src="image_url[1]" />
+            </div>
+            <div v-else-if="item.gameName === '고요속의 외침'">
+              <img :src="image_url[2]" />
+            </div>
+            <div v-else-if="item.gameName === '노래방'">
+              <img :src="image_url[3]" />
+            </div>
+            <div v-else-if="item.gameName === '순간포착'">
+              <img :src="image_url[4]" />
+            </div>
+            <div v-else>
+              <img :src="image_url[5]" />
+            </div>  -->
+            <!-- 이미지 끝 -->
+
+
+            <div class="roominfo">
+              <p>방 : {{ item.title }}</p>
+              <p>{{item.nowUser}}/{{item.maxUser}}</p>
+              <p>게임 : {{ item.gameName }}</p>
+              <p>방장 : {{ item.ownerNickname }}</p>
+            </div>
+
+            <!-- 비밀방일 때 열쇠 띄워줌 v-if 처리 해주기 -->
+            <!-- 모달로 비번치게 만들기 -->
+          <div v-if="item.privateRoom">
+          <img class="key" src="@/assets/key.png" alt="key">
           </div>
-              <div class="btn">
-                  <router-link class="btn_text" :to="{ name: '#' }">
-                    <div class="button button--brightness">입장</div>
-                  </router-link>
-              </div>
+
+            <div class="btn" id="enter">
+                <router-link class="btn_text" :to="`/gameroom/${item.id}`">
+                  <div class="button button--brightness">입장</div>
+                </router-link>
+            </div>
+
             </div>
           </div>
 
-
-          
-        </div>
+        <!-- </div> -->
       </template>
     </vue-horizontal-list>
     </div>
 
-  
 </template>
 
 
@@ -46,6 +75,8 @@ export default {
     },
     data() {
     return {
+      recommend_games: [0],
+      image_url: [],
 
       options: {
         responsive: [
@@ -54,29 +85,34 @@ export default {
           { start: 768, end: 992, size: 3 },
           { size: 4 },
         ],
+      position: {
+          start: 0,
+        },
+      autoplay: {
+        play: true,
+        speed: 5000,
+        repeat: true,
       },
-        recommend_games: [],
-        image_url: [],
+      },
     };
   },
 
-    created(){
-    axios.get(`${SERVER_URL}/conferences/`)
+created(){
+    axios.get(`${SERVER_URL}/conferences`)
     .then((res) => {
-      this.recommend_games = res.data
-      console.log('dfdfddd')
-      console.log(this.recommend_games)
-      console.log(this.recommend_games)
-      console.log(this.recommend_games[0])
+      const numbers =_.range(0, res.data.length-1);
+      const sampleNums =_.sampleSize(numbers, 5);
 
+      for (const key in sampleNums) {
+            this.recommend_games.push(res.data[sampleNums[key]])
+        }
+        this.recommend_games.shift(); //맨앞에 빈값 들어와서 하나 제거
 
-      const url_value=_.sampleSize(_.range(1000,1100),this.recommend_games.length)
+      const url_value=_.sampleSize(_.range(500,600),6)
 
-      for (var i=0; i<this.recommend_games.length; i++) {
-        this.image_url.push(`https://picsum.photos/id/${url_value[i]}/600/600/`)
+      for (var i=0; i<6; i++) {
+        this.image_url.push(`https://unsplash.it/${url_value[i]}/${url_value[i]}/`)
       }
-      console.log(this.image_url)
-
 
     })
   },
@@ -110,7 +146,7 @@ export default {
   /* 패딩 탑으로 직사각형으로 이미지 */
   padding-top: 20%;
   margin-left: 15%;
- 
+  box-shadow: 0px 6px 6px rgba(56, 56, 56, 0.753);
 }
 img {
   object-fit: cover;
@@ -122,10 +158,18 @@ img {
   left: 0;
   right: 0;
   filter: brightness(40%);
+  
 }
 .abc {
   margin: 0 5rem;
   /* height: 24vh; */
+}
+.key {
+  width:20px;
+  height:20px;
+  top: 10%;
+  left:85%;
+  filter: brightness(100%);
 }
 
 

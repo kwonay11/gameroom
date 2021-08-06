@@ -1,7 +1,7 @@
 <template>
   <div >
     <div class="btn1">
-      <router-link class="btn_text1" :to="{ name: '#' }">
+      <router-link class="btn_text1" :to="`/gameroom/${fast_start.id}`">
         <div class="button1 button--brightness1">빠른시작</div>
       </router-link>
       <router-link class="btn_text1" :to="{ name: 'Creatroom' }" >
@@ -18,15 +18,30 @@
 </template>
 
 <script>
-
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import { authComputed } from "@/store/helpers"
-
+import axios from 'axios'
 
 export default {
     name: "button",
+    data: function() {
+      return {
+        fast_start: [],
+      }
+    },
     computed: {
     ...authComputed
     },
+
+    created(){
+    axios.get(`${SERVER_URL}/conferences`)
+    .then((res) => {
+      this.fast_start = res.data[0]
+    })
+  },
+
+
+
 
 
 }

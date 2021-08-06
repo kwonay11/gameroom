@@ -1,4 +1,4 @@
-.btn{
+.btn {
     margin-left: 5vw;
     width: 397px;
     height: 85px;
@@ -6,89 +6,94 @@
     top: 316px;
     display: grid;
     grid-template-columns: repeat(5, auto);
-    
-  }
-  .button {
+}
+
+.button {
     width: 80px;
     height: 30px;
     cursor: pointer;
     position: relative;
     display: grid;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    
-  }
-  .btn_text {
+}
+
+.btn_text {
     /* 버튼 그냥 봤을 때 */
     margin: auto;
     font-weight: 600;
     position: absolute;
-    background-color:rgba(37, 93, 139, 0.76);
-    top:42%;
-    left:38%;
-    right:38%;
+    background-color: rgba(50, 113, 196, 0.76);
+    top: 72%;
+    left: 10.3vw;
     font-size: 1em;
-    /* text-decoration: none; */
-    
-  }
-  .btn span {
+    text-decoration: none;
+}
+
+.btn span {
     margin: auto;
     font-weight: 600;
     display: block;
     font-size: 1em;
     text-decoration: none;
-    
-  }
-  /*****BUTTON BRIGHTNESS*****/
-  .button--brightness {
+}
+
+
+/*****BUTTON BRIGHTNESS*****/
+
+.button--brightness {
     color: rgb(217, 211, 230);
     background-color: transparent;
     border: 2px solid #d2ece9;
     border-radius: 5px;
     overflow: hidden;
     transition: background-color 0.7s;
-    padding-top:8px;
-  
-  }
-  .button--brightness:before, .button--brightness:after {
+    padding-top: 8px;
+}
+
+.button--brightness:before,
+.button--brightness:after {
     content: "";
     position: absolute;
     width: 60px;
     height: 100%;
     border-radius: 5px;
-    
-  
-    
-  }
-  /* 호버할때 움직이는거 */
-  .button--brightness:before {
+}
+
+
+/* 호버할때 움직이는거 */
+
+.button--brightness:before {
     top: 0;
     left: 0;
     background-color: rgba(255, 255, 255, 0.5);
     transform: translate3d(-150%, 0, 0) skew(-15deg);
-  }
-  .button--brightness:after {
+}
+
+.button--brightness:after {
     top: 0;
     left: 30px;
     width: 30px;
     background-color: #412297;
     transform: translate3d(-100px, 0, 0) skew(-15deg);
-  }
-  .button--brightness:hover {
+}
+
+.button--brightness:hover {
     border: 2px solid #fff;
     background-color: #412297;
     transition: background-color 0.1s, color 0.7s 0.1s, border 0.7s;
-  }
-  .button--brightness:hover:before, .button--brightness:hover:after {
+}
+
+.button--brightness:hover:before,
+.button--brightness:hover:after {
     transform: translate3d(180%, 0, 0);
     opacity: 0.6;
     transition: transform 0.7s;
-    
-  }
-  .list_title {
+}
+
+.list_title {
     text-align: left;
     margin: 0 8vw -0.6vw;
     font-size: 20px;
     font-weight: bold;
-    color:white;
-  
-  }
+    color: white;
+}

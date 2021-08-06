@@ -1,5 +1,6 @@
 <template>
-  <div >
+  <div
+  >
   <MainPageButton />
   <RecommendRooms />
   <WaitingRooms />
