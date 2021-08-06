@@ -51,8 +51,8 @@
           </div>
           <p v-if="!contents.password" style="color:white">비밀번호를 입력해주세요.</p>
       </div>
-      <button v-if="contents.title && contents.maxUser" @click="joinSession()" >
-        <router-link :to="{ name: 'Room' }" class='btn-animate'>START</router-link>
+      <button v-if="contents.title && contents.maxUser" @click="joinSessions()" >
+        <span class='btn-animate'>START</span>
       </button>
 
     </form>
@@ -61,9 +61,10 @@
 
 
 <script>
-// import axios from 'axios'
-// const SERVER_URL = process.env.VUE_APP_SERVER_URL
-import swal from 'sweetalert';
+import axios from 'axios'
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+// import swal from 'sweetalert';
+
 export default {
   name: 'CreateRoomModal',
   data: function() {
@@ -79,26 +80,47 @@ export default {
        }
     },
     methods: {
-      joinSession: function() {
-        this.contents.gamecategory = this.$store.state.gamecategory
-        
-          this.$store.dispatch("createConference", this.contents)
-            .then(() => {
-              
-              this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid}});
-              swal(`즐거운 게임하세요!`);
-            })
-            .catch(() => {
-              
-              swal(`잘못된 정보입니다.`);
-            })
-
+      
+      joinSessions: function() {
+        event.preventDefault()
+          this.contents.gamecategory = this.$store.state.gamecategory
+          axios.defaults.headers.common[
+                    "Authorization"
+          ] = `Bearer ${this.$store.state.accessToken}`;
+          axios.post(`${SERVER_URL}/conferences`, this.contents)
+                  .then((res) => {
+                      console.log('방번호 만들기')
+                      console.log(res.data.roomId)
+                      this.$store.dispatch('createConference', String(res.data.roomId))
+                      this.$router.push({ name: "Room" , params: {roomid: res.data.roomId}});
+                  })
+                  .catch(() => {
+                      
+                  })
+      
       },
+
+  
     },
     
 
   }
+ //   this.$store.dispatch("createConference", this.contents)
+        //     .then((res) => {
+        //       console.log(res)
+        //       swal(`즐거운 게임하세요!`);
+        //       console.log( this.$store.state.conferenceid)
+        //       this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid}});
+              
+        //     })
+        //     .catch(() => {
+        //       reject();
+        //       console.log('error')
+        //       swal(`잘못된 정보입니다.`);
+        //     })
 
+        // })
+      
 </script>
 
 

@@ -48,14 +48,14 @@
 
 <script>
 import axios from 'axios';
-// import { OpenVidu } from 'openvidu-browser';
+// import { OpenVidu } from 'openvidu-browser'; 
 import UserVideo from '@/components/UserVideo';
-import {mapState} from 'vuex';
+import {mapState, mapActions} from 'vuex';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 // const OPENVIDU_SERVER_SECRET = "MY_SECRET";
-// const SERVER_URL = process.env.VUE_APP_SERVER_URL
+
 export default {
    name: 'App',
 
@@ -65,6 +65,9 @@ export default {
 
    data () {
       return {
+         
+         // OpenVidu object
+
          mySessionId: null,
          myUserName: '',
          canJoin: null,
@@ -72,22 +75,35 @@ export default {
    },
    computed:{
       ...mapState([
+         'OV',
          'mainStreamManager',
          'publisher',
          'subscribers',
+         'session',
+         'ovToken',
          
       ])
+      
+      
+   },
+   
+   methods: {
+      ...mapActions(['joinSession','enterSession'])
+   },
+   created: function() {
+      // console.log(this.$store.state.conferenceid)
+      this.joinSession(this.$store.state.conferenceid);
    }
    // created: function () {
    //    this.mySessionId = this.$route.params.roomid
    //    this.myUserName = this.$store.state.id
-   //    console.log(this.mySessionId)
-   //    console.log(this.myUserName)
-   //    this.OV = new OpenVidu();
-   //       // --- Init a session ---
-   //       this.session = this.OV.initSession();
 
-   //       // --- Specify the actions when events take place in the session ---
+      
+   //       // --- Get an OpenVidu object ---
+	// 		this.OV = new OpenVidu();
+
+	// 		// --- Init a session ---
+	// 		this.session = this.OV.initSession();
 
    //       // On every new Stream received...
    //       this.session.on('streamCreated', ({ stream }) => {
@@ -107,29 +123,13 @@ export default {
    //       this.session.on('exception', ({ exception }) => {
    //          console.warn(exception);
    //       });
-   //       axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
-   //       // --- Connect to the session with a valid user token ---
-   //       axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
-   //       .then((res) => {
-   //          console.log(res.status)
-   //          if(res.status == 200) {
-   //             this.canJoin = true;
-   //          }
-   //          else {
-   //             this.canJoin = false;
-   //          }
-   //          if(!this.canJoin)
-   //        return;
-   //      })
-   //      .catch(() => {
-   //             this.$router.push({ name: 'MainPage' })
-   //        this.canJoin = false;
-   //      });
+      
       
    //       // 'getToken' method is simulating what your server-side should do.
    //       // 'token' parameter should be retrieved and returned by your own backend
    //       this.getToken(this.mySessionId).then(token => {
    //          this.session.connect(token, { clientData: this.myUserName })
+   //             console.log(token,'token')
    //             .then(() => {
 
    //                // --- Get your own camera stream with the desired properties ---
@@ -188,7 +188,9 @@ export default {
 
    //    // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessions
    //    createSession (sessionId) {
+         
    //       return new Promise((resolve, reject) => {
+   //          console.log('createsession',sessionId)
    //          axios
    //             .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, JSON.stringify({
    //                customSessionId: sessionId,
@@ -217,6 +219,7 @@ export default {
    //    // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessionsltsession_idgtconnection
    //    createToken (sessionId) {
    //       return new Promise((resolve, reject) => {
+   //          console.log('createtoken',sessionId)
    //          axios
    //             .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`, {}, {
    //                auth: {

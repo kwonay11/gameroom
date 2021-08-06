@@ -38,11 +38,11 @@ export default new Vuex.Store({
 
         // openvidu 
         OV: undefined,
+        ovToken: null,
         session: undefined,
         mainStreamManager: undefined,
         publisher: undefined,
         subscribers: [],
-
 
     },
     mutations: {
@@ -80,22 +80,23 @@ export default new Vuex.Store({
             state.gamecategory = gamecategory_id
         },
         // Openvidu
-        SET_OV: function(state, OV) {
+        SET_OV(state, OV) {
             state.OV = OV;
         },
-        SET_OVTOKEN: function(state, token) {
+        SET_OVTOKEN(state, token) {
             state.ovToken = token;
         },
-        SET_SESSION: function(state, session) {
+        SET_SESSION(state, session) {
+            console.log(session + 'session')
             state.session = session;
         },
-        SET_MAINSTREAMMANAGER: function(state, mainStreamManager) {
+        SET_MAINSTREAMMANAGER(state, mainStreamManager) {
             state.mainStreamManager = mainStreamManager;
         },
-        SET_PUBLISHER: function(state, publisher) {
+        SET_PUBLISHER(state, publisher) {
             state.publisher = publisher;
         },
-        SET_SUBSCRIBERS: function(state, subscribers) {
+        SET_SUBSCRIBERS(state, subscribers) {
             state.subscribers = subscribers;
         },
     },
@@ -144,36 +145,34 @@ export default new Vuex.Store({
                     commit('NEW_PASSWORD', content.changePassword)
                 })
         },
-        createConference: function({state,commit, dispatch }, contents) {
-            return new Promise((resolve, reject) => {
-                axios.defaults.headers.common[
-                    "Authorization"
-                ] = `Bearer ${state.accessToken}`;
-      
-                axios.post(`${SERVER_URL}/conferences`, contents)
-                    .then((res) => {
-                        console.log('방번호 만들기')
-                        // console.log(commit);
-                        console.log(res.data.roomId)
-                        commit('CONFERENCE_ID', res.data.roomId)
-
-                        const contents ={
-                          'conferenceId': res.data.roomId,
-                          'userid': state.id,
-                          'isFull':true,  
-                        }
-                        dispatch('joinSession', contents)
-                        
-                        resolve();
-                        
-                    })
-                    .catch(() => {
-                        reject();
-                    })
-            
-            })   
+        createConference: function({commit }, conferenceid) {
+            commit('CONFERENCE_ID', String(conferenceid))
+            // dispatch('joinSession',conferenceid)
         },
-        checkNumConferences: function({state,dispatch}){
+        // createConference: function({state,commit }, contents, callback) {
+        //     return new Promise((resolve, reject) => {
+        //         axios.defaults.headers.common[
+        //             "Authorization"
+        //         ] = `Bearer ${state.accessToken}`;
+      
+        //         axios.post(`${SERVER_URL}/conferences`, contents,)
+        //             .then((res) => {
+        //                 console.log('방번호 만들기')
+        //                 console.log(res.data.roomId)
+        //                 commit('CONFERENCE_ID', String(res.data.roomId))
+                        
+        //             })
+        //             .then(()=>{
+        //                 console.log(state.conferenceid)
+        //                 callback
+        //             })
+        //             .catch(() => {
+        //                 reject();
+        //             })
+            
+        //     })   
+        // },
+        checkNumConferences: function({state,dispatch}, ){
             console.log('방에 인원수 체크하는곳')
          // --- Connect to the session with a valid user token ---
          axios.get(`${SERVER_URL}/conferences/${state.conferenceId}`)
@@ -193,21 +192,20 @@ export default new Vuex.Store({
           
         });
         },
-        joinSession: function({commit, dispatch},contents){
-            console.log(commit,contents)
-            console.log('세션 만들기')
+        joinSession: function({commit, dispatch},sessionId){
             const OV = new OpenVidu();
 			// --- Init a session ---
 			const session = OV.initSession();
+            
+            console.log(session)
 			// --- Specify the actions when events take place in the session ---
 			// On every new Stream received...
             const subscribers = [];
-            
+            commit('SET_SESSION', session);
             session.on('streamCreated', ({ stream }) => {
 				const subscriber = session.subscribe(stream);
 				subscribers.push(subscriber);
 			});
-            console.log('1')
             // On every Stream destroyed...
 			session.on('streamDestroyed', ({ stream }) => {
 				const index = subscribers.indexOf(stream.streamManager, 0);
@@ -215,77 +213,71 @@ export default new Vuex.Store({
 					subscribers.splice(index, 1);
                 }
             });
-            console.log('2')
             // On every asynchronous exception...
             // 여기서 signal 등록하면됨 
 			session.on('exception', ({ exception }) => {
 				console.warn(exception);
 			});
-			session.on('signal:my-chat', (event) => {
-				console.log(event.data);
-				console.log(event);
-			})
-			session.on('signal:game',(event) =>{
-				console.log('game')
-				console.log(event)
-			})
-            console.log('여기까지')
             // 방에 자리가 있으면 토큰 만들어줌 
-            if(contents.isFull){
-                console.log(contents.conferenceId);
-                dispatch('getToken', contents.conferenceId).then(token => {
-                    session.connect(token, {clientData: contents.userid})
-                    .then(() => {
-                        let publisher = OV.initPublisher(undefined, {
-                            audioSource: undefined, // The source of audio. If undefined default microphone
-                            videoSource: undefined, // The source of video. If undefined default webcam
-                            publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
-                            publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-                            resolution: '640x480',  // The resolution of your video
-                            frameRate: 30,			// The frame rate of your video
-                            insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-                            mirror: true,       	// Whether to mirror your local video or not
-                          });
-                        commit('SET_OV', OV);
-                        commit('SET_MAINSTREAMMANAGER', publisher);
-                        commit('SET_PUBLISHER', publisher);
-                        commit('SET_SESSION', session);
-                        commit('SET_SUBSCRIBERS', subscribers);
-                        commit('SET_OVTOKEN', token);
-                        session.publish(publisher);
-
-                    })  
-                    .catch(error => {
-                        console.log('There was an error connecting to the session:', error.code, error.message);
-                    })          
+            
+            
+            console.log(this.state.conferenceid);
+            dispatch('getToken', sessionId).then(() => {
+                console.log('224',this.state.ovToken)
+                session.connect(this.state.ovToken,{ clientData: this.state.id })
+                .then(() => {
+                    // console.log('하 제발요')
+                    let publisher = OV.initPublisher(undefined, {
+                        audioSource: undefined, // The source of audio. If undefined default microphone
+                        videoSource: undefined, // The source of video. If undefined default webcam
+                        publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
+                        publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
+                        resolution: '640x480',  // The resolution of your video
+                        frameRate: 30,			// The frame rate of your video
+                        insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
+                        mirror: true,       	// Whether to mirror your local video or not
+                        });
+                    
+                    console.log(OV,publisher,session,subscribers)
+                    commit('SET_OV', OV);
+                    commit('SET_MAINSTREAMMANAGER', publisher);
+                    commit('SET_PUBLISHER', publisher);
+                    commit('SET_SESSION', session);
+                    commit('SET_SUBSCRIBERS', subscribers);
+                    
+                    
+                })
+                .catch(error => {
+                    console.log('으아아아아아')
+                    console.log('There was an error connecting to the session:', error.code, error.message);
                 });
-            }
+                session.publish(this.publisher); 
+                
+            });
+            
         },
-        getToken ({ dispatch }, mySessionId) {
-            console.log(mySessionId)
-            return dispatch('createSession', mySessionId).then(sessionId => dispatch('createToken', sessionId));
+        getToken ({ dispatch }) {
+            console.log('getToken');
+            return dispatch('createSession').then(dispatch('createToken'));
         },
-        createSession (sessionId) {
-            console.log(sessionId)
+        createSession () {
+            console.log('createSession');
             return new Promise((resolve, reject) => {
-                console.log(OPENVIDU_SERVER_URL,OPENVIDU_SERVER_SECRET,sessionId);
                 axios.
                     post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, JSON.stringify({
-                        customSessionId : sessionId
+                        customSessionId : this.state.conferenceid
                     }), {
                     auth: {
                         username: 'OPENVIDUAPP',
                         password: OPENVIDU_SERVER_SECRET,
                     },
-                    
                 })
                 .then(response => response.data)
                 .then(data => resolve(data.id))
                 .catch(error => {
                         
                     if (error.response.status === 409) {
-                        resolve(sessionId);
-                        
+                        resolve(this.state.conferenceid);
                     } else {
                         console.warn(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`);
                         if (window.confirm(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`)) {
@@ -296,24 +288,31 @@ export default new Vuex.Store({
                 });
             });
         },
-        createToken (sessionId) {
-            return new Promise((resolve, reject) => {
+        createToken ( {commit} ) {
+            new Promise((resolve, reject) => {
+                console.log('createtoken')
                axios
-                  .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`, {}, {
+                  .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${this.state.conferenceid}/connection`, {}, {
                      auth: {
                         username: 'OPENVIDUAPP',
                         password: OPENVIDU_SERVER_SECRET,
                      },
                   })
                   .then(response => response.data)
-                  .then(data => resolve(data.token))
-                  .catch(error => reject(error.response));
+                  .then(data => resolve(commit('SET_OVTOKEN', data.token)))
+                  .catch(error => reject(error.response));              
             });
-         },
-   
-        gamecategory: function({ commit }, gamecategory_id) {
-            commit('GAMECATEGORY', gamecategory_id)
+            console.log('token = ' + this.state.ovToken);
         },
+        enterSession ( {state} ) {
+            console.log(state.ovToken +'sdadasdasdsad')
+            state.session.connect(state.ovToken, { clientData: state.id })
+            .then(() => {
+                state.session.publish(state.publisher)
+            })
+            
+
+        }
 
     },
     getters: {
