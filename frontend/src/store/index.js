@@ -201,7 +201,7 @@ export default new Vuex.Store({
 			// --- Specify the actions when events take place in the session ---
 			// On every new Stream received...
             const subscribers = [];
-            commit('SET_SESSION', session);
+            // commit('SET_SESSION', session);
             session.on('streamCreated', ({ stream }) => {
 				const subscriber = session.subscribe(stream);
 				subscribers.push(subscriber);
