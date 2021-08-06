@@ -1,6 +1,6 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.request.UserDTO;
+import com.ssafy.api.request.UserUpdateNicknamePutReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.request.UserUpdatePasswordPostReq;
 import com.ssafy.db.entity.User;
@@ -15,23 +15,23 @@ public interface UserService {
 
 	void removeUser(String userId); //user 삭제
 
-	void modifyUser(UserDTO userDTO);
+	void modifyUser(UserUpdateNicknamePutReq userDTO);
 
-	default User dtoToEntity(UserDTO userDTO) {
+	default User dtoToEntity(UserUpdateNicknamePutReq userDTO) {
 		User user = User.builder()
 				.userId(userDTO.getUserId())
-				.nickName(userDTO.getNickName())
+				.nickname(userDTO.getNickname())
 				.exp(userDTO.getExp())
 				.build();
 		return user;
 	}
 
-	default UserDTO EntityToUser(User user) {
+	default UserUpdateNicknamePutReq EntityToUser(User user) {
 
-		UserDTO userDTO = UserDTO.builder()
+		UserUpdateNicknamePutReq userDTO = UserUpdateNicknamePutReq.builder()
 				.userId(user.getUserId())
 				.id(user.getId())
-				.nickName(user.getNickName())
+				.nickname(user.getNickname())
 				.exp(user.getExp())
 				.build();
 

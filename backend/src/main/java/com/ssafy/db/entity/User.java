@@ -4,8 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.*;
+import org.springframework.stereotype.Service;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 유저 모델 정의.
@@ -17,20 +21,41 @@ import javax.persistence.Entity;
 @AllArgsConstructor // @Builder를 사용하기 위한 어노테이션
 @NoArgsConstructor // @Builder를 사용하기 위한 어노테이션
 @ToString
-public class User extends BaseEntity{
-
+public class User extends BaseEntity implements Serializable {
     private String userId; // 로그인용 유저 아이디
-    private String nickName; // 방에서 사용할 닉네임
-    private int exp; // 경험치
+    private String nickname; // 방에서 사용할 닉네임
+    @Builder.Default
+    private int exp = 0; // 경험치
 
     @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //json 표시 안되게 하는 어노테이션
     private String password;
 
-    //닉네임 수정용
-    public void changeNickName(String nickName) {
-        this.nickName =nickName;
-    }
+
+    /* user와 다른Entity 간의 1:N 관계에서
+    * 양방향 관계 맺어주기 OneToMany (mappedBy = 외래키를 가지고 있는 곳이 주인임 ) */
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<WinRate> winRates;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<GameHistory> gameHistories;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserGame> userGames;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserConference> userConferences;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<Conference> conferences;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ConferenceHistory> conferenceHistories;
+
+
+
+
+
 
 
 }

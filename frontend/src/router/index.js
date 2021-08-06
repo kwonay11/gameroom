@@ -4,13 +4,16 @@ import MainPage from '../views/MainPage.vue'
 import Search from '@/views/Search.vue'
 import Login from '@/views/Accounts/Login.vue'
 import Signup from '@/views/Accounts/Signup.vue'
-import MyPage from '@/views/Accounts/Mypage.vue'
+import Mypage from '@/views/Accounts/Mypage.vue'
+import Creatroom from '@/views/Creatroom.vue'
+import CreateRoomModal from '@/components/CreateRoomModal'
+import Room from '@/views/Room'
 
 
 Vue.use(VueRouter)
 
 const routes = [{
-        path: '/main',
+        path: '/',
         name: 'MainPage',
         component: MainPage
     },
@@ -22,18 +25,36 @@ const routes = [{
     {
         path: '/login',
         name: 'Login',
-        component: Login
+        component: Login,
+
     },
     {
         path: '/signup',
         name: 'Signup',
-        component: Signup
+        component: Signup,
     },
     {
         path: '/mypage',
         name: 'Mypage',
-        component: MyPage
+        component: Mypage,
+        params: 'my',
     },
+    {
+        path: '/createroom',
+        name: 'Creatroom',
+        component: Creatroom,
+    },
+    {
+        path: '/gameroom/:roomid',
+        name: 'Room',
+        component: Room,
+    },
+    {
+        path: '/room_info',
+        name: 'CreateRoomModal',
+        component: CreateRoomModal,
+    },
+
 
 ]
 
