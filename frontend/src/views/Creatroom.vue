@@ -13,7 +13,9 @@
                 </div>
                 <div class="back">
                   <div class="inner">
+                
                     {{ value.summary }}
+                    <br>
                     <router-link :to="{ name: 'CreateRoomModal' }">
                       <button class="start" @click='category(value.id)'>
                         <span class="circle" aria-hidden="true">

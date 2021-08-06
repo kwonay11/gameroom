@@ -3,29 +3,33 @@
     <div id="recommend">
     <div class="list_title">추천방 - 추천 방에 참여해요! </div>
     <vue-horizontal-list :items="recommend_games" :options="options" class="abc">
+       <!-- v-for="value in $store.state.userData.winRateList" v-bind:key="value.id" -->
+
       <template v-slot:default="{ item }">
         <div>
           <div class="image-container">
 
+            <!-- 이미지 지정 -->
             <!-- <img :src="image_url[item.gameId-1]" /> -->
-            <div v-if="item.gameName === 'game1'">
+            <div v-if="item.gameName === '몸으로 말해요'">
               <img :src="image_url[0]" />
             </div>
-            <div v-else-if="item.gameName === 'game2'">
+            <div v-else-if="item.gameName === '캐치마인드'">
               <img :src="image_url[1]" />
             </div>
-            <div v-else-if="item.gameName === 'game3'">
+            <div v-else-if="item.gameName === '고요속의 외침'">
               <img :src="image_url[2]" />
             </div>
-            <div v-else-if="item.gameName === 'game4'">
+            <div v-else-if="item.gameName === '노래방'">
               <img :src="image_url[3]" />
             </div>
-            <div v-else-if="item.gameName === 'game5'">
+            <div v-else-if="item.gameName === '순간포착'">
               <img :src="image_url[4]" />
             </div>
             <div v-else>
               <img :src="image_url[5]" />
             </div> 
+            <!-- 이미지 끝 -->
 
 
             <div class="roominfo">
@@ -37,7 +41,7 @@
 
             <!-- 비밀방일 때 열쇠 띄워줌 v-if 처리 해주기 -->
           <!-- <div v-if="item.privateRooms"> -->
-          <img class="key" src="@/assets/key.png" alt="key">
+          <!-- <img class="key" src="@/assets/key.png" alt="key"> -->
           <!-- </div> -->
 
             <div class="btn" id="enter">
@@ -141,7 +145,7 @@ created(){
   /* 패딩 탑으로 직사각형으로 이미지 */
   padding-top: 20%;
   margin-left: 15%;
- 
+  box-shadow: 0px 6px 6px rgba(56, 56, 56, 0.753);
 }
 img {
   object-fit: cover;
@@ -153,6 +157,7 @@ img {
   left: 0;
   right: 0;
   filter: brightness(40%);
+  
 }
 .abc {
   margin: 0 5rem;

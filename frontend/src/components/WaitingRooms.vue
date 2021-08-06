@@ -7,19 +7,19 @@
           <div class="image-container">
 
             <!-- <img :src="image_url[item.gameId-1]" /> -->
-            <div v-if="item.gameName === 'game1'">
+            <div v-if="item.gameName === '몸으로 말해요'">
               <img :src="image_url[0]" />
             </div>
-            <div v-else-if="item.gameName === 'game2'">
+            <div v-else-if="item.gameName === '캐치마인드'">
               <img :src="image_url[1]" />
             </div>
-            <div v-else-if="item.gameName === 'game3'">
+            <div v-else-if="item.gameName === '고요속의 외침'">
               <img :src="image_url[2]" />
             </div>
-            <div v-else-if="item.gameName === 'game4'">
+            <div v-else-if="item.gameName === '노래방'">
               <img :src="image_url[3]" />
             </div>
-            <div v-else-if="item.gameName === 'game5'">
+            <div v-else-if="item.gameName === '순간포착'">
               <img :src="image_url[4]" />
             </div>
             <div v-else>
@@ -36,7 +36,7 @@
 
             <!-- 비밀방일 때 열쇠 띄워줌 v-if 처리 해주기 -->
           <!-- <div v-if="item.privateRooms"> -->
-          <img class="key" src="@/assets/key.png" alt="key">
+          <!-- <img class="key" src="@/assets/key.png" alt="key"> -->
           <!-- </div> -->
 
             <div class="btn">
@@ -95,7 +95,7 @@ export default {
     axios.get(`${SERVER_URL}/conferences/`)
     .then((res) => {
       this.waiting_games = res.data
-
+      // console.log(this.waiting_games)
       const url_value=_.sampleSize(_.range(500,600),6)
 
       for (var i=0; i<6; i++) {
@@ -136,7 +136,7 @@ export default {
   /* 패딩 탑으로 직사각형으로 이미지 */
   padding-top: 20%;
   margin-left: 15%;
- 
+  box-shadow: 0px 6px 6px rgba(56, 56, 56, 0.753);
 }
 img {
   object-fit: cover;
@@ -148,6 +148,7 @@ img {
   left: 0;
   right: 0;
   filter: brightness(40%);
+  
 }
 .abc {
   margin: 0 5rem;
