@@ -1,154 +1,105 @@
 <template>
-  
   <div>
-
-  <p class="head">처음에 시작할 게임을 선택하고 시작하기 버튼을 눌러주세요.<br>
-  게임중에 게임을 변경할 수 있습니다.</p>
-  <div class="cols mt-5">
-      <div class="col" ontouchstart="this.classList.toggle('hover');">
-        <div class="container">
-          <div class="front" style="background-image: url(https://unsplash.it/500/500/)">
-            <div class="inner">
-              <p>몸으로 말해요</p>
+    <p class="head">처음에 시작할 게임을 선택하고 시작하기 버튼을 눌러주세요.<br>
+    게임중에 게임을 변경할 수 있습니다.</p>
+    <div class="cols" >
+        <div v-for="value in games" v-bind:key="value.id" class="col" ontouchstart="this.classList.toggle('hover');">
+          <div class="container" style='flex'>
+                <!-- <div class="front" style="background-image: url(https://unsplash.it/505/505/)"> -->
+                <div class="front" v-bind:style="{ 'background-image': image_url[value.id-1] }">
+                  <div class="inner">
+                    {{ value.name }}
+                  </div>
+                </div>
+                <div class="back">
+                  <div class="inner">
+                
+                    {{ value.summary }}
+                    <br>
+                    <router-link :to="{ name: 'CreateRoomModal' }">
+                      <button class="start" @click='category(value.id)'>
+                        <span class="circle" aria-hidden="true">
+                          <span class="icon arrow"></span>
+                        </span>
+                        <span class="button-text">start</span>
+                      </button>
+                    </router-link>
+                  </div>
+                </div>
             </div>
           </div>
-          <div class="back">
-            <div class="inner">
-              <p>한 사람이 몸으로만 단어설명을 하고 다른 사람들이 맞추는 게임</p>
-               <button class="start">
-                <span class="circle" aria-hidden="true">
-                  <span class="icon arrow"></span>
-                </span>
-                <span class="button-text">start</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col" ontouchstart="this.classList.toggle('hover');">
-        <div class="container">
-          <div class="front" style="background-image:url(https://unsplash.it/510/510/)">
-            <div class="inner">
-              <p>캐치마인드</p>
-            </div>
-          </div>
-          <div class="back">
-            <div class="inner">
-              <p>한 사람이 그림으로 그려 다른 사람들이 맞추는 게임</p>
-              <button class="start">
-                <span class="circle" aria-hidden="true">
-                  <span class="icon arrow"></span>
-                </span>
-                <span class="button-text">start</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col" ontouchstart="this.classList.toggle('hover');">
-        <div class="container">
-          <div class="front" style="background-image: url(https://unsplash.it/502/502/)">
-            <div class="inner">
-              <p>고요속의 외침</p>
-            </div>
-          </div>
-          <div class="back">
-            <div class="inner">
-              <p>음성 없이 제시어를 설명하는 게임</p>
-              <button class="start">
-                <span class="circle" aria-hidden="true">
-                  <span class="icon arrow"></span>
-                </span>
-                <span class="button-text">start</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col" ontouchstart="this.classList.toggle('hover');">
-        <div class="container">
-          <div class="front" style="background-image: url(https://unsplash.it/503/503/)">
-            <div class="inner">
-              <p>노래방</p>
-            </div>
-          </div>
-          <div class="back">
-            <div class="inner">
-              <p>랜선 노래방! <br>다른사람의 노래를 듣고 평가 해보아요!</p>
-              <button class="start">
-                <span class="circle" aria-hidden="true">
-                  <span class="icon arrow"></span>
-                </span>
-                <span class="button-text">start</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col" ontouchstart="this.classList.toggle('hover');">
-        <div class="container">
-          <div class="front" style="background-image: url(https://unsplash.it/504/504/">
-            <div class="inner">
-              <p>순간포착</p>
-            </div>
-          </div>
-          <div class="back">
-            <div class="inner">
-              <p>순식간에 지나가는 사진을 맞춰보아요!</p>
-              <button class="start">
-                <span class="circle" aria-hidden="true">
-                  <span class="icon arrow"></span>
-                </span>
-                <span class="button-text">start</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col" ontouchstart="this.classList.toggle('hover');">
-        <div class="container">
-          <div class="front" style="background-image: url(https://unsplash.it/505/505/)">
-            <div class="inner">
-              <p>글자 맞추기</p>
-
-            </div>
-          </div>
-          <div class="back">
-            <div class="inner">
-              <p>구멍뚫린 단어를 맞춰라!</p>
-              <button class="start">
-                <span class="circle" aria-hidden="true">
-                  <span class="icon arrow"></span>
-                </span>
-                <span class="button-text">start</span>
-              </button>
-            </div>
-          </div>
-        </div>
-     
-      </div>
-     </div>
+    </div>
   </div>
+<!-- </div> -->
 </template>
 
 <script>
+
+import axios from 'axios'
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+import _ from "lodash"
+
 export default {
-    name:"Creatroom"
+    name:"Creatroom",
+    components:{
+      // myModal,
+      // CreateRoomModal,
+    },
+    data(){
+       return{
+         visible2: false,
+        //  방생성을 위한 하드코딩임. 변경 필요 
+        games:[],
+        gamecategory: '',
+        // url_value: [],
+        image_url: [],
+
+       }
+     },
+
+    created(){
+      // this.url_value=_.sampleSize(_.range(500,600),1)
+      const url_value=_.sampleSize(_.range(500,600),6)
+
+      for (var i=0; i<6; i++) {
+        this.image_url.push(`url(https://unsplash.it/${url_value[i]}/${url_value[i]}/)`)
+      }
+      // console.log(this.image_url)
+
+      
+      axios.get(`${SERVER_URL}/games/`)
+      .then((res) => {
+        this.games = res.data
+      })
+
+    },
+     methods: {
+       catchmind: function(){
+        this.visible2 = !this.visible2
+  
+      },
+      category: function(id) {
+        this.$store
+          .dispatch("gamecategory", id)
+      }
+    },
+
+
 
 }
 </script>
 
-<style>
+<style scoped>
 .cols{
-  display: -webkit-box;
-  display: -ms-flexbox;
+  margin-top: 8vh;
   display: flex;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
-          justify-content: center;
+          justify-content: space-around;
 }
+
 
 .col{
   width: calc(25% - 2rem);

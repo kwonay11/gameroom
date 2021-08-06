@@ -3,17 +3,20 @@
     <div v-if="this.$route.name === 'Signup'">
       <div id="signup">
         <navbar />
+        <router-view/>
       </div>
     </div>
-    <!-- <div v-else-if="this.$route.name === 'Search'">
-      <div id="search">
-        <navbar />
+
+    <div v-else-if="this.$route.name === 'Room'">
+      <div id="room">
+        <router-view/>
       </div>
-    </div> -->
+    </div>
 
     <div v-else>
       <div id="app">
         <navbar />
+        <router-view/>
       </div>
     </div>
   </div>
@@ -53,14 +56,16 @@ export default {
   background-size:100% 100%;
 
 }
-#search {
-
+#room {
+  background: url("./assets/sky-5114501_1920.jpg");
+  height: 100vh;
+  background-size:100% 100%;
 }
-@import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap');
 
-p{
-  font-family: 'Gamja Flower', cursive;
-}
+// p{
+//   font-family: 'Gamja Flower', cursive;
+// }
 nav ul {
   text-align: right;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 75%, rgba(255, 255, 255, 0) 100%);
