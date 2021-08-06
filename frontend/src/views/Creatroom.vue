@@ -67,7 +67,7 @@ export default {
       // console.log(this.image_url)
 
       
-      axios.get(`${SERVER_URL}/games/`)
+      axios.get(`${SERVER_URL}/games`)
       .then((res) => {
         this.games = res.data
       })

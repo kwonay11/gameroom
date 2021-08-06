@@ -6,8 +6,8 @@
       <template v-slot:default="{ item }">
           <div class="image-container">
 
-            <!-- <img :src="image_url[item.gameId-1]" /> -->
-            <div v-if="item.gameName === '몸으로 말해요'">
+            <img :src="image_url[item.gameId-1]" />
+            <!-- <div v-if="item.gameName === '몸으로 말해요'">
               <img :src="image_url[0]" />
             </div>
             <div v-else-if="item.gameName === '캐치마인드'">
@@ -24,20 +24,20 @@
             </div>
             <div v-else>
               <img :src="image_url[5]" />
-            </div> 
+            </div>  -->
 
 
             <div class="roominfo">
+              <p>방 : {{ item.title }}</p>
               <p>{{item.nowUser}}/{{item.maxUser}}</p>
               <p>게임 : {{ item.gameName }}</p>
-              <p>방 : {{ item.title }}</p>
               <p>방장 : {{ item.ownerNickname }}</p>
             </div>
 
             <!-- 비밀방일 때 열쇠 띄워줌 v-if 처리 해주기 -->
-          <!-- <div v-if="item.privateRooms"> -->
-          <!-- <img class="key" src="@/assets/key.png" alt="key"> -->
-          <!-- </div> -->
+          <div v-if="item.privateRoom">
+          <img class="key" src="@/assets/key.png" alt="key">
+          </div>
 
             <div class="btn">
                 <router-link class="btn_text" :to="`/gameroom/${item.id}`">
@@ -92,7 +92,7 @@ export default {
   },
 
     created(){
-    axios.get(`${SERVER_URL}/conferences/`)
+    axios.get(`${SERVER_URL}/conferences`)
     .then((res) => {
       this.waiting_games = res.data
       // console.log(this.waiting_games)
