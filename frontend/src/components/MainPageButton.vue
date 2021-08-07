@@ -34,7 +34,7 @@ export default {
     },
 
     created(){
-    axios.get(`${SERVER_URL}/conferences/`)
+    axios.get(`${SERVER_URL}/conferences`)
     .then((res) => {
       this.fast_start = res.data[0]
     })

@@ -79,8 +79,8 @@ export default {
    created: function () {
       this.mySessionId = this.$route.params.roomid
       this.myUserName = this.$store.state.id
-      console.log(this.mySessionId)
-      console.log(this.myUserName)
+      // console.log(this.mySessionId)
+      // console.log(this.myUserName)
       this.OV = new OpenVidu();
          // --- Init a session ---
          this.session = this.OV.initSession();
@@ -107,6 +107,7 @@ export default {
          });
          axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
          // --- Connect to the session with a valid user token ---
+         console.log('room확인')
          axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
          .then((res) => {
             console.log(res.status)
