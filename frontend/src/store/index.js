@@ -25,6 +25,13 @@ export default new Vuex.Store({
         conferenceid: null,
         gamecategory: null,
 
+        // openviudu 
+        OV: undefined,
+        session: undefined,
+        mainStreamManager: undefined,
+        publisher: undefined,
+        subscribers: [],
+
 
     },
     mutations: {
@@ -60,7 +67,18 @@ export default new Vuex.Store({
         },
         GAMECATEGORY: function(state, gamecategory_id) {
             state.gamecategory = gamecategory_id
+        },
+        OPENVIDU: function(state, data) {
+            console.log('72 ' + data.OV)
+            state.OV = data.OV,
+            state.session = data.session,
+            state.mainStreamManager = data.mainStreamManager,
+            state.publisher = data.publisher,
+            state.subscribers = data.subscribers
         }
+        
+
+        
     },
 
     actions: {
@@ -129,6 +147,10 @@ export default new Vuex.Store({
         gamecategory: function({ commit }, gamecategory_id) {
             commit('GAMECATEGORY', gamecategory_id)
         },
+        openvidu: function({ commit}, data){
+            
+            commit('OPENVIDU',data)
+        }
 
     },
     getters: {

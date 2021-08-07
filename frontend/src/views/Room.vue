@@ -31,7 +31,7 @@
                <img class="m-4" style="width:13%" src="@/assets/video-player.png" alt="video">
                </span>
                <span class="buttons">
-               <img class="m-4" style="width:13%" src="@/assets/delete.png" alt="delete">
+               <img class="m-4" style="width:13%" src="@/assets/delete.png" alt="delete" @click="leaveSession">
                </span>
                <span class="buttons">
                <img class="m-4" style="width:13%" src="@/assets/question.png" alt="tutorial">
@@ -53,7 +53,7 @@ import UserVideo from '@/components/UserVideo';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
+const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
@@ -65,11 +65,14 @@ export default {
 
    data () {
       return {
+         
          OV: undefined,
          session: undefined,
          mainStreamManager: undefined,
          publisher: undefined,
          subscribers: [],
+         
+         
 
          mySessionId: null,
          myUserName: '',
@@ -105,6 +108,20 @@ export default {
          this.session.on('exception', ({ exception }) => {
             console.warn(exception);
          });
+         this.session.on('signal:my-chat', (event) => {
+				console.log(event.data);
+				console.log(event);
+			})
+			this.session.on('signal:game',(event) =>{
+				console.log('game')
+				console.log(event)
+			})
+         this.session.on('signal:leave',(event) =>{
+				console.log('leave')
+				console.log(event)
+			})
+
+
          axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
          // --- Connect to the session with a valid user token ---
          console.log('room확인')
@@ -148,13 +165,21 @@ export default {
                   this.publisher = publisher;
 
                   // --- Publish your stream ---
-
+                  
                   this.session.publish(this.publisher);
                })
                .catch(error => {
                   console.log('There was an error connecting to the session:', error.code, error.message);
                });
          });
+         const opnevidu ={
+            "OV" :this.OV,
+            "session":this.session,
+            "mainStreamManager": this.mainStreamManager,
+            "publisher":this.publisher,
+            "subscribers": this.subscribers
+         }
+         this.$store.dispatch('openvidu',opnevidu);
 
          window.addEventListener('beforeunload', this.leaveSession)
       },
@@ -164,6 +189,22 @@ export default {
 
       leaveSession () {
          // --- Leave the session by calling 'disconnect' method over the Session object ---
+         this.session.signal({
+          
+         data: JSON.stringify({
+            "roomId" : this.mySessionId,
+            "JWT": this.$store.state.accessToken
+         }),
+         type: 'leave'
+         })
+         .then(() => {
+				console.log('leave success');
+            this.$router.push({ name: "MainPage" });
+            
+			})
+			.catch(error => {
+				console.log(error);
+			})
          if (this.session) this.session.disconnect();
 
          this.session = undefined;
@@ -171,6 +212,8 @@ export default {
          this.publisher = undefined;
          this.subscribers = [];
          this.OV = undefined;
+
+         
 
          window.removeEventListener('beforeunload', this.leaveSession);
       },
