@@ -1,6 +1,5 @@
 <template>
-  <div
-  >
+  <div>
   <MainPageButton />
   <RecommendRooms />
   <WaitingRooms />
@@ -10,9 +9,9 @@
 <script>
 
 import { authComputed } from "@/store/helpers"
-import WaitingRooms from "@/components/WaitingRooms"
-import RecommendRooms from "@/components/RecommendRooms"
-import MainPageButton from "@/components/MainPageButton"
+import WaitingRooms from "@/components/MainPage/WaitingRooms"
+import RecommendRooms from "@/components/MainPage/RecommendRooms"
+import MainPageButton from "@/components/MainPage/MainPageButton"
 
 export default {
     name: "MainPage",

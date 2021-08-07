@@ -31,9 +31,12 @@
        </li>
      </ul>
 
-    
-     <router-link  id="a" :to="{ name: 'MainPage' }">
-     <img src="@/assets/logo.png" alt="logo"></router-link>
+
+     <!-- <router-link  id="a" :to="{ name: 'MainPage' }">
+     <img src="@/assets/logo.png" alt="logo">
+     <MainLogo />
+     </router-link> -->
+        
     </nav>
     
   </div>
@@ -45,7 +48,8 @@ import swal from 'sweetalert';
 export default {
   name:'nav',
   computed: {
-    ...authComputed
+    ...authComputed,
+    // MainLogo,
   },  
   methods: {
     logout() {

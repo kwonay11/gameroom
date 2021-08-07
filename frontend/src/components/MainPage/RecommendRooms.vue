@@ -9,28 +9,7 @@
         <div>
           <div class="image-container">
 
-            <!-- 이미지 지정 -->
             <img :src="image_url[item.gameId-1]" />
-            <!-- <div v-if="item.gameName === '몸으로 말해요'">
-              <img :src="image_url[0]" />
-            </div>
-            <div v-else-if="item.gameName === '캐치마인드'">
-              <img :src="image_url[1]" />
-            </div>
-            <div v-else-if="item.gameName === '고요속의 외침'">
-              <img :src="image_url[2]" />
-            </div>
-            <div v-else-if="item.gameName === '노래방'">
-              <img :src="image_url[3]" />
-            </div>
-            <div v-else-if="item.gameName === '순간포착'">
-              <img :src="image_url[4]" />
-            </div>
-            <div v-else>
-              <img :src="image_url[5]" />
-            </div>  -->
-            <!-- 이미지 끝 -->
-
 
             <div class="roominfo">
               <p>방 : {{ item.title }}</p>
@@ -39,10 +18,8 @@
               <p>방장 : {{ item.ownerNickname }}</p>
             </div>
 
-            <!-- 비밀방일 때 열쇠 띄워줌 v-if 처리 해주기 -->
-            <!-- 모달로 비번치게 만들기 -->
           <div v-if="item.privateRoom">
-          <img class="key" src="@/assets/key.png" alt="key">
+            <img class="key" src="@/assets/key.png" alt="key">
           </div>
 
             <div class="btn" id="enter">
@@ -54,7 +31,6 @@
             </div>
           </div>
 
-        <!-- </div> -->
       </template>
     </vue-horizontal-list>
     </div>
@@ -119,7 +95,7 @@ created(){
 }
 </script>
 <style scoped>
-@import './../common/css/main.css';
+@import './../../common/css/main.css';
 #recommend{
   height: 28vh;
 }

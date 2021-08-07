@@ -3,31 +3,32 @@
     <p class="head">처음에 시작할 게임을 선택하고 시작하기 버튼을 눌러주세요.<br>
     게임중에 게임을 변경할 수 있습니다.</p>
     <div class="cols" >
-        <div v-for="value in games" v-bind:key="value.id" class="col" ontouchstart="this.classList.toggle('hover');">
-          <div class="container" style='flex'>
-                <!-- <div class="front" style="background-image: url(https://unsplash.it/505/505/)"> -->
-                <div class="front" v-bind:style="{ 'background-image': image_url[value.id-1] }">
-                  <div class="inner">
-                    {{ value.name }}
-                  </div>
-                </div>
-                <div class="back">
-                  <div class="inner">
-                
-                    {{ value.summary }}
-                    <br>
-                    <router-link :to="{ name: 'CreateRoomModal' }">
-                      <button class="start" @click='category(value.id)'>
-                        <span class="circle" aria-hidden="true">
-                          <span class="icon arrow"></span>
-                        </span>
-                        <span class="button-text">start</span>
-                      </button>
-                    </router-link>
-                  </div>
-                </div>
+      <div v-for="value in games" v-bind:key="value.id" class="col" ontouchstart="this.classList.toggle('hover');">
+        <div class="container" style='flex'>
+
+          <div class="front" v-bind:style="{ 'background-image': image_url[value.id-1] }">
+            <div class="inner">
+              {{ value.name }}
             </div>
           </div>
+
+          <div class="back">
+            <div class="inner">
+              {{ value.summary }}
+              <br>
+              <router-link :to="{ name: 'CreateRoomModal' }">
+                <button class="start" @click='category(value.id)'>
+                  <span class="circle" aria-hidden="true">
+                    <span class="icon arrow"></span>
+                  </span>
+                  <span class="button-text">start</span>
+                </button>
+              </router-link>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
   </div>
 <!-- </div> -->
@@ -42,30 +43,23 @@ import _ from "lodash"
 export default {
     name:"Creatroom",
     components:{
-      // myModal,
-      // CreateRoomModal,
     },
     data(){
        return{
          visible2: false,
-        //  방생성을 위한 하드코딩임. 변경 필요 
         games:[],
         gamecategory: '',
-        // url_value: [],
         image_url: [],
 
        }
      },
 
     created(){
-      // this.url_value=_.sampleSize(_.range(500,600),1)
       const url_value=_.sampleSize(_.range(500,600),6)
 
       for (var i=0; i<6; i++) {
         this.image_url.push(`url(https://unsplash.it/${url_value[i]}/${url_value[i]}/)`)
       }
-      // console.log(this.image_url)
-
       
       axios.get(`${SERVER_URL}/games`)
       .then((res) => {

@@ -97,12 +97,6 @@ export default {
 
 <style >
 
-/* #signup {
-  background: url("../../assets/desert-5171724_1920.png");
-  height: 100vh;
-  background-size:100% 100%;
-} */
-
 .signup {
   width: 35%;
   height: 58vh;
