@@ -48,9 +48,9 @@
 
 <script>
 import axios from 'axios';
-// import { OpenVidu } from 'openvidu-browser'; 
+import { OpenVidu } from 'openvidu-browser'; 
 import UserVideo from '@/components/UserVideo';
-import {mapState, mapActions} from 'vuex';
+// import {mapState, mapActions} from 'vuex';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":443";
