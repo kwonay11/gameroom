@@ -4,6 +4,7 @@ package com.ssafy.db.entity;
 import lombok.*;
 
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -27,7 +28,7 @@ public class Conference extends BaseEntity implements Serializable {
 
     @CreatedDate
     private LocalDateTime callStartTime; //방 생성시간
-
+    @LastModifiedDate
     private LocalDateTime callEndTime; //방 종료시간
 
     private String title; // 방제목
@@ -38,5 +39,11 @@ public class Conference extends BaseEntity implements Serializable {
 
     private int maxUser; // 최대인원
 
+    public void setCallEndTime(LocalDateTime callEndTime) {
+        this.callEndTime = callEndTime;
+    }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }
