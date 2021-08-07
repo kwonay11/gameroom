@@ -57,13 +57,8 @@
                 </div>
           </div>
       </div>
-<<<<<<< HEAD
       <button v-if="contents.title && contents.maxUser" @click="joinSession">
         <span class='btn-animate' > START</span>
-=======
-      <button v-if="contents.title && contents.maxUser" @click="joinSessions()" >
-        <span class='btn-animate'>START</span>
->>>>>>> e8000651681106a5258c1424d7ca2522101e5c25
       </button>
 
     </form>
