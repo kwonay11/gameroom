@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import com.google.gson.JsonParser;
-import io.openvidu.server.test.TestService;
+
 import org.kurento.client.GenericMediaEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,8 +75,6 @@ public class SessionEventsHandler {
 	@Autowired
 	protected OpenviduBuildInfo openviduBuildConfig;
 
-	@Autowired
-	protected TestService testService;
 
 	protected Map<String, Recording> recordingsToSendClientEvents = new ConcurrentHashMap<>();
 
@@ -407,9 +405,9 @@ public class SessionEventsHandler {
 			HttpEntity<?> httpEntity = new HttpEntity<>(httpHeaders);
 			restTemplate.exchange(uri.toString(), HttpMethod.DELETE, httpEntity, String.class);
 		}
-		if (message.has("type") && message.get("type").getAsString().equals("signal:game")) {
-			testService.controlGame(participant, message, participants, rpcNotificationService);
-		}
+//		if (message.has("type") && message.get("type").getAsString().equals("signal:game")) {
+//			testService.controlGame(participant, message, participants, rpcNotificationService);
+//		}
 
 		String from = null;
 		String type = null;
