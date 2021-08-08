@@ -218,6 +218,7 @@
 			</activation>
 			<modules>
 				<module>openvidu-server</module>
+				<module>openvidu-client</module>
 			</modules>
 		</profile>
 		<profile>
