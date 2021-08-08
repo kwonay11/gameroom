@@ -218,10 +218,6 @@
 			</activation>
 			<modules>
 				<module>openvidu-server</module>
-				<module>openvidu-client</module>
-				<module>openvidu-test-e2e</module>
-				<module>openvidu-test-browsers</module>
-				<module>openvidu-java-client</module>
 			</modules>
 		</profile>
 		<profile>
@@ -282,22 +278,6 @@
 			<dependency>
 				<groupId>io.openvidu</groupId>
 				<artifactId>openvidu-server</artifactId>
-			</dependency>
-			<dependency>
-				<groupId>io.openvidu</groupId>
-				<artifactId>openvidu-client</artifactId>
-			</dependency>
-			<dependency>
-				<groupId>io.openvidu</groupId>
-				<artifactId>openvidu-test-e2e</artifactId>
-			</dependency>
-			<dependency>
-				<groupId>io.openvidu</groupId>
-				<artifactId>openvidu-test-browsers</artifactId>
-			</dependency>
-			<dependency>
-				<groupId>io.openvidu</groupId>
-				<artifactId>openvidu-java-client</artifactId>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
