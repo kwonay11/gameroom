@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios";
-import { OpenVidu } from 'openvidu-browser';
+// import { OpenVidu } from 'openvidu-browser';
 import createPersistedState from 'vuex-persistedstate';
 
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 // axios.defaults.headers.post['Content-Type'] = 'application/json';
-const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
-const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+// const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
+// const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 // axios.defaults.headers.common["Authorization"] = `Bearer ${$store.state.accessToken}`;
 
