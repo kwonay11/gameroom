@@ -32,6 +32,7 @@ export default {
 
 <style scoped>
 .card{
+  padding-top: 0.8%;
   margin-left: 3%;
   margin-right: 3%;
   background-color: #3a394248;

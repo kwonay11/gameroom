@@ -1,13 +1,9 @@
 <template>
   <div>
-    <header>
     <SearchBar @input-search="onInputSearch"/>
-    </header>
-    <section>
-      <div v-if="searchGames.length">
+      <div v-if="searchGames.length" class='card'>
         <GameList :searchGames='searchGames' :inputKeyword='inputKeyword'/>
       </div>
-     </section>
   </div>
 </template>
 
@@ -35,19 +31,15 @@ export default {
       this.inputKeyword = data.keyword
       }}
 
-}
+    }
 
 </script>
 
-<style>
-
-section,
-header {
-  width: 60%;       /* 전체 너비의 80% */
-  margin: 0 auto;   /* 양 옆 margin을 균등하게 배분*/
-  padding: 1rem 0;  /* 위, 아래 padding */
-
+<style scoped>
+.card{
+  height: 35vh;
+  margin-left: 10%;
+  margin-right: 10%;
+  background-color: #3a394248;
 }
-
-
 </style>

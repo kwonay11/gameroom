@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="search-bar" :style="{ margin: GameLength ? '2vh 0 5vh 0' : '18vh 0' }">
+    <div class="search-bar" :style="{ margin: GameLength ? '2vh auto 5vh' : '18vh auto' }">
       <p>방 제목(공백 제거 후 처리) 혹은 방장 닉네임 검색</p>
       <input v-model='search_input' placeholder="search" @keyup.enter='SearchKeyword' type="text" />
     </div>
@@ -44,7 +44,9 @@ export default {
 
 <style >
 .search-bar {
-  transition: margin 0.5s;
+  /* transition: margin 0.5s; */
+  text-align: center;
+  width: 80%;
 
 }
 
