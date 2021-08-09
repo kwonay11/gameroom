@@ -5,7 +5,6 @@
     <div class="cols" >
         <div v-for="value in games" v-bind:key="value.id" class="col" ontouchstart="this.classList.toggle('hover');">
           <div class="container" style='flex'>
-                <!-- <div class="front" style="background-image: url(https://unsplash.it/505/505/)"> -->
                 <div class="front" v-bind:style="{ 'background-image': image_url[value.id-1] }">
                   <div class="inner">
                     {{ value.name }}
@@ -42,31 +41,23 @@ import _ from "lodash"
 export default {
     name:"Creatroom",
     components:{
-      // myModal,
-      // CreateRoomModal,
     },
     data(){
        return{
-         visible2: false,
-        //  방생성을 위한 하드코딩임. 변경 필요 
         games:[],
         gamecategory: '',
-        // url_value: [],
-        image_url: [],
-
+        image_url: []
        }
      },
 
     created(){
-      // this.url_value=_.sampleSize(_.range(500,600),1)
+      //500~600 6개 뽑음
       const url_value=_.sampleSize(_.range(500,600),6)
 
       for (var i=0; i<6; i++) {
         this.image_url.push(`url(https://unsplash.it/${url_value[i]}/${url_value[i]}/)`)
       }
-      // console.log(this.image_url)
 
-      
       axios.get(`${SERVER_URL}/games`)
       .then((res) => {
         this.games = res.data
@@ -74,10 +65,6 @@ export default {
 
     },
      methods: {
-       catchmind: function(){
-        this.visible2 = !this.visible2
-  
-      },
       category: function(id) {
         this.$store
           .dispatch("gamecategory", id)
