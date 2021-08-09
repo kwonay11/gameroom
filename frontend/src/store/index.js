@@ -115,9 +115,7 @@ export default new Vuex.Store({
 
                 axios.post(`${SERVER_URL}/conferences`, contents)
                     .then((res) => {
-                        // console.log('sdsdsdsd')
-                        // console.log(commit);
-                        console.log(res.data.roomId)
+                        // console.log(res.data.roomId)
                         commit('CONFERENCE_ID', res.data.roomId)
                         resolve();
                     })

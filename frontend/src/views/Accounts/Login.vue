@@ -53,10 +53,10 @@ export default {
           this.$emit('login')
           this.$store.dispatch('login', this.credentials)
           this.$router.push({ name: 'MainPage' })
-          swal(`로그인에 성공하였습니다.`);
+          swal("로그인 성공","방구석 게임방을 즐기세요","success");
         })
         .catch(() => {
-          swal(`로그인에 실패하였습니다.`);
+          swal("로그인 실패","정확히 입력해주세요","error");
         })
       }
 

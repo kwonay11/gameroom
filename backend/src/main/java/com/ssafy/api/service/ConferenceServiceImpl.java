@@ -68,7 +68,7 @@ public class ConferenceServiceImpl implements ConferenceService {
     }
 
     @Override
-    public int register(ConferenceRegisterPostReq dto) {
+    public Long register(ConferenceRegisterPostReq dto) {
         User user = userRepository.findByUserId(dto.getUserid()).get();
         GameCategory gameCategory = gameCategoryRepository.findById(dto.getGamecategory()).get();
         Conference conference = Conference.builder()
@@ -80,11 +80,11 @@ public class ConferenceServiceImpl implements ConferenceService {
                 .build();
         Conference result = conferenceRepository.save(conference);
 
-        UserConference userConference = UserConference.builder()
-                .conference(result)
-                .user(user)
-                .build();
-        userConferenceRepository.save(userConference);
+//        UserConference userConference = UserConference.builder()
+//                .conference(result)
+//                .user(user)
+//                .build();
+//        userConferenceRepository.save(userConference);
 
         ConferenceHistory conferenceHistory =ConferenceHistory.builder()
                 .conference(result)
@@ -93,9 +93,7 @@ public class ConferenceServiceImpl implements ConferenceService {
                 .build();
         conferenceHistoryRepository.save(conferenceHistory);
 
-        return result.getMaxUser();
-
-
+        return result.getId();
     }
 }
 

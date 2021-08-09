@@ -2,17 +2,38 @@
 
 > 화상 기반 랜선 게임 플랫폼 
 
+팀장 : `권예빈`
 
+팀원 : `김보민`,` 김윤빈`, `정동원`
 
 ## 📆 프로젝트 개요 
 
 - **진행 기간** : 2021.07.21~ 진행중
-- 목표
+  * Sub PJT1 :  7/12-  7/16
+  * Sub PJT2 : 7/19- 7/30
+  * Sub PJT3 : 8/2 - 8/20
+    * Sprint1 : 8/2 - 8/6
+- **목표**
   - 온라인으로 서로 소통하며 게임을 즐길 수 있는 화상 게임 서비스를 개발합니다. 
   - 온라인 화상으로도 게임의 즐거움을 충분히 느낄 수 있도록 UX/UI를 설계합니다.
+  - 코로나19의 사회적거리두기로 인한 외로움 해소를 목표로 합니다.
 
+* **Sub PJT2 배포링크**
 
+  http://i5c104.p.ssafy.io/
 
+* **기획**
+
+  [노션 링크](https://spangle-dive-0b6.notion.site/e13cee0a62d344ec914af6c46bc48b1e)
+
+  ![image-20210806111442750](README.assets/image-20210806111442750.png)
+
+- **요구사항정의**
+  
+  [노션링크](https://spangle-dive-0b6.notion.site/e782d18cf0704b90b11ee7a7983dd049)
+  
+  ![image-20210806111623795](README.assets/image-20210806111623795.png)
+  
 - **Wireframe**
   
   - [와이어프레임 링크](https://www.figma.com/file/baTkJLA1PJCApXCzz7GJdZ/방구석게임방?node-id=0%3A1) 
@@ -90,8 +111,14 @@
 - 깃 커밋에 들어갈 이슈번호는 '스토리' 이슈 단위로 작성한다.
 - 회의를 통해 기능 추가
   * Sprint를 시작할 때 이슈의 Story point와 담당자를 정한다.
+  
+- Sub PJT2 Jira 소멸차트
 
-![image-20210730101558309](README.assets/image-20210730003324695.png)
+  ![image-20210730101558309](README.assets/image-20210730003324695.png)
+
+* Sub PJT3 -1 Jira 소멸차트
+
+    ![image-20210806110836315](README.assets/image-20210806110836315.png)  
 
 ## 개발 환경
 
