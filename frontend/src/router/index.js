@@ -7,7 +7,7 @@ import Signup from '@/views/Accounts/Signup.vue'
 import Mypage from '@/views/Accounts/Mypage.vue'
 import Creatroom from '@/views/Creatroom.vue'
 import CreateRoomModal from '@/components/CreateRoomModal'
-import Room from '@/views/GameRoom'
+import Room from '@/views/Room'
 
 
 Vue.use(VueRouter)

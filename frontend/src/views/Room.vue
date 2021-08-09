@@ -37,8 +37,15 @@
                <img class="m-4" style="width:13%" src="@/assets/question.png" alt="tutorial">
                </span>
             </div>
-            <div class='player'>
-               채팅
+            <div id='chat-area'>
+               <div v-for="val in chat" v-bind:key="val.id">
+                  {{ val.user }} : {{ val.text}}
+               </div>
+               <!-- <input v-model='chattings' @enter='receiveMessage' placeholder="채팅" type="text" /> -->
+            </div>
+            <div class='chat_input'>
+               <input v-model='chattings' @keyup.enter='sendMessage' placeholder="채팅" type="text" />
+
             </div>
          </div>
       </div>
@@ -74,9 +81,29 @@ export default {
          mySessionId: null,
          myUserName: '',
          canJoin: null,
-      }
+
+         chattings: '',
+         // chatting_user: '',
+         chat: [],
+         chatHeight: "33vh"
+   }
+   },
+   watch: {
+
+      chat() {
+         setTimeout(() => {
+         var chatDiv = document.getElementById("chat-area");
+         chatDiv.scrollTo({
+            // document.body.scrollTop = document.body.scrollHeight;
+            top: chatDiv.scrollHeight - chatDiv.clientHeight,
+            behavior: 'smooth'
+         })
+         }, 50);
+      },
    },
    created: function () {
+
+
       // 방 ID 인거 같고
       this.mySessionId = this.$route.params.roomid
       // 내 닉네임
@@ -160,10 +187,58 @@ export default {
          });
 
          window.addEventListener('beforeunload', this.leaveSession)
+
+
+         this.session.on('signal:my-chat', (event) => {
+            console.log('여기')
+            console.log(event)
+            // this.chatting_user = event.from.data["clientData"]
+            console.log('내가 입력한 내용')
+            console.log(event.data); // Message
+            const content = event.data.slice(1, -1) // Message
+            console.log('입력한 사람')
+            console.log(event.from.data); // Message
+            const chatting_user = event.from.data.slice(15,-2)
+            console.log(chatting_user)
+            
+
+            // this.chat[chatting_user] = content
+            this.chat.push({
+               user : chatting_user,
+               text : content
+            });
+
+            console.log('채팅')
+            console.log(this.chat)
+
+            
+            // console.log('ggg')
+            // console.log(event.from.data); // Connection object of the sender
+            // console.log(event.from.data[clientData]); // Connection object of the sender // Connection object of the sender
+            // console.log(event.type); // The type of message ("my-chat")
+         });
+
+
       },
+
+
+
       methods: {
 
-      
+      sendMessage (){
+            this.session.signal({
+                data: JSON.stringify(this.chattings),
+                type: 'my-chat'
+            })
+            .then(() => {
+                this.chattings = '';
+                console.log('Message success');
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        },
+
 
       leaveSession () {
          // --- Leave the session by calling 'disconnect' method over the Session object ---
@@ -243,7 +318,8 @@ export default {
                .catch(error => reject(error.response));
          });
       },
-   }
+   },
+
 }
 
 </script>
@@ -301,7 +377,20 @@ box-sizing: border-box;
    /* display: flex; */
    align-items: center;
 }
-
+.chat {
+   
+   overflow-y: scroll;
+   border: 3px solid #ffa500;
+   /* display: flex; */
+   align-items: center;
+   height: 34vh;
+}
+.chat_input {
+   border: 3px solid #ffa500;
+   /* display: flex; */
+   align-items: center;
+   height: 8vh;
+}
 #video-container video {
    /* position: relative; */
    float: left;
@@ -357,6 +446,32 @@ video {
    color: #777777;
    font-weight: bold;
    border-bottom-right-radius: 4px;
+}
+
+#chat-area {
+     overflow-y: scroll;
+   border: 3px solid #ffa500;
+   /* display: flex; */
+   align-items: center;
+   height: 34vh;
+  
+}
+#chat-area::-webkit-scrollbar {
+  width: 8px; 
+  height: 8px;
+}
+#chat-area::-webkit-scrollbar-track {
+  background: #37474F;
+}
+#chat-area::-webkit-scrollbar-corner {
+  background: #37474F; 
+}
+#chat-area::-webkit-scrollbar-thumb {
+  background:  #b0a2c8;
+}
+#chat-area::-webkit-scrollbar-button {
+  background-color: #37474F;
+  height: 0;
 }
 
 
