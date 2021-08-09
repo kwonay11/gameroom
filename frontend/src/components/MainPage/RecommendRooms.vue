@@ -1,7 +1,7 @@
 <template>
 
     <div id="recommend">
-    <div class="list_title">추천방 - 추천 방에 참여해요! </div>
+    <div class="list_title mt-1">추천방 - 추천 방에 참여해요! </div>
     <vue-horizontal-list :items="recommend_games" :options="options" class="abc">
        <!-- v-for="value in $store.state.userData.winRateList" v-bind:key="value.id" -->
 
@@ -22,11 +22,17 @@
             <img class="key" src="@/assets/key.png" alt="key">
           </div>
 
-            <div class="btn" id="enter">
+            <div v-if="loggedIn" class="btn" id="enter">
                 <router-link class="btn_text" :to="`/gameroom/${item.id}`">
                   <div class="button button--brightness">입장</div>
                 </router-link>
             </div>
+
+             <div v-if="!loggedIn" class="btn" id="enter">
+                <router-link class="btn_text" :to="{ name: 'Login' }" >
+                    <div class="button button--brightness">입장</div>
+                  </router-link>
+              </div>
 
             </div>
           </div>
@@ -39,6 +45,7 @@
 
 
 <script>
+import { authComputed } from "@/store/helpers"
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import VueHorizontalList from "vue-horizontal-list";
 import axios from 'axios'
@@ -71,6 +78,9 @@ export default {
       },
       },
     };
+  },
+  computed: {
+    ...authComputed,
   },
 
 created(){
