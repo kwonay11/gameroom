@@ -1,9 +1,8 @@
 <template>
 
+  <div v-if="searchGames.length && inputKeyword">
     <div id="gamelist">
-      
-      <div v-if="searchGames.length">
-        <div class="search_result">{{inputKeyword}}의 검색 결과입니다. </div>
+        <div class="search_result">{{ inputKeyword }}의 검색 결과입니다. </div>
         <vue-horizontal-list :items="searchGames" :options="options" class='abc'>
           <template v-slot:default="{ item }">
               <div class="image-container">
@@ -37,11 +36,13 @@
 
           </template>
         </vue-horizontal-list>
+          </div>
       </div>
-    <div v-else>
-      <div class="list_title mt-1">{{inputKeyword}}의 검색 결과가 없습니다. </div>
-    </div>
-  </div>
+    <!-- <div v-else>
+      <div class="search_result">{{inputKeyword}}의 검색 결과가 없습니다. </div>
+      <div>{{inputKeyword}}의 검색 결과가 없습니다. </div>
+    </div> -->
+
 
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="search-bar" :style="{ margin: GameLength ? '2vh auto 5vh' : '18vh auto' }">
+    <div class="search-bar" :style="{ margin: GameLength ? '2vh auto 2vh' : '18vh auto 6vh' }">
       <p>방 제목(공백 제거 후 처리) 혹은 방장 닉네임 검색</p>
       <input v-model='search_input' placeholder="search" @keyup.enter='SearchKeyword' type="text" />
     </div>
