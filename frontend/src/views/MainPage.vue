@@ -1,8 +1,10 @@
 <template>
   <div>
   <MainPageButton />
+  <div class="card">
   <RecommendRooms />
   <WaitingRooms />
+  </div>
   </div>
 </template>
 
@@ -29,5 +31,9 @@ export default {
 </script>
 
 <style scoped>
-
+.card{
+  margin-left: 3%;
+  margin-right: 3%;
+  background-color: #3a394248;
+}
 </style>

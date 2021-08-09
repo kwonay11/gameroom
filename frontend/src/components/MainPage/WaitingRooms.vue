@@ -39,11 +39,17 @@
           <img class="key" src="@/assets/key.png" alt="key">
           </div>
 
-            <div class="btn">
+            <div v-if="loggedIn" class="btn" id="enter">
                 <router-link class="btn_text" :to="`/gameroom/${item.id}`">
                   <div class="button button--brightness">입장</div>
                 </router-link>
             </div>
+
+             <div v-if="!loggedIn" class="btn" id="enter">
+                <router-link class="btn_text" :to="{ name: 'Login' }" >
+                    <div class="button button--brightness">입장</div>
+                  </router-link>
+              </div>
 
             </div>
        
@@ -57,6 +63,7 @@
 
 
 <script>
+import { authComputed } from "@/store/helpers"
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import VueHorizontalList from "vue-horizontal-list";
 import axios from 'axios'
@@ -90,7 +97,9 @@ export default {
       },
     };
   },
-
+   computed: {
+    ...authComputed,
+  },
     created(){
     axios.get(`${SERVER_URL}/conferences`)
     .then((res) => {
