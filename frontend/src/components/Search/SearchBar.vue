@@ -18,7 +18,6 @@ export default {
     return {
       search_input: '',
       GameLength: null,
-
     }
   },
 

@@ -2,15 +2,11 @@
   <div>
     <SearchBar @input-search="onInputSearch"/>
       <div v-if="searchGames.length" class='card'>
-      <!-- <div  class='card'> -->
         <GameList :searchGames='searchGames' :inputKeyword='inputKeyword'/>
       </div>
       <div v-else-if="searchGames_length === 0" >
         <div class="search_result">{{ inputKeyword }}의 검색 결과가 없습니다. </div>
       </div>
-      <!-- <div v-else >
-        
-      </div> -->
   </div>
 </template>
 

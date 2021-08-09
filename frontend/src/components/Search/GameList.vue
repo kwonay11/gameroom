@@ -38,12 +38,6 @@
         </vue-horizontal-list>
           </div>
       </div>
-    <!-- <div v-else>
-      <div class="search_result">{{inputKeyword}}의 검색 결과가 없습니다. </div>
-      <div>{{inputKeyword}}의 검색 결과가 없습니다. </div>
-    </div> -->
-
-
 </template>
 
 
@@ -139,7 +133,6 @@ img {
 
 .abc {
   margin: 0 5rem;
-  /* height: 24vh; */
 }
 
 .key {
