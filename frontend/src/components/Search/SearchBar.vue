@@ -1,40 +1,51 @@
 <template>
   <div>
-    <div class="search-bar" :style="{ margin: GameList ? '0' : '18vh 0' }">
+    <div class="search-bar" :style="{ margin: GameLength ? '2vh 0 5vh 0' : '18vh 0' }">
       <p>방 제목(공백 제거 후 처리) 혹은 방장 닉네임 검색</p>
-      <input  v-model="search_input" placeholder="search" @keyup.enter='search' type="text" />
+      <input v-model='search_input' placeholder="search" @keyup.enter='SearchKeyword' type="text" />
     </div>
   </div>
 </template>
 <script>
 
-// const SERVER_URL = process.env.VUE_APP_SERVER_URL
-// import axios from 'axios'
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+import axios from 'axios'
 
 export default {
+ 
   name: 'SearchBar',
-  // data: function() {
-  //   return {
+  data: function() {
+    return {
+      search_input: '',
+      GameLength: null,
 
-  //   }
-  // },
+    }
+  },
 
-  // methods: {
-  //     search: function( ) {
-  //       console.log(this.search_input)
-  //       axios.get(`${SERVER_URL}/conferences?keyword=${this.search_input}`)
-  //       .then((res) => {
-  //         console.log(res.data)
-  //       })
 
-  //       this.search_input = '';
-  //     }
-  //   }
+  methods: {
+    SearchKeyword() {
+      axios.get(`${SERVER_URL}/conferences?keyword=${this.search_input}`)
+        .then((res) => {
+          const content = {
+            games: res.data,
+            keyword: this.search_input,
+          }
+          this.$emit('input-search', content)
+          this.GameLength = res.data.length
+          this.search_input = ''
+        })
+    }
+  }
+  
 }
 </script>
+
+
 <style >
 .search-bar {
   transition: margin 0.5s;
+
 }
 
 .search-bar > input {
