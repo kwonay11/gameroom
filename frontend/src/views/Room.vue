@@ -77,7 +77,9 @@ export default {
       }
    },
    created: function () {
+      // 방 ID 인거 같고
       this.mySessionId = this.$route.params.roomid
+      // 내 닉네임
       this.myUserName = this.$store.state.id
       // console.log(this.mySessionId)
       // console.log(this.myUserName)
@@ -127,7 +129,8 @@ export default {
       
          // 'getToken' method is simulating what your server-side should do.
          // 'token' parameter should be retrieved and returned by your own backend
-         this.getToken(this.mySessionId).then(token => {
+         this.getToken(this.mySessionId)
+         .then(token => {
             this.session.connect(token, { clientData: this.myUserName })
                .then(() => {
 
@@ -193,7 +196,8 @@ export default {
        */
 
       getToken (mySessionId) {
-         return this.createSession(mySessionId).then(sessionId => this.createToken(sessionId));
+         return this.createSession(mySessionId)
+         .then(sessionId => this.createToken(sessionId));
       },
 
       // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessions

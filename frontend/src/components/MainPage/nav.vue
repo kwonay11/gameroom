@@ -30,12 +30,6 @@
 
        </li>
      </ul>
-
-
-     <!-- <router-link  id="a" :to="{ name: 'MainPage' }">
-     <img src="@/assets/logo.png" alt="logo">
-     <MainLogo />
-     </router-link> -->
         
     </nav>
     
@@ -49,7 +43,6 @@ export default {
   name:'nav',
   computed: {
     ...authComputed,
-    // MainLogo,
   },  
   methods: {
     logout() {
@@ -64,7 +57,6 @@ export default {
 <style lang="scss">
 nav{
   text-align: center;
-  // position: float;
 
 }
 nav ul {

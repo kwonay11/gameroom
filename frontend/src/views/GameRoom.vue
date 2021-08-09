@@ -4,8 +4,15 @@
   </div>
 </template>
 <script>
+import { mapState, mapActions } from 'vuex'
+
 export default {
-  name:'GameRoom'
+  name:'GameRoom',
+
+  computed: {
+    ...mapState('video'),
+    ...mapActions('video')
+  },
   
 }
 </script>
