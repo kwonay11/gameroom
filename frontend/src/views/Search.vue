@@ -1,7 +1,7 @@
 <template>
   <div>
       <div class="search_back pt-4 px-4">
-        <v-autocomplete 
+        <v-autocomplete v-bind="search"
           filled
           solo
         ></v-autocomplete>
@@ -10,15 +10,25 @@
 </template>
 
 <script>
-
-
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+import axios from 'axios'
 
 export default {
      name: "Search",
      data: function () {
        return{
+         search_room : [],
        }
      },
+     created(){
+      axios.get(`${SERVER_URL}/conferences`)
+      .then((res) => {
+        this.search_room = res.data
+
+      })
+
+     }
+    
 
      
 }

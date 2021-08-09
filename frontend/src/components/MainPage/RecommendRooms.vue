@@ -109,9 +109,12 @@ created(){
 #recommend{
   height: 28vh;
 }
- p,h5 {
+ h5 {
   /* padding :2%; */
   font-size: 20px;
+  color:white;
+}
+p{
   color:white;
 }
 .roominfo {
@@ -128,7 +131,7 @@ created(){
   border-radius: 10px;
   overflow: hidden;
   position: relative;
-  width: 70%;
+  width: 75%;
   /* 패딩 탑으로 직사각형으로 이미지 */
   padding-top: 20%;
   margin-left: 15%;
