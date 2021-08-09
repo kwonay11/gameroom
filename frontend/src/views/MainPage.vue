@@ -2,8 +2,8 @@
   <div>
   <MainPageButton />
   <div class="card">
-  <RecommendRooms />
-  <WaitingRooms />
+    <RecommendRooms />
+    <WaitingRooms />
   </div>
   </div>
 </template>

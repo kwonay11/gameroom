@@ -1,50 +1,38 @@
 <template>
   <div>
-      <div class="search_back pt-4 px-4">
-        <v-autocomplete 
-          filled
-          solo
-        ></v-autocomplete>
-      </div>
+    <header>
+    <SearchBar />
+    </header>
+    <section>
+    <GameList />
+     </section>
   </div>
 </template>
 
 <script>
 
-
+import SearchBar from "@/components/Search/SearchBar"
+import GameList from "@/components/Search/GameList"
 
 export default {
-     name: "Search",
-     data: function () {
-       return{
-       }
-     },
-
-     
+  name: 'Search',
+  components: {
+    SearchBar,
+    GameList,
+  }
 }
 </script>
 
 <style>
 
-
-.search_back {
-  width: 80%;
-  height: 90px;
-  background: rgba(19,17,150,0.4000000059604645);
-  position: relative;
-  margin: auto;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content:space-around;
-  padding-top: 10px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
+section,
+header {
+  width: 80%;       /* 전체 너비의 80% */
+  margin: 0 auto;   /* 양 옆 margin을 균등하게 배분*/
+  padding: 1rem 0;  /* 위, 아래 padding */
 }
-.input {
-  width: 95%;
-  height: 85px;
-  background: rgba(253,244,244,1);
-  border-radius: 15px;
+
+section {
+  display: flex;  /* Detail, List를 가로 배치 */
 }
 </style>
