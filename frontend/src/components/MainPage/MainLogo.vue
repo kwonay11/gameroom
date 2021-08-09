@@ -1,14 +1,4 @@
-<template>
-  <!-- <div class='font'>
-    <div class="neon">
-      방구석
-    </div>
-      <div class="flux">
-      게임방
-    </div>
-  </div> -->
-
-  
+<template> 
   <router-link  :to="{ name: 'MainPage' }" style="text-decoration: none">
   <div class='font'>
     <div class="neon">
