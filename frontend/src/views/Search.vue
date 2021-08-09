@@ -17,15 +17,10 @@ export default {
      name: "Search",
      data: function () {
        return{
-         nowpage: 'search',
        }
      },
 
-    created(){
-        const nowpage = this.nowpage
-        this.$store.dispatch('nowpage', nowpage)
-    },
-
+     
 }
 </script>
 
