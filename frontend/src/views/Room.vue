@@ -39,8 +39,8 @@
             </div>
             <div id='chat-area'>
                <div v-for="val in chat" v-bind:key="val.id">
-               <div v-if="val.user === myUserName" class="mychat">
-                  {{ myUserNick }} : {{ val.text }}
+               <div v-if="val.user === myUserNick" class="mychat">
+                  {{ val.text }}
                </div>
               
                <div v-else class="otherchat">
@@ -170,7 +170,7 @@ export default {
          // 'token' parameter should be retrieved and returned by your own backend
          this.getToken(this.mySessionId)
          .then(token => {
-            this.session.connect(token, { clientData: this.myUserName })
+            this.session.connect(token, { clientData: this.myUserNick })
                .then(() => {
 
                   // --- Get your own camera stream with the desired properties ---
