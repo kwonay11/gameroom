@@ -109,7 +109,7 @@ export default {
 }
 </script>
 <style scoped>
-@import './../common/css/main.css';
+@import './../../common/css/main.css';
 #waiting{
   height: 28vh;
 }

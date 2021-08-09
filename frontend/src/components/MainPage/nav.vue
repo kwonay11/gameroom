@@ -30,10 +30,7 @@
 
        </li>
      </ul>
-
-    
-     <router-link  id="a" :to="{ name: 'MainPage' }">
-     <img src="@/assets/logo.png" alt="logo"></router-link>
+        
     </nav>
     
   </div>
@@ -45,7 +42,7 @@ import swal from 'sweetalert';
 export default {
   name:'nav',
   computed: {
-    ...authComputed
+    ...authComputed,
   },  
   methods: {
     logout() {
@@ -60,7 +57,6 @@ export default {
 <style lang="scss">
 nav{
   text-align: center;
-  // position: float;
 
 }
 nav ul {
