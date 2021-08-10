@@ -551,7 +551,7 @@ video {
   outline: none !important;
   resize: none;
   color: white;
-  font-size: 16px;
+  font-size: 20px;
   height: 25px;
   margin: 0;
   padding-right: 10px;

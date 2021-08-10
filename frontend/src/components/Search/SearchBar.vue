@@ -51,7 +51,7 @@ export default {
 </script>
 
 
-<style >
+<style>
 /*  */
 .search-bar {
   /* transition: margin 0.5s; */
@@ -78,7 +78,7 @@ export default {
   padding-bottom: 0.5%;
   margin-right:2.5%;
 }
-input:focus {
+.inner_search:focus {
   outline: none;
   box-shadow: 0px 0px 20px rgb(2, 1, 12);
   }
