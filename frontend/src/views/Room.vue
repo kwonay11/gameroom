@@ -20,31 +20,42 @@
             </div>
          </div>
          <div class="col-md-4">
-            <div class='player'>
+            <div>
                <div class="link">
-               <img style="width:8%" src="@/assets/link.png" alt="link">
+               <img style="width:5%" src="@/assets/link.png" alt="link">
                </div>
                <span class="buttons">
-               <img class="m-4" style="width:13%" src="@/assets/microphone (3).png" alt="mike">
+               <img class="m-4" style="width:11%" src="@/assets/microphone (3).png" alt="mike">
                </span>
                <span class="buttons">
-               <img class="m-4" style="width:13%" src="@/assets/video-player.png" alt="video">
+               <img class="m-4" style="width:11%" src="@/assets/video-player.png" alt="video">
                </span>
                <span class="buttons">
-               <img class="m-4" style="width:13%" src="@/assets/delete.png" alt="delete">
+               <img class="m-4" style="width:11%" src="@/assets/delete.png" alt="delete">
                </span>
                <span class="buttons">
-               <img class="m-4" style="width:13%" src="@/assets/question.png" alt="tutorial">
+               <img class="m-4" style="width:11%" src="@/assets/question.png" alt="tutorial">
                </span>
             </div>
             <div id='chat-area'>
                <div v-for="val in chat" v-bind:key="val.id">
-                  {{ val.user }} : {{ val.text}}
+               <div v-if="val.user === myUserNick" class="mychat">
+                  {{ val.text }}
                </div>
-               <!-- <input v-model='chattings' @enter='receiveMessage' placeholder="채팅" type="text" /> -->
+              
+               <div v-else class="otherchat">
+                  {{ val.user }} : {{ val.text }}
+
+               </div>
+            
+               </div>
+         
             </div>
+       
             <div class='chat_input'>
-               <input v-model='chattings' @keyup.enter='sendMessage' placeholder="채팅" type="text" />
+               <!-- <textarea v-model='chattings' @keyup.enter='sendMessage' placeholder="채팅" type="text" class="message-input"></textarea> -->
+               <input v-model='chattings' @keyup.enter='sendMessage' placeholder="input message.." type="text" class="message_input"/>
+               <button :disabled="!chattings" @click='sendMessage' type="submit" class="message_submit">Send</button>
 
             </div>
          </div>
@@ -80,6 +91,7 @@ export default {
 
          mySessionId: null,
          myUserName: '',
+         myUserNick: '',
          canJoin: null,
 
          chattings: '',
@@ -106,8 +118,8 @@ export default {
 
       // 방 ID 인거 같고
       this.mySessionId = this.$route.params.roomid
-      // 내 닉네임
       this.myUserName = this.$store.state.id
+      this.myUserNick = this.$store.state.userData.nickname
       // console.log(this.mySessionId)
       // console.log(this.myUserName)
       this.OV = new OpenVidu();
@@ -158,7 +170,7 @@ export default {
          // 'token' parameter should be retrieved and returned by your own backend
          this.getToken(this.mySessionId)
          .then(token => {
-            this.session.connect(token, { clientData: this.myUserName })
+            this.session.connect(token, { clientData: this.myUserNick })
                .then(() => {
 
                   // --- Get your own camera stream with the desired properties ---
@@ -188,7 +200,7 @@ export default {
 
          window.addEventListener('beforeunload', this.leaveSession)
 
-
+         // 내가 입력한 채팅
          this.session.on('signal:my-chat', (event) => {
             console.log('여기')
             console.log(event)
@@ -202,20 +214,13 @@ export default {
             console.log(chatting_user)
             
 
-            // this.chat[chatting_user] = content
+            
             this.chat.push({
                user : chatting_user,
                text : content
             });
 
-            console.log('채팅')
-            console.log(this.chat)
-
-            
-            // console.log('ggg')
-            // console.log(event.from.data); // Connection object of the sender
-            // console.log(event.from.data[clientData]); // Connection object of the sender // Connection object of the sender
-            // console.log(event.type); // The type of message ("my-chat")
+      
          });
 
 
@@ -327,6 +332,7 @@ export default {
 <style>
 
 .input_answer {
+   outline: none !important;
   color: #000000;
   height: 86px;
   display: block;
@@ -345,7 +351,7 @@ position: relative;
 background: rgba(20, 17, 151, 0.47);
 border: 1px solid #FFFFFF;
 box-sizing: border-box;
-/* border-radius: 20px; */
+border-radius: 20px;
 }
 
 .link {
@@ -373,23 +379,9 @@ box-sizing: border-box;
 }
 
 .player {
-   border: 3px solid #ffa500;
-   /* display: flex; */
+   border: 3px solid white;
+   border-radius:20px;
    align-items: center;
-}
-.chat {
-   
-   overflow-y: scroll;
-   border: 3px solid #ffa500;
-   /* display: flex; */
-   align-items: center;
-   height: 34vh;
-}
-.chat_input {
-   border: 3px solid #ffa500;
-   /* display: flex; */
-   align-items: center;
-   height: 8vh;
 }
 #video-container video {
    /* position: relative; */
@@ -447,32 +439,144 @@ video {
    font-weight: bold;
    border-bottom-right-radius: 4px;
 }
-
+.chat_input {
+   margin-top: 6px;
+   border: 3px solid rgb(255, 255, 255);
+   border-radius:20px;
+   flex: 0 1 40px;
+   width: 100%;
+   background: rgba(0, 0, 0, 0.3);
+   padding: 20px;
+   position: relative;
+}
 #chat-area {
-     overflow-y: scroll;
-   border: 3px solid #ffa500;
-   /* display: flex; */
+   padding:5px;
+   overflow-y: scroll;
+   border: 3px solid rgb(255, 255, 255);
+   border-radius:20px;
    align-items: center;
    height: 34vh;
-  
+   background: rgba(0, 0, 0, 0.5);
+   color:white;
+ 
 }
 #chat-area::-webkit-scrollbar {
   width: 8px; 
   height: 8px;
+ 
 }
 #chat-area::-webkit-scrollbar-track {
-  background: #37474F;
+   background: #3f3150;
+   border-radius: 20px;
 }
 #chat-area::-webkit-scrollbar-corner {
-  background: #37474F; 
+   background: #3f3150;
+   border-radius: 20px;
+  
 }
 #chat-area::-webkit-scrollbar-thumb {
-  background:  #b0a2c8;
+   background:  #b0a2c8;
+   border-radius: 20px;
 }
 #chat-area::-webkit-scrollbar-button {
-  background-color: #37474F;
-  height: 0;
+  background-color: #dccbe0;
+ border-radius: 20px;
 }
+.mychat{
+   position: relative;
+   float: right;
+   display: block;
+   color: #fff;
+   text-align: right;
+   background: linear-gradient(120deg, #df80bf, #56136b);
+   border-radius: 10px 10px 0 10px;
+   margin-bottom:10px;
+   margin-left:30px;
+   margin-right: 10px;
+   padding:5px;
+   /* 한줄씩 나오는거 */
+   clear: both;
+
+}
+/* 말풍선 */
+.mychat:after{
+   content: '';
+	position: absolute;
+	bottom: 0;
+	left: 97%;
+	width: 0;
+	height: 0;
+	border: 5px solid transparent;
+	border-top-color: #56136b;
+	border-bottom: 0;
+	border-right: 0;
+	margin-left: -2.5px;
+	margin-bottom: -5px;
+}
+
+
+.otherchat{
+   position: relative;
+   float: left;
+   display: block;
+   color: #fff;
+   text-align: left;
+   background: linear-gradient(120deg, #4f2fc2,#24a89d);
+   border-radius: 10px 10px 10px 0px;
+   margin-bottom:10px;
+   margin-left:8px;
+   margin-right: 30px;
+   padding:5px;
+   clear: both;
+
+
+}
+/* 말풍선 */
+.otherchat:after{
+   content: '';
+	position: absolute;
+	bottom: 0;
+	left: 3%;
+	width: 0;
+	height: 0;
+	border: 5px solid transparent;
+	border-top-color: #4f2fc2;
+	border-bottom: 0;
+	border-left: 0;
+	margin-left: -2.5px;
+	margin-bottom: -5px;
+}
+.message_input{
+   background: none;
+  outline: none !important;
+  resize: none;
+  color: white;
+  font-size: 16px;
+  height: 25px;
+  margin: 0;
+  padding-right: 10px;
+  width: 300px;
+}
+.message_submit{
+   position: absolute;
+  z-index: 1;
+  right: 20px;
+  color: #fff;
+  border: none;
+  background: #401d77;
+  font-size: 15px;
+  text-transform: uppercase;
+  line-height: 1;
+  padding: 6px 10px;
+  border-radius: 50px;
+  outline: none !important;
+  transition: background 0.1s ease;
+
+}
+.message_submit:hover {
+  background: #8647eb;
+}
+
 
 
 </style>

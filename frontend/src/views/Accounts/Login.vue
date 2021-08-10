@@ -70,6 +70,7 @@ export default {
 
 
 .login_box {
+  outline: none !important;
   width: 35%;
   height:58vh;
   border-radius: 15px;

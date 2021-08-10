@@ -39,13 +39,13 @@
           <img class="key" src="@/assets/key.png" alt="key">
           </div>
 
-            <div v-if="loggedIn" class="btn" id="enter">
+            <div v-if="loggedIn" class="btn">
                 <router-link class="btn_text" :to="`/gameroom/${item.id}`">
                   <div class="button button--brightness">입장</div>
                 </router-link>
             </div>
 
-             <div v-if="!loggedIn" class="btn" id="enter">
+             <div v-if="!loggedIn" class="btn">
                 <router-link class="btn_text" :to="{ name: 'Login' }" >
                     <div class="button button--brightness">입장</div>
                   </router-link>
@@ -122,9 +122,12 @@ export default {
 #waiting{
   height: 28vh;
 }
- p,h5 {
+ h5 {
   /* padding :2%; */
   font-size: 20px;
+  color:white;
+}
+p{
   color:white;
 }
 .roominfo {
@@ -133,7 +136,7 @@ export default {
   margin-left: 15%;
   margin-right: 15%;
   text-align:initial;
-  top: 0.8vh;
+  top: 1vh;
   
   
 }
@@ -141,7 +144,7 @@ export default {
   border-radius: 10px;
   overflow: hidden;
   position: relative;
-  width: 70%;
+  width: 75%;
   /* 패딩 탑으로 직사각형으로 이미지 */
   padding-top: 20%;
   margin-left: 15%;

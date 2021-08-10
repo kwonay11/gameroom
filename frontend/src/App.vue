@@ -62,7 +62,7 @@ export default {
 
 }
 #room {
-  // background: url("./assets/sky-5114501_1920.jpg");
+  background: url("./assets/sky-5114501_1920.jpg");
   height: 100vh;
   background-size:100% 100%;
 }
