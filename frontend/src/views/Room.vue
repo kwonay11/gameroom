@@ -42,7 +42,7 @@
                <img class="m-4" style="width:11%" src="@/assets/question.png" alt="tutorial">
                </span>
             </div>
-         <Chatting />
+            <Chatting :session="session"/>
          </div>
       </div>
       <!-- </div> -->
@@ -55,8 +55,7 @@ import axios from 'axios';
 // import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '@/components/UserVideo';
 import Chatting from '@/components/GameRoom/Chatting';
-
-import { Video } from '@/mixins/video'
+import { video } from '@/mixins/video'
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
@@ -64,17 +63,31 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 // const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 // const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
-   name: 'App',
+   name: 'Room',
 
    components: {
       UserVideo,
       Chatting,
    },
 
-   watch: {
-   },
+   data () {
+      return {
+         OV: undefined,
+         session: undefined,
+         mainStreamManager: undefined,
+         publisher: undefined,
+         subscribers: [],
+
+         mySessionId: null,
+         myUserName: '',
+         myUserNick: '',
+         canJoin: null,
+
+
+   }},
    
-   mixins: [Video]
+   mixins: [video]
+
 }
 
 </script>
@@ -189,7 +202,4 @@ video {
    font-weight: bold;
    border-bottom-right-radius: 4px;
 }
-
-
-
 </style>

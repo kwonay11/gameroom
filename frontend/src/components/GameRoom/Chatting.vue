@@ -1,35 +1,46 @@
 <template>
   <div>
       <div id='chat-area'>
-               <div v-for="val in chat" v-bind:key="val.id">
-               <div v-if="val.user === $store.state.id" class="mychat">
-                  {{ val.user }} : {{ val.text }}
-               </div>
-              
-               <div v-else class="otherchat">
-                  {{ val.user }} : {{ val.text }}
-               </div>
-            
-               </div>
+         <div v-for="val in chat" v-bind:key="val.id">
+         <div v-if="val.user === myUserNick" class="mychat">
+            {{ val.user }} : {{ val.text }}
+         </div>
          
-            </div>
+         <div v-else class="otherchat">
+            {{ val.user }} : {{ val.text }}
+         </div>
+      
+         </div>
+   
+      </div>
        
-            <div class='chat_input'>
-               <!-- <textarea v-model='chattings' @keyup.enter='sendMessage' placeholder="채팅" type="text" class="message-input"></textarea> -->
-               <input v-model='chattings' @keyup.enter='sendMessage' placeholder="input message.." type="text" class="message-input"/>
-               <button :disabled="!chattings" @click='sendMessage' type="submit" class="message-submit">Send</button>
+      <div class='chat_input'>
+         <!-- <textarea v-model='chattings' @keyup.enter='sendMessage' placeholder="채팅" type="text" class="message-input"></textarea> -->
+         <input v-model='chattings' @keyup.enter='sendMessage' placeholder="input message.." type="text" class="message-input"/>
+         <button :disabled="!chattings" @click='sendMessage' type="submit" class="message-submit">Send</button>
 
-            </div>
+      </div>
 
   </div>
 </template>
 
 <script>
-
-import { Video } from '@/mixins/video'
+// import { video } from '@/mixins/video'
 
 export default {
     name:'Chatting',
+    data() {
+       return {
+         chattings: '',
+         // chatting_user: '',
+         chat: [],
+         chatHeight: "33vh",
+         myUserNick: null,
+       }
+    },
+    props:{
+       session: Object,
+    },
     watch: {
 
       chat() {
@@ -43,8 +54,32 @@ export default {
          }, 50);
       },
    },
-   methods: {
-      sendMessage() {
+   created: function () {
+        this.myUserNick = this.$store.state.userData.nickname
+        this.session.on('signal:my-chat', (event) => {
+            console.log('여기')
+            console.log(event)
+                // this.chatting_user = event.from.data["clientData"]
+            console.log('내가 입력한 내용')
+            console.log(event.data); // Message
+            const content = event.data.slice(1, -1) // Message
+            console.log('입력한 사람')
+            console.log(event.from.data); // Message
+            const chatting_user = event.from.data.slice(15, -2)
+            console.log(chatting_user)
+
+
+
+            this.chat.push({
+                user: chatting_user,
+                text: content
+            });
+
+
+        });
+   },
+       methods: {
+        sendMessage() {
             this.session.signal({
                     data: JSON.stringify(this.chattings),
                     type: 'my-chat'
@@ -57,9 +92,14 @@ export default {
                     console.log(error);
                 })
         },
+<<<<<<< HEAD
 
    },
    mixins: [Video]
+=======
+      },
+   // mixins: [video]
+>>>>>>> d26ec42fe989cccc2333246d506c7bedbe9ba2fb
 
 }
 </script>
@@ -202,5 +242,11 @@ export default {
 .message_submit:hover {
   background: #8647eb;
 }
+<<<<<<< HEAD
+=======
+
+
 
 </style>
+>>>>>>> d26ec42fe989cccc2333246d506c7bedbe9ba2fb
+

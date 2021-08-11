@@ -8,47 +8,13 @@ const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
-export const Video = {
 
-    data() {
-        return {
-            OV: undefined,
-            session: undefined,
-            mainStreamManager: undefined,
-            publisher: undefined,
-            subscribers: [],
-
-            mySessionId: null,
-            myUserName: '',
-            myUserNick: '',
-            canJoin: null,
-
-            chattings: '',
-            // chatting_user: '',
-            chat: [],
-            chatHeight: "33vh"
-        }
-    },
-    watch: {
-
-        chat() {
-            setTimeout(() => {
-                var chatDiv = document.getElementById("chat-area");
-                chatDiv.scrollTo({
-                    // document.body.scrollTop = document.body.scrollHeight;
-                    top: chatDiv.scrollHeight - chatDiv.clientHeight,
-                    behavior: 'smooth'
-                })
-            }, 50);
-        },
-    },
-
+export const video = {
     created: function() {
 
 
         // 방 ID 인거 같고
         this.mySessionId = this.$route.params.roomid
-
         this.myUserName = this.$store.state.id
         this.myUserNick = this.$store.state.userData.nickname
             // console.log(this.mySessionId)
@@ -100,8 +66,6 @@ export const Video = {
         // 'token' parameter should be retrieved and returned by your own backend
         this.getToken(this.mySessionId)
             .then(token => {
-                console.log(token)
-                console.log('토큰')
                 this.session.connect(token, { clientData: this.myUserNick })
                     .then(() => {
 
@@ -132,50 +96,8 @@ export const Video = {
 
         window.addEventListener('beforeunload', this.leaveSession)
 
-        // 내가 입력한 채팅
-        this.session.on('signal:my-chat', (event) => {
-            console.log('여기')
-            console.log(event)
-                // this.chatting_user = event.from.data["clientData"]
-            console.log('내가 입력한 내용')
-            console.log(event.data); // Message
-            const content = event.data.slice(1, -1) // Message
-            console.log('입력한 사람')
-            console.log(event.from.data); // Message
-            const chatting_user = event.from.data.slice(15, -2)
-            console.log(chatting_user)
-
-
-
-            this.chat.push({
-                user: chatting_user,
-                text: content
-            });
-
-
-        });
-
-
     },
-
-
-
     methods: {
-
-        // sendMessage() {
-        //     this.session.signal({
-        //             data: JSON.stringify(this.chattings),
-        //             type: 'my-chat'
-        //         })
-        //         .then(() => {
-        //             this.chattings = '';
-        //             console.log('Message success');
-        //         })
-        //         .catch(error => {
-        //             console.log(error);
-        //         })
-        // },
-
 
         leaveSession() {
             // --- Leave the session by calling 'disconnect' method over the Session object ---
@@ -214,11 +136,10 @@ export const Video = {
 
         // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessions
         createSession(sessionId) {
-            console.log('여기여기여기')
             return new Promise((resolve, reject) => {
                 axios
                     .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, JSON.stringify({
-                        // customSessionId: sessionId,
+                        customSessionId: sessionId,
                     }), {
                         auth: {
                             username: 'OPENVIDUAPP',
@@ -230,9 +151,7 @@ export const Video = {
                     .catch(error => {
                         if (error.response.status === 409) {
                             resolve(sessionId);
-                            console.log('409???')
                         } else {
-                            console.log('여긴뎅')
                             console.warn(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`);
                             if (window.confirm(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`)) {
                                 location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
@@ -245,7 +164,6 @@ export const Video = {
 
         // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessionsltsession_idgtconnection
         createToken(sessionId) {
-            console.log('ffffff')
             return new Promise((resolve, reject) => {
                 axios
                     .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`, {}, {
