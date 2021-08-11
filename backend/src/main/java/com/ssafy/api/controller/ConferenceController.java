@@ -70,7 +70,7 @@ public class ConferenceController {
             if(conferenceMapping.getTitle().replace(" ", "").contains(keyword) || conferenceMapping.getOwner().getNickname().contains(keyword))  // 검색 키워드가 제목 혹은 방장 닉네임에 포함될 경우
                 list2.add(new Object[]{conferenceMapping, conferenceMapping.getMaxUser() - userConferenceService.countByConferenceId(conferenceMapping.getId())});
         }
-        Collections.sort(list2, (o1, o2) -> (long)o1[1] > (long)o2[1] ? 1 : -1);
+        Collections.sort(list2, Comparator.comparingLong(o -> (Long) o[1]));
         List<ConferenceInfoRes> res = new ArrayList<>();
         for(int i = 0; i < list2.size(); i++) {
             if((long)list2.get(i)[1] <= 0)
