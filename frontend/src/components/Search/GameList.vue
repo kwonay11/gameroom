@@ -14,19 +14,21 @@
                   <p>{{item.nowUser}}/{{item.maxUser}}</p>
                   <p>게임 : {{ item.gameName }}</p>
                   <p>방장 : {{ item.ownerNickname }}</p>
+                  
+
                 </div>
 
               <div v-if="item.privateRoom">
                 <img class="key" src="@/assets/key.png" alt="key">
               </div>
 
-                <div v-if="loggedIn" class="btn" id="enter">
-                    <router-link class="btn_text" :to="`/gameroom/${item.id}`">
+                <div v-if="loggedIn" class="btn">
+                    <router-link class="btn_text" :to="{ name: 'RoomPasswordModal',params:{id:item.id} }">
                       <div class="button button--brightness">입장</div>
                     </router-link>
                 </div>
 
-                <div v-if="!loggedIn" class="btn" id="enter">
+                <div v-if="!loggedIn" class="btn" >
                     <router-link class="btn_text" :to="{ name: 'Login' }" >
                         <div class="button button--brightness">입장</div>
                       </router-link>
@@ -78,12 +80,18 @@ export default {
     ...authComputed,
   },
 
-created(){
-      const url_value=_.sampleSize(_.range(500,600),6)
-      for (var i=0; i<6; i++) {
-        this.image_url.push(`https://unsplash.it/${url_value[i]}/${url_value[i]}/`)
-      }
-    }
+  created(){
+        const url_value=_.sampleSize(_.range(500,600),6)
+        for (var i=0; i<6; i++) {
+          this.image_url.push(`https://unsplash.it/${url_value[i]}/${url_value[i]}/`)
+        }
+      },
+  // methods: {
+  //   enter:function(){
+  //     this.$router.push({name: 'RoomPasswordModal', params: {item.id}})
+
+  //   }
+  // }
 }
 </script>
 
