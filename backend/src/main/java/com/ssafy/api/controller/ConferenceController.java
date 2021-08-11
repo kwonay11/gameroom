@@ -1,6 +1,5 @@
 package com.ssafy.api.controller;
-import com.ssafy.api.response.ConferenceInfoRes;
-import com.ssafy.api.response.ConferenceMapping;
+import com.ssafy.api.response.*;
 import com.ssafy.api.service.ConferenceService;
 import com.ssafy.api.service.UserConferenceService;
 import com.ssafy.common.auth.SsafyUserDetails;
@@ -21,8 +20,6 @@ import springfox.documentation.annotations.ApiIgnore;
 import java.util.*;
 
 import com.ssafy.api.request.ConferenceRegisterPostReq;
-import com.ssafy.api.response.ConferenceRes;
-import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.db.entity.User;
 import io.swagger.annotations.ApiParam;
 
@@ -156,7 +153,28 @@ public class ConferenceController {
         conferenceService.exitConference(user, conferenceid);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "true"));
         }
-    
+
+    @GetMapping("/info/{conferenceId}")
+    @ApiOperation(value = "게임 방 정보", notes = "게임 방 정보를 response")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getGameRoomInfo(@PathVariable Long conferenceId) {
+        Optional<Conference> optionalConference = conferenceService.getConferenceById(conferenceId);
+        if(!optionalConference.isPresent() || !optionalConference.get().isActive())  // 방이 존재하지 않거나 is_active가 false일 경우
+            return ResponseEntity.status(200).body(BaseResponseBody.of(404, "false"));
+        Conference conference = optionalConference.get();
+        GameRoomInfoRes res = GameRoomInfoRes.builder()
+                                .title(conference.getTitle())
+                                .gameId(conference.getGameCategory().getId())
+                                .gameName(conference.getGameCategory().getName())
+                                .gameSummary(conference.getGameCategory().getSummary())
+                                .ownerNicknames(conference.getOwner().getNickname())
+                                .maxUser(conference.getMaxUser())
+                                .build();
+        return ResponseEntity.status(200).body(res);
+    }
 
     @PostMapping() 
     @ApiOperation(value = "방 정보생성", notes = "컨퍼런스 방 정보 생성 한다. ")
