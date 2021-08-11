@@ -3,7 +3,7 @@
       <div id='chat-area'>
          <div v-for="val in chat" v-bind:key="val.id">
          <div v-if="val.user === myUserNick" class="mychat">
-            {{ val.user }} : {{ val.text }}
+            {{ val.text }}
          </div>
          
          <div v-else class="otherchat">
@@ -15,9 +15,8 @@
       </div>
        
       <div class='chat_input'>
-         <!-- <textarea v-model='chattings' @keyup.enter='sendMessage' placeholder="채팅" type="text" class="message-input"></textarea> -->
-         <input v-model='chattings' @keyup.enter='sendMessage' placeholder="input message.." type="text" class="message-input"/>
-         <button :disabled="!chattings" @click='sendMessage' type="submit" class="message-submit">Send</button>
+         <input v-model='chattings' @keyup.enter='sendMessage' placeholder="input message.." type="text" class="message_input"/>
+         <button :disabled="!chattings" @click='sendMessage' type="submit" class="message_submit">Send</button>
 
       </div>
 
@@ -25,7 +24,6 @@
 </template>
 
 <script>
-// import { video } from '@/mixins/video'
 
 export default {
     name:'Chatting',
@@ -92,14 +90,7 @@ export default {
                     console.log(error);
                 })
         },
-<<<<<<< HEAD
-
-   },
-   mixins: [Video]
-=======
       },
-   // mixins: [video]
->>>>>>> d26ec42fe989cccc2333246d506c7bedbe9ba2fb
 
 }
 </script>
@@ -242,11 +233,8 @@ export default {
 .message_submit:hover {
   background: #8647eb;
 }
-<<<<<<< HEAD
-=======
 
 
 
 </style>
->>>>>>> d26ec42fe989cccc2333246d506c7bedbe9ba2fb
 
