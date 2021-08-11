@@ -164,9 +164,9 @@ border-radius: 20px;
 
 video {
    
-   margin-top:1.8vh;
+   padding-top:1.8vh;
    /* 맨 아래에 나오는 카메라화면 */
-   width: 55%;
+   width: 49%;
    height: auto;
 
 }

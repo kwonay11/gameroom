@@ -106,12 +106,12 @@ export default {
 <style scoped>
 .button{
   padding-top:3.6vh;
-     /* border: 3px solid rgb(255, 255, 255); */
+  border: 1px solid rgb(255, 255, 255);
    border-radius:20px;
   display:flex;
   flex-direction: column;
   width: 100%;
-  height: 19vh;
+  height: 18vh;
 }
 .link {
   right:-40%;
@@ -119,7 +119,7 @@ export default {
   position: relative;
   padding: 0 2vw;
   width: 90%;
-  margin-bottom: 1.5vh;
+  padding-bottom: 1.5vh;
 }
 .link > img {
   width : 4.5vh;
@@ -127,7 +127,7 @@ export default {
 }
 .control {
   padding: 0 2vw;
-  margin-top:1vh;
+  padding-top:1vh;
   align-items: center;
   display:flex;
   flex-direction: row;
