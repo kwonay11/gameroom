@@ -176,6 +176,7 @@ export default {
 }
 
 .btn-animate {
+  text-decoration: none;
   color: #fff;
   font-size: 14px;
   font-weight: 600;
