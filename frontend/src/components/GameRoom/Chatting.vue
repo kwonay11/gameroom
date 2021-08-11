@@ -112,7 +112,7 @@ export default {
    border: 3px solid rgb(255, 255, 255);
    border-radius:20px;
    align-items: center;
-   height: 34vh;
+   height: 39.5vh;
    background: rgba(0, 0, 0, 0.5);
    color:white;
  

@@ -38,29 +38,13 @@
           <div v-if="item.privateRoom">
           <img class="key" src="@/assets/key.png" alt="key">
           </div>
-            <!-- 로그인 했을 때 -->
+
             <div v-if="loggedIn" class="btn">
-                <div class="button button--brightness" @click="enter">입장</div>
-      
-                <!-- 비밀번호 치는 모달 -->
-                  <app-my-modal v-if="item.privateRoom" :visible.sync="visible">
-                    <div>
-                      <img src="@/assets/방비밀번호.png" alt="img">
-                      <input class="_input" 
-                      v-model="room_password" placeholder="비밀번호 확인" type="password" />
-                      <!-- <div v-if="!room_password" style="color:white">비밀번호를 입력해 주세요.</div>
-                      <div v-else-if="room_password != " style="color:white">비밀번호가 불일치합니다.</div> -->
-                      <router-link class="btn_text" :to="`/gameroom/${item.id}`">
-                    <!-- <button v-if="room_password === " @click="out_save" class="btn-animate">입장</button> -->
-                        <button>입장</button>
-                      </router-link>
-                    </div>
-                  </app-my-modal>
-                
-           
+                <router-link class="btn_text" :to="`/gameroom/${item.id}`">
+                  <div class="button button--brightness">입장</div>
+                </router-link>
             </div>
 
-            <!-- 로그인 안했을 때 -->
              <div v-if="!loggedIn" class="btn">
                 <router-link class="btn_text" :to="{ name: 'Login' }" >
                     <div class="button button--brightness">입장</div>
@@ -84,18 +68,14 @@ const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import VueHorizontalList from "vue-horizontal-list";
 import axios from 'axios'
 import _ from "lodash"
-import myModal from '@/components/myModal'
 
 export default {
   name:'WaitingRooms',
   components: {
-     VueHorizontalList,
-     appMyModal: myModal,
+     VueHorizontalList
     },
     data() {
     return {
-      visible: false,
-      room_password:'',
       waiting_games: [0],
       image_url: [],
 
@@ -133,17 +113,8 @@ export default {
 
 
 
-      })
-    },
-  methods: {
-
-    enter: function(){
-          this.visible = !this.visible
-   
-        },
-  }
-
-  
+    })
+  },
 }
 </script>
 <style scoped>

@@ -105,13 +105,13 @@ export default {
 </script>
 <style scoped>
 .button{
+  padding-top:3.6vh;
      /* border: 3px solid rgb(255, 255, 255); */
    border-radius:20px;
   display:flex;
   flex-direction: column;
   width: 100%;
-  height: 15vh;
-  padding: 0 1vh;
+  height: 19vh;
 }
 .link {
   right:-40%;

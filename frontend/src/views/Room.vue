@@ -82,14 +82,14 @@ export default {
 
 .input_answer {
    outline: none !important;
-  color: #000000;
-  height: 86px;
-  display: block;
-  font-size: 1.2rem;
-  letter-spacing: 0.15rem;
-  padding: 20px;
-  width: 100%;
-  margin-bottom:10px;
+   color:white;
+   height: 83px;
+   display: block;
+   font-size: 1.2rem;
+   letter-spacing: 0.15rem;
+   padding: 3vh;
+   width: 100%;
+ 
 }
 .answer{
 display: inline-block;
@@ -98,9 +98,10 @@ height: 80px;
 /* margin-left: 10vw; */
 position: relative;
 background: rgba(20, 17, 151, 0.47);
-border: 1px solid #FFFFFF;
+border: 3px solid #FFFFFF;
 box-sizing: border-box;
 border-radius: 20px;
+
 }
 
 
@@ -110,7 +111,7 @@ border-radius: 20px;
   /* width: 95vw; */
    /* height: 22vh; */
    /* text-align: justify; */
-  border: 3px solid #ffa500;
+  /* border: 3px solid #ffa500; */
    display: flex;
    flex-direction: row;
    /* align-items: center;
@@ -118,7 +119,9 @@ border-radius: 20px;
 }
 
 .player {
-   border: 3px solid white;
+   /* 젤 크게 나오는 메인스트리머 화면 */
+   /* border: 3px solid white; */
+   padding-top:2vh;
    border-radius:20px;
    align-items: center;
 }
@@ -128,7 +131,7 @@ border-radius: 20px;
    width: 16%;
    margin-left:0.6%;
    border:4px solid;
-   border-color:rgb(255, 230, 0);
+   border-color:rgb(255, 255, 255);
    /* cursor: pointer; */
    /* margin:  2%;  */
    /* margin-left: 5%; */
@@ -144,7 +147,7 @@ border-radius: 20px;
    float: left;
    width: 28%;
    position: relative;
-   margin-left:-28%;
+   margin-left:-28.5%;
    /* display: flex; */
    /* justify-content: space-around; */
 }
@@ -156,13 +159,14 @@ border-radius: 20px;
    padding-right: 5px;
    color: #777777;
    font-weight: bold;
-   border-bottom-right-radius: 4px;
+   border-radius: 8px;
 }
 
 video {
-   margin-top:2.5vh;
+   
+   margin-top:1.8vh;
    /* 맨 아래에 나오는 카메라화면 */
-   width: 45%;
+   width: 55%;
    height: auto;
 
 }
@@ -176,6 +180,6 @@ video {
    font-size: 22px;
    color: #777777;
    font-weight: bold;
-   border-bottom-right-radius: 4px;
+   border-radius: 5px;
 }
 </style>
