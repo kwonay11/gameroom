@@ -1,7 +1,7 @@
 <template>
   <div >
     <div class="btn1">
-      <router-link class="btn_text1" :to="`/gameroom/${fast_start.id}`">
+      <router-link class="btn_text1" :to="`/gameroom/${fast_start}`">
         <div class="button1 button--brightness1">빠른시작</div>
       </router-link>
       <router-link class="btn_text1" :to="{ name: 'Creatroom' }" >
@@ -26,7 +26,9 @@ export default {
     name: "button",
     data: function() {
       return {
-        fast_start: [],
+        fast_start:{
+          'id':0
+        },
       }
     },
     computed: {

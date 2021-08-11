@@ -52,8 +52,8 @@ import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '@/components/UserVideo';
 // import {mapState, mapActions} from 'vuex';
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-
-const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":443";
+axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
+const OPENVIDU_SERVER_URL = "https://localhost:4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {

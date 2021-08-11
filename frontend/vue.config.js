@@ -6,11 +6,18 @@ module.exports = {
     
   },
     devServer: {
+      // proxy:{
+      //   '/openvidu': {
+      //     target: "https://i5c104.p.ssafy.io:4443",
+      //     changeOrigin: true,
+      //     "secure":false
+      //   }
+    
     host: "0.0.0.0",
     hot: true,
     disableHostCheck: true
   },
-  transpileDependencies: [
+  transpileDependencies:[
     'vuetify'
   ],
 }
