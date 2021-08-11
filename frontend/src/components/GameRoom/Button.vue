@@ -106,7 +106,7 @@ export default {
 <style scoped>
 .button{
   padding-top:3.6vh;
-  border: 1px solid rgb(255, 255, 255);
+  /* border: 1px solid rgb(255, 255, 255); */
    border-radius:20px;
   display:flex;
   flex-direction: column;

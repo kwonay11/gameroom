@@ -130,7 +130,7 @@ border-radius: 20px;
    float: left;
    width: 16%;
    margin-left:0.6%;
-   border:4px solid;
+   border:3px solid;
    border-color:rgb(255, 255, 255);
    /* cursor: pointer; */
    /* margin:  2%;  */
@@ -166,7 +166,7 @@ video {
    
    padding-top:1.8vh;
    /* 맨 아래에 나오는 카메라화면 */
-   width: 49%;
+   width: 50%;
    height: auto;
 
 }

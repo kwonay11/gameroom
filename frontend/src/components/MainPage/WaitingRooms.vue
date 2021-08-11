@@ -122,21 +122,16 @@ export default {
 #waiting{
   height: 28vh;
 }
- h5 {
-  /* padding :2%; */
-  font-size: 20px;
-  color:white;
-}
-p{
+ p,h5 {
+  font-size: 0.9vw;
   color:white;
 }
 .roominfo {
   /* display: flex; */
   position: absolute;
-  margin-left: 15%;
-  margin-right: 15%;
+  margin: 2% 15%;
   text-align:initial;
-  top: 1vh;
+  top: 0.8vh;
   
   
 }
