@@ -25,23 +25,7 @@
 
          <!--  버튼 -->
          <div class="col-md-4">
-            <div>
-               <div class="link">
-               <img style="width:5%" src="@/assets/link.png" alt="link">
-               </div>
-               <span class="buttons">
-               <img class="m-4" style="width:11%" src="@/assets/microphone (3).png" alt="mike">
-               </span>
-               <span class="buttons">
-               <img class="m-4" style="width:11%" src="@/assets/video-player.png" alt="video">
-               </span>
-               <span class="buttons">
-               <img class="m-4" style="width:11%" src="@/assets/delete.png" alt="delete">
-               </span>
-               <span class="buttons">
-               <img class="m-4" style="width:11%" src="@/assets/question.png" alt="tutorial">
-               </span>
-            </div>
+            <Button :publisher="publisher"/>
             <Chatting :session="session"/>
          </div>
       </div>
@@ -55,6 +39,7 @@ import axios from 'axios';
 // import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '@/components/UserVideo';
 import Chatting from '@/components/GameRoom/Chatting';
+import Button from '@/components/GameRoom/Button';
 import { video } from '@/mixins/video'
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -68,6 +53,7 @@ export default {
    components: {
       UserVideo,
       Chatting,
+      Button,
    },
 
    data () {
@@ -117,17 +103,7 @@ box-sizing: border-box;
 border-radius: 20px;
 }
 
-.link {
-   right:-40%;
-   cursor: pointer;
-   position: relative;
-   
 
-}
-.buttons{
-  cursor: pointer;
-  position: relative;
-}
 .participation {
   margin: 0 2.2vw;
   padding: 2.5vh;

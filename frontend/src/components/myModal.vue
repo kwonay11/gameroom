@@ -6,7 +6,7 @@
     <div class="my-modal__dialog ">       
       <div class="my-modal__body">
         <button  @click="$emit('update:visible', !visible)">
-          <img class="my-modal__close" src="@/assets/delete.png" alt="닫기">
+          <img class="my-modal__close" src="@/assets/delete.png" alt="닫기" style="padding-bottom:2vh">
         </button>
         
         <slot></slot>
