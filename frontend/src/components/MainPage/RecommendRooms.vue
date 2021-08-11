@@ -1,31 +1,15 @@
 <template>
 
-  <div id="waiting">
-    <div class="list_title">대기방 - 대기중인 방에 참여해요! </div>
-    <vue-horizontal-list :items="waiting_games" :options="options" class="abc">
+    <div id="recommend">
+    <div class="list_title mt-1">추천방 - 추천 방에 참여해요! </div>
+    <vue-horizontal-list :items="recommend_games" :options="options" class="abc">
+       <!-- v-for="value in $store.state.userData.winRateList" v-bind:key="value.id" -->
+
       <template v-slot:default="{ item }">
-          <div class="image-container">
+        <div>
+          <div class="image-container" v-if="item">
 
             <img :src="image_url[item.gameId-1]" />
-            <!-- <div v-if="item.gameName === '몸으로 말해요'">
-              <img :src="image_url[0]" />
-            </div>
-            <div v-else-if="item.gameName === '캐치마인드'">
-              <img :src="image_url[1]" />
-            </div>
-            <div v-else-if="item.gameName === '고요속의 외침'">
-              <img :src="image_url[2]" />
-            </div>
-            <div v-else-if="item.gameName === '노래방'">
-              <img :src="image_url[3]" />
-            </div>
-            <div v-else-if="item.gameName === '순간포착'">
-              <img :src="image_url[4]" />
-            </div>
-            <div v-else>
-              <img :src="image_url[5]" />
-            </div>  -->
-
 
             <div class="roominfo">
               <p>방 : {{ item.title }}</p>
@@ -34,21 +18,25 @@
               <p>방장 : {{ item.ownerNickname }}</p>
             </div>
 
-            <!-- 비밀방일 때 열쇠 띄워줌 v-if 처리 해주기 -->
           <div v-if="item.privateRoom">
-          <img class="key" src="@/assets/key.png" alt="key">
+            <img class="key" src="@/assets/key.png" alt="key">
           </div>
 
-            <div class="btn">
+            <div v-if="loggedIn" class="btn" id="enter">
                 <router-link class="btn_text" :to="`/gameroom/${item.id}`">
                   <div class="button button--brightness">입장</div>
                 </router-link>
             </div>
 
-            </div>
-       
+             <div v-if="!loggedIn" class="btn" id="enter">
+                <router-link class="btn_text" :to="{ name: 'Login' }" >
+                    <div class="button button--brightness">입장</div>
+                  </router-link>
+              </div>
 
-        <!-- </div> -->
+            </div>
+          </div>
+
       </template>
     </vue-horizontal-list>
     </div>
@@ -57,19 +45,20 @@
 
 
 <script>
+import { authComputed } from "@/store/helpers"
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import VueHorizontalList from "vue-horizontal-list";
 import axios from 'axios'
 import _ from "lodash"
 
 export default {
-  name:'WaitingRooms',
+  name:'RecommendRooms',
   components: {
      VueHorizontalList
     },
     data() {
     return {
-      waiting_games: [0],
+      recommend_games: [0],
       image_url: [],
 
       options: {
@@ -84,38 +73,48 @@ export default {
         },
       autoplay: {
         play: true,
-        speed: 4000,
+        speed: 5000,
         repeat: true,
       },
       },
     };
   },
+  computed: {
+    ...authComputed,
+  },
 
-    created(){
+created(){
     axios.get(`${SERVER_URL}/conferences`)
     .then((res) => {
-      this.waiting_games = res.data
-      // console.log(this.waiting_games)
+      const numbers =_.range(0, res.data.length-1);
+      const sampleNums =_.sampleSize(numbers, 5);
+
+      for (const key in sampleNums) {
+            this.recommend_games.push(res.data[sampleNums[key]])
+        }
+        this.recommend_games.shift(); //맨앞에 빈값 들어와서 하나 제거
+
       const url_value=_.sampleSize(_.range(500,600),6)
 
       for (var i=0; i<6; i++) {
         this.image_url.push(`https://unsplash.it/${url_value[i]}/${url_value[i]}/`)
       }
 
-
-
     })
   },
 }
 </script>
 <style scoped>
-@import './../common/css/main.css';
-#waiting{
+@import './../../common/css/main.css';
+#recommend{
   height: 28vh;
 }
- p,h5 {
+ h5 {
   /* padding :2%; */
   font-size: 20px;
+  color:white;
+}
+p{
   color:white;
 }
 .roominfo {
@@ -132,7 +131,7 @@ export default {
   border-radius: 10px;
   overflow: hidden;
   position: relative;
-  width: 70%;
+  width: 75%;
   /* 패딩 탑으로 직사각형으로 이미지 */
   padding-top: 20%;
   margin-left: 15%;

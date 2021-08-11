@@ -1,15 +1,11 @@
 <template>
 
-    <div id="recommend">
-    <div class="list_title">추천방 - 추천 방에 참여해요! </div>
-    <vue-horizontal-list :items="recommend_games" :options="options" class="abc">
-       <!-- v-for="value in $store.state.userData.winRateList" v-bind:key="value.id" -->
-
+  <div id="waiting">
+    <div class="list_title">대기방 - 대기중인 방에 참여해요! </div>
+    <vue-horizontal-list :items="waiting_games" :options="options" class="abc">
       <template v-slot:default="{ item }">
-        <div>
-          <div class="image-container" v-if="item">
+          <div class="image-container">
 
-            <!-- 이미지 지정 -->
             <img :src="image_url[item.gameId-1]" />
             <!-- <div v-if="item.gameName === '몸으로 말해요'">
               <img :src="image_url[0]" />
@@ -29,7 +25,6 @@
             <div v-else>
               <img :src="image_url[5]" />
             </div>  -->
-            <!-- 이미지 끝 -->
 
 
             <div class="roominfo">
@@ -40,19 +35,24 @@
             </div>
 
             <!-- 비밀방일 때 열쇠 띄워줌 v-if 처리 해주기 -->
-            <!-- 모달로 비번치게 만들기 -->
           <div v-if="item.privateRoom">
           <img class="key" src="@/assets/key.png" alt="key">
           </div>
 
-            <div class="btn" id="enter">
+            <div v-if="loggedIn" class="btn">
                 <router-link class="btn_text" :to="`/gameroom/${item.id}`">
                   <div class="button button--brightness">입장</div>
                 </router-link>
             </div>
 
+             <div v-if="!loggedIn" class="btn">
+                <router-link class="btn_text" :to="{ name: 'Login' }" >
+                    <div class="button button--brightness">입장</div>
+                  </router-link>
+              </div>
+
             </div>
-          </div>
+       
 
         <!-- </div> -->
       </template>
@@ -63,19 +63,20 @@
 
 
 <script>
+import { authComputed } from "@/store/helpers"
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import VueHorizontalList from "vue-horizontal-list";
 import axios from 'axios'
 import _ from "lodash"
 
 export default {
-  name:'RecommendRooms',
+  name:'WaitingRooms',
   components: {
      VueHorizontalList
     },
     data() {
     return {
-      recommend_games: [0],
+      waiting_games: [0],
       image_url: [],
 
       options: {
@@ -90,42 +91,43 @@ export default {
         },
       autoplay: {
         play: true,
-        speed: 5000,
+        speed: 4000,
         repeat: true,
       },
       },
     };
   },
-
-created(){
+   computed: {
+    ...authComputed,
+  },
+    created(){
     axios.get(`${SERVER_URL}/conferences`)
     .then((res) => {
-      const numbers =_.range(0, res.data.length-1);
-      const sampleNums =_.sampleSize(numbers, 5);
-
-      for (const key in sampleNums) {
-            this.recommend_games.push(res.data[sampleNums[key]])
-        }
-        this.recommend_games.shift(); //맨앞에 빈값 들어와서 하나 제거
-
+      this.waiting_games = res.data
+      // console.log(this.waiting_games)
       const url_value=_.sampleSize(_.range(500,600),6)
 
       for (var i=0; i<6; i++) {
         this.image_url.push(`https://unsplash.it/${url_value[i]}/${url_value[i]}/`)
       }
 
+
+
     })
   },
 }
 </script>
 <style scoped>
-@import './../common/css/main.css';
-#recommend{
+@import './../../common/css/main.css';
+#waiting{
   height: 28vh;
 }
- p,h5 {
+ h5 {
   /* padding :2%; */
   font-size: 20px;
+  color:white;
+}
+p{
   color:white;
 }
 .roominfo {
@@ -134,7 +136,7 @@ created(){
   margin-left: 15%;
   margin-right: 15%;
   text-align:initial;
-  top: 0.8vh;
+  top: 1vh;
   
   
 }
@@ -142,7 +144,7 @@ created(){
   border-radius: 10px;
   overflow: hidden;
   position: relative;
-  width: 70%;
+  width: 75%;
   /* 패딩 탑으로 직사각형으로 이미지 */
   padding-top: 20%;
   margin-left: 15%;

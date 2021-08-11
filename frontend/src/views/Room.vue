@@ -1,6 +1,7 @@
 <template>
 
    <div  v-if="session">
+   <!-- <div  > -->
       <div class='participation'>
          <div id="video-container" class="col-lg-12">
          <!-- <div id="video-container" class=""> -->
@@ -11,6 +12,8 @@
          </div>
       </div>
       <div class='row p-4'>
+
+         <!-- 메인 화면 -->
          <div id="main-video" class="col-md-8">
             <div class="player">
                <user-video :stream-manager="mainStreamManager"/>
@@ -19,48 +22,38 @@
                </div>
             </div>
          </div>
+
+         <!--  버튼 -->
          <div class="col-md-4">
-            <div class='player'>
-               <div class="link">
-               <img style="width:8%" src="@/assets/link.png" alt="link">
-               </div>
-               <span class="buttons">
-               <img class="m-4" style="width:13%" src="@/assets/microphone (3).png" alt="mike">
-               </span>
-               <span class="buttons">
-               <img class="m-4" style="width:13%" src="@/assets/video-player.png" alt="video">
-               </span>
-               <span class="buttons">
-               <img class="m-4" style="width:13%" src="@/assets/delete.png" alt="delete" @click="leaveSession">
-               </span>
-               <span class="buttons">
-               <img class="m-4" style="width:13%" src="@/assets/question.png" alt="tutorial">
-               </span>
-            </div>
-            <div class='player'>
-               채팅
-            </div>
+            <Button :publisher="publisher"/>
+            <Chatting :session="session"/>
          </div>
       </div>
+      <!-- </div> -->
    </div>
 
 </template>
 
 <script>
 import axios from 'axios';
-import { OpenVidu } from 'openvidu-browser'; 
+// import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '@/components/UserVideo';
-// import {mapState, mapActions} from 'vuex';
+import Chatting from '@/components/GameRoom/Chatting';
+import Button from '@/components/GameRoom/Button';
+import { video } from '@/mixins/video'
+
 axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.headers.post['Access-Control-Allow-Origin'] = '*';
-const OPENVIDU_SERVER_URL = "https://localhost:4443";
-const OPENVIDU_SERVER_SECRET = "MY_SECRET";
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
+
+// const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
+// const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+// const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
-   name: 'App',
+   name: 'Room',
 
    components: {
       UserVideo,
+      Chatting,
+      Button,
    },
 
    data () {
@@ -76,213 +69,14 @@ export default {
 
          mySessionId: null,
          myUserName: '',
+         myUserNick: '',
          canJoin: null,
-      }
-   },
-   created: function () {
-      this.mySessionId = this.$route.params.roomid
-      this.myUserName = this.$store.state.id
-      // console.log(this.mySessionId)
-      // console.log(this.myUserName)
-      this.OV = new OpenVidu();
-         // --- Init a session ---
-         this.session = this.OV.initSession();
-
-         // --- Specify the actions when events take place in the session ---
-
-         // On every new Stream received...
-         this.session.on('streamCreated', ({ stream }) => {
-            const subscriber = this.session.subscribe(stream);
-            this.subscribers.push(subscriber);
-         });
-
-         // On every Stream destroyed...
-         this.session.on('streamDestroyed', ({ stream }) => {
-            const index = this.subscribers.indexOf(stream.streamManager, 0);
-            if (index >= 0) {
-               this.subscribers.splice(index, 1);
-            }
-         });
-
-         // On every asynchronous exception...
-         this.session.on('exception', ({ exception }) => {
-            console.warn(exception);
-         });
-         this.session.on('signal:my-chat', (event) => {
-				console.log(event.data);
-				console.log(event);
-			})
-			this.session.on('signal:game',(event) =>{
-				console.log('game')
-				console.log(event)
-			})
-         this.session.on('signal:leave',(event) =>{
-				console.log('leave')
-				console.log(event)
-			})
 
 
-         axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
-         // --- Connect to the session with a valid user token ---
-         console.log('room확인')
-         axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
-         .then((res) => {
-            console.log(res.status)
-            if(res.status == 200) {
-               this.canJoin = true;
-            }
-            else {
-               this.canJoin = false;
-            }
-            if(!this.canJoin)
-          return;
-        })
-        .catch(() => {
-               this.$router.push({ name: 'MainPage' })
-          this.canJoin = false;
-        });
-      
-         // 'getToken' method is simulating what your server-side should do.
-         // 'token' parameter should be retrieved and returned by your own backend
-         this.getToken(this.mySessionId).then(token => {
-            this.session.connect(token, { clientData: this.myUserName })
-               .then(() => {
+   }},
+   
+   mixins: [video]
 
-                  // --- Get your own camera stream with the desired properties ---
-
-                  let publisher = this.OV.initPublisher(undefined, {
-                     audioSource: undefined, // The source of audio. If undefined default microphone
-                     videoSource: undefined, // The source of video. If undefined default webcam
-                     publishAudio: true,     // Whether you want to start publishing with your audio unmuted or not
-                     publishVideo: true,     // Whether you want to start publishing with your video enabled or not
-                     resolution: '640x480',  // The resolution of your video
-                     frameRate: 30,         // The frame rate of your video
-                     insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-                     mirror: false          // Whether to mirror your local video or not
-                  });
-
-                  this.mainStreamManager = publisher;
-                  this.publisher = publisher;
-
-                  // --- Publish your stream ---
-                  
-                  this.session.publish(this.publisher);
-               })
-               .catch(error => {
-                  console.log('There was an error connecting to the session:', error.code, error.message);
-               });
-         });
-         const opnevidu ={
-            "OV" :this.OV,
-            "session":this.session,
-            "mainStreamManager": this.mainStreamManager,
-            "publisher":this.publisher,
-            "subscribers": this.subscribers
-         }
-         this.$store.dispatch('openvidu',opnevidu);
-
-         window.addEventListener('beforeunload', this.leaveSession)
-      },
-      methods: {
-
-      
-
-      leaveSession () {
-         // --- Leave the session by calling 'disconnect' method over the Session object ---
-         this.session.signal({
-          
-         data: JSON.stringify({
-            "roomId" : this.mySessionId,
-            "JWT": this.$store.state.accessToken
-         }),
-         type: 'leave'
-         })
-         .then(() => {
-				console.log('leave success');
-            this.$router.push({ name: "MainPage" });
-            
-			})
-			.catch(error => {
-				console.log(error);
-			})
-         if (this.session) this.session.disconnect();
-
-         this.session = undefined;
-         this.mainStreamManager = undefined;
-         this.publisher = undefined;
-         this.subscribers = [];
-         this.OV = undefined;
-
-         
-
-         window.removeEventListener('beforeunload', this.leaveSession);
-      },
-
-      updateMainVideoStreamManager (stream) {
-         if (this.mainStreamManager === stream) return;
-         this.mainStreamManager = stream;
-      },
-
-      /**
-       * --------------------------
-       * SERVER-SIDE RESPONSIBILITY
-       * --------------------------
-       * These methods retrieve the mandatory user token from OpenVidu Server.
-       * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
-       * the API REST, openvidu-java-client or openvidu-node-client):
-       *   1) Initialize a Session in OpenVidu Server   (POST /openvidu/api/sessions)
-       *   2) Create a Connection in OpenVidu Server (POST /openvidu/api/sessions/<SESSION_ID>/connection)
-       *   3) The Connection.token must be consumed in Session.connect() method
-       */
-
-      getToken (mySessionId) {
-         return this.createSession(mySessionId).then(sessionId => this.createToken(sessionId));
-      },
-
-      // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessions
-      createSession (sessionId) {
-         return new Promise((resolve, reject) => {
-            axios
-               .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, JSON.stringify({
-                  customSessionId: sessionId,
-               }), {
-                  auth: {
-                     username: 'OPENVIDUAPP',
-                     password: OPENVIDU_SERVER_SECRET,
-                  },
-               })
-               .then(response => response.data)
-               .then(data => resolve(data.id))
-               .catch(error => {
-                  if (error.response.status === 409) {
-                     resolve(sessionId);
-                  } else {
-                     console.warn(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`);
-                     if (window.confirm(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`)) {
-                        location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
-                     }
-                     reject(error.response);
-                  }
-               });
-         });
-      },
-
-      // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessionsltsession_idgtconnection
-      createToken (sessionId) {
-         return new Promise((resolve, reject) => {
-            axios
-               .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`, {}, {
-                  auth: {
-                     username: 'OPENVIDUAPP',
-                     password: OPENVIDU_SERVER_SECRET,
-                  },
-               })
-               .then(response => response.data)
-               .then(data => resolve(data.token))
-               .catch(error => reject(error.response));
-         });
-      },
-   }
 }
 
 </script>
@@ -290,14 +84,15 @@ export default {
 <style>
 
 .input_answer {
-  color: #000000;
-  height: 86px;
-  display: block;
-  font-size: 1.2rem;
-  letter-spacing: 0.15rem;
-  padding: 20px;
-  width: 100%;
-  margin-bottom:10px;
+   outline: none !important;
+   color:white;
+   height: 83px;
+   display: block;
+   font-size: 1.2rem;
+   letter-spacing: 0.15rem;
+   padding: 3vh;
+   width: 100%;
+ 
 }
 .answer{
 display: inline-block;
@@ -306,29 +101,20 @@ height: 80px;
 /* margin-left: 10vw; */
 position: relative;
 background: rgba(20, 17, 151, 0.47);
-border: 1px solid #FFFFFF;
+border: 3px solid #FFFFFF;
 box-sizing: border-box;
-/* border-radius: 20px; */
-}
-
-.link {
-   right:-40%;
-   cursor: pointer;
-   position: relative;
-   
+border-radius: 20px;
 
 }
-.buttons{
-  cursor: pointer;
-  position: relative;
-}
+
+
 .participation {
   margin: 0 2.2vw;
   padding: 2.5vh;
   /* width: 95vw; */
    /* height: 22vh; */
    /* text-align: justify; */
-  border: 3px solid #ffa500;
+  /* border: 3px solid #ffa500; */
    display: flex;
    flex-direction: row;
    /* align-items: center;
@@ -336,18 +122,19 @@ box-sizing: border-box;
 }
 
 .player {
-   border: 3px solid #ffa500;
-   /* display: flex; */
+   /* 젤 크게 나오는 메인스트리머 화면 */
+   /* border: 3px solid white; */
+   padding-top:2vh;
+   border-radius:20px;
    align-items: center;
 }
-
 #video-container video {
    /* position: relative; */
    float: left;
    width: 16%;
    margin-left:0.6%;
    border:4px solid;
-   border-color:rgb(255, 230, 0);
+   border-color:rgb(255, 255, 255);
    /* cursor: pointer; */
    /* margin:  2%;  */
    /* margin-left: 5%; */
@@ -363,7 +150,7 @@ box-sizing: border-box;
    float: left;
    width: 28%;
    position: relative;
-   margin-left:-28%;
+   margin-left:-28.5%;
    /* display: flex; */
    /* justify-content: space-around; */
 }
@@ -375,13 +162,14 @@ box-sizing: border-box;
    padding-right: 5px;
    color: #777777;
    font-weight: bold;
-   border-bottom-right-radius: 4px;
+   border-radius: 8px;
 }
 
 video {
-   margin-top:2.5vh;
+   
+   margin-top:1.8vh;
    /* 맨 아래에 나오는 카메라화면 */
-   width: 45%;
+   width: 55%;
    height: auto;
 
 }
@@ -395,8 +183,6 @@ video {
    font-size: 22px;
    color: #777777;
    font-weight: bold;
-   border-bottom-right-radius: 4px;
+   border-radius: 5px;
 }
-
-
 </style>

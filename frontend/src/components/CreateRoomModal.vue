@@ -67,9 +67,7 @@
 
 
 <script>
-import axios from 'axios'
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
-// import swal from 'sweetalert';
+import swal from 'sweetalert';
 
 export default {
   name: 'CreateRoomModal',
@@ -216,6 +214,7 @@ export default {
 }
 
 .btn-animate {
+  text-decoration: none;
   color: #fff;
   font-size: 14px;
   font-weight: 600;

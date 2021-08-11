@@ -138,7 +138,7 @@ export default {
           axios.delete(`${SERVER_URL}/users/${this.$store.state.id}`)
           .then(() => {
             this.$store.dispatch('logout')
-            swal(`탈퇴되었습니다.`)
+            swal("정상적으로 탈퇴되었습니다.","이용해 주셔서 감사합니다.","success")
             this.visible2= false
             this.$router.push({ name: 'MainPage' })
           })

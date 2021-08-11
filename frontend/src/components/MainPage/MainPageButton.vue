@@ -52,10 +52,9 @@ export default {
 <style>
 .btn1{
   margin-left: 5vw;
+  padding-bottom: 1.5vh;
   width: 397px;
-  height: 85px;
-  left: 98px;
-  top: 316px;
+
   display: grid;
   grid-template-columns: repeat(5, auto);
 }

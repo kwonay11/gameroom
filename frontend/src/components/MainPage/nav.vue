@@ -30,10 +30,7 @@
 
        </li>
      </ul>
-
-    
-     <router-link  id="a" :to="{ name: 'MainPage' }">
-     <img src="@/assets/logo.png" alt="logo"></router-link>
+        
     </nav>
     
   </div>
@@ -45,13 +42,13 @@ import swal from 'sweetalert';
 export default {
   name:'nav',
   computed: {
-    ...authComputed
+    ...authComputed,
   },  
   methods: {
     logout() {
       this.$store.dispatch('logout')
       this.$router.push({ name: "MainPage" });
-      swal(`로그아웃 되었습니다.`);
+      swal("로그아웃 되었습니다.","또 오세요!","success");
     }
   }
 
@@ -60,7 +57,6 @@ export default {
 <style lang="scss">
 nav{
   text-align: center;
-  // position: float;
 
 }
 nav ul {

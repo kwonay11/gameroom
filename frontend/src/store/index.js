@@ -63,9 +63,6 @@ export default new Vuex.Store({
         FETCH_USER: function(state, res) {
             state.userData = res.data
         },
-        NOWPAGE: function(state, nowpage) {
-            state.nowpage = nowpage
-        },
         NEW_NICKNAME: function(state, new_nickname) {
             state.userData.nickname = new_nickname
         },
@@ -111,9 +108,6 @@ export default new Vuex.Store({
                     commit('FETCH_USER', res)
                 })
         },
-        nowpage: function({ commit }, nowpage) {
-            commit('NOWPAGE', nowpage)
-        },
         newnickname: function({ commit }, content) {
             axios.defaults.headers.common[
                 "Authorization"
@@ -134,6 +128,23 @@ export default new Vuex.Store({
                 .then(() => {
                     commit('NEW_PASSWORD', content.changePassword)
                 })
+        },
+        joinSession: function({ commit }, contents) {
+            return new Promise((resolve, reject) => {
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${this.state.accessToken}`;
+
+                axios.post(`${SERVER_URL}/conferences`, contents)
+                    .then((res) => {
+                        // console.log(res.data.roomId)
+                        commit('CONFERENCE_ID', res.data.roomId)
+                        resolve();
+                    })
+                    .catch(() => {
+                        reject();
+                    })
+            })
         },
         gamecategory: function({ commit }, gamecategory_id) {
             commit('GAMECATEGORY', gamecategory_id)
