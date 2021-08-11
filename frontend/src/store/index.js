@@ -46,9 +46,6 @@ export default new Vuex.Store({
         FETCH_USER: function(state, res) {
             state.userData = res.data
         },
-        NOWPAGE: function(state, nowpage) {
-            state.nowpage = nowpage
-        },
         NEW_NICKNAME: function(state, new_nickname) {
             state.userData.nickname = new_nickname
         },
@@ -82,9 +79,6 @@ export default new Vuex.Store({
                 .then((res) => {
                     commit('FETCH_USER', res)
                 })
-        },
-        nowpage: function({ commit }, nowpage) {
-            commit('NOWPAGE', nowpage)
         },
         newnickname: function({ commit }, content) {
             axios.defaults.headers.common[
