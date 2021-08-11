@@ -96,46 +96,8 @@ export const video = {
 
         window.addEventListener('beforeunload', this.leaveSession)
 
-        // 내가 입력한 채팅
-        this.session.on('signal:my-chat', (event) => {
-            console.log('여기')
-            console.log(event)
-                // this.chatting_user = event.from.data["clientData"]
-            console.log('내가 입력한 내용')
-            console.log(event.data); // Message
-            const content = event.data.slice(1, -1) // Message
-            console.log('입력한 사람')
-            console.log(event.from.data); // Message
-            const chatting_user = event.from.data.slice(15, -2)
-            console.log(chatting_user)
-
-
-
-            this.chat.push({
-                user: chatting_user,
-                text: content
-            });
-
-
-        });
-
-
     },
     methods: {
-        sendMessage() {
-            this.session.signal({
-                    data: JSON.stringify(this.chattings),
-                    type: 'my-chat'
-                })
-                .then(() => {
-                    this.chattings = '';
-                    console.log('Message success');
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-        },
-
 
         leaveSession() {
             // --- Leave the session by calling 'disconnect' method over the Session object ---
