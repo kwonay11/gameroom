@@ -1,6 +1,9 @@
 <template lang="">
   <div class='button'>
       <div class="link">
+        <!-- 방장만 보이게 하기 -->
+        <img  src="@/assets/settings.png" alt="setting">
+
         <img  src="@/assets/link.png" alt="link">
       </div>
 
@@ -71,17 +74,25 @@ export default {
 </script>
 <style scoped>
 .button{
+     /* border: 3px solid rgb(255, 255, 255); */
+   border-radius:20px;
   display:flex;
   flex-direction: column;
   width: 100%;
   height: 15vh;
-  padding: 1vh;
+  padding: 0 1vh;
 }
- img {
-  width : 7vh;
+.link {
+  right:-40%;
+  cursor: pointer;
+  position: relative;
+  padding: 0 2vw;
+  width: 90%;
+  margin-bottom: 1.5vh;
 }
 .link > img {
-  width : 4vh;
+  width : 4.5vh;
+  padding: 0 0.4vw;
 }
 .control {
   padding: 0 2vw;
@@ -91,14 +102,13 @@ export default {
   flex-direction: row;
   width: 100%
 }
-.link {
-  right:-40%;
-  cursor: pointer;
-  position: relative;
-}
 .buttons{
   cursor: pointer;
   position: relative;
   width: 25%;
 }
+img {
+  width : 7vh;
+}
+
 </style>
