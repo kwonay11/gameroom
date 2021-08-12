@@ -1,6 +1,11 @@
 <template>
 
    <div  v-if="session">
+      <h3 style="color:white">
+         방제목 : {{ roominfo.title }}  
+         게임 종류 : {{ roominfo.gameName }}  
+         최대 인원 : {{ roominfo.maxUser}}
+      </h3>
    <!-- <div  > -->
       <div class='participation'>
          <div id="video-container" class="col-lg-12">
@@ -25,7 +30,7 @@
 
          <!--  버튼 -->
          <div class="col-md-4">
-            <Button :publisher="publisher"/>
+            <Button :publisher="publisher" :roominfo="roominfo" />
             <Chatting :session="session"/>
          </div>
       </div>
@@ -46,7 +51,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 // const OPENVIDU_SERVER_SECRET = "MY_SECRET";
-// const SERVER_URL = process.env.VUE_APP_SERVER_URL
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
    name: 'Room',
 
@@ -56,6 +61,8 @@ export default {
       Button,
    },
 
+
+   
    data () {
       return {
          OV: undefined,
@@ -69,8 +76,23 @@ export default {
          myUserNick: '',
          canJoin: null,
 
+         roominfo: {},
 
    }},
+
+   created() {
+    console.log('방 id')
+    console.log(this.mySessionId)
+
+    axios.get(`${SERVER_URL}/conferences/info/${this.mySessionId}`)
+      .then((res) => {
+        this.roominfo = res.data
+        console.log('룽 정보')
+        console.log(this.roominfo)
+        console.log(this.roominfo.gameSummary)
+
+      })
+  },
    
    mixins: [video]
 
@@ -130,7 +152,7 @@ border-radius: 20px;
    float: left;
    width: 16%;
    margin-left:0.6%;
-   border:4px solid;
+   border:3px solid;
    border-color:rgb(255, 255, 255);
    /* cursor: pointer; */
    /* margin:  2%;  */
@@ -164,9 +186,9 @@ border-radius: 20px;
 
 video {
    
-   margin-top:1.8vh;
+   padding-top:1.8vh;
    /* 맨 아래에 나오는 카메라화면 */
-   width: 55%;
+   width: 50%;
    height: auto;
 
 }

@@ -6,14 +6,13 @@
 
         <img  src="@/assets/link.png" alt="link" @click='link'>
       </div>
-    <app-my-modal :visible.sync="visible">
-      <div>
-        <input id='url' class="_input" v-model="url"  type="text"/>
-        <br>
-        <button class="btn-animate" @click="doCopy()">copy</button>        <!-- <button class="btn-animate">확인</button> -->
-
-      </div>
-    </app-my-modal>
+      <app-my-modal :visible.sync="visible_url">
+        <div>
+          <input id='url' class="_input" v-model="url"  type="text"/>
+          <br>
+          <button class="btn-animate" @click="doCopy()">copy</button>
+        </div>
+      </app-my-modal>
 
       <div class='control'>
             <!-- 음소거 -->
@@ -40,11 +39,16 @@
               <img  src="@/assets/delete.png" alt="delete">
             </span>
 
+            <!-- 게임 설명 -->
             <span class="buttons">
-              <img  src="@/assets/question.png" alt="tutorial">
+              <img  src="@/assets/question.png" alt="tutorial" @click='tutorial'>
             </span>
-
       </div>
+      <app-my-modal :visible.sync="visible_tutorial">
+        <div>
+          <p> {{ roominfo.gameSummary }}</p>
+        </div>
+      </app-my-modal>
   </div>
 </template>
 <script>
@@ -56,7 +60,8 @@ export default {
 
   data() {
     return {
-       visible: false,
+       visible_url: false,
+       visible_tutorial: false,
        url: null,
     }
   },
@@ -64,10 +69,14 @@ export default {
     appMyModal: myModal,
   },
 
-  props:{
+  props: {
     publisher: Object,
+    roominfo: Object,
   },
   
+  created() {
+
+  },
 
   methods: {
     muteAudio() {
@@ -85,7 +94,7 @@ export default {
       }
     },
     link() {
-      this.visible = !this.visible
+      this.visible_url = !this.visible_url
       
       // const urlInput = document.getElementById('urlInput');
       this.url = window.document.location.href
@@ -98,6 +107,9 @@ export default {
       this.visible = false
       
     },
+    tutorial() {
+      this.visible_tutorial = !this.visible_tutorial
+    }
   }
 
   
@@ -106,12 +118,12 @@ export default {
 <style scoped>
 .button{
   padding-top:3.6vh;
-     /* border: 3px solid rgb(255, 255, 255); */
+  /* border: 1px solid rgb(255, 255, 255); */
    border-radius:20px;
   display:flex;
   flex-direction: column;
   width: 100%;
-  height: 19vh;
+  height: 18vh;
 }
 .link {
   right:-40%;
@@ -119,7 +131,7 @@ export default {
   position: relative;
   padding: 0 2vw;
   width: 90%;
-  margin-bottom: 1.5vh;
+  padding-bottom: 1.5vh;
 }
 .link > img {
   width : 4.5vh;
@@ -127,7 +139,7 @@ export default {
 }
 .control {
   padding: 0 2vw;
-  margin-top:1vh;
+  padding-top:1vh;
   align-items: center;
   display:flex;
   flex-direction: row;
