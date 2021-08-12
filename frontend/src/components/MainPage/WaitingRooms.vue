@@ -7,24 +7,6 @@
           <div class="image-container">
 
             <img :src="image_url[item.gameId-1]" />
-            <!-- <div v-if="item.gameName === '몸으로 말해요'">
-              <img :src="image_url[0]" />
-            </div>
-            <div v-else-if="item.gameName === '캐치마인드'">
-              <img :src="image_url[1]" />
-            </div>
-            <div v-else-if="item.gameName === '고요속의 외침'">
-              <img :src="image_url[2]" />
-            </div>
-            <div v-else-if="item.gameName === '노래방'">
-              <img :src="image_url[3]" />
-            </div>
-            <div v-else-if="item.gameName === '순간포착'">
-              <img :src="image_url[4]" />
-            </div>
-            <div v-else>
-              <img :src="image_url[5]" />
-            </div>  -->
 
 
             <div class="roominfo">
@@ -40,10 +22,18 @@
           </div>
 
             <div v-if="loggedIn" class="btn">
-                <router-link class="btn_text" :to="`/gameroom/${item.id}`">
-                  <div class="button button--brightness">입장</div>
-                </router-link>
-            </div>
+                  <div v-if="item.privateRoom">
+                    <router-link class="btn_text" :to="{ name: 'RoomPasswordModal',params:{id:item.id} }">
+                      <div class="button button--brightness">입장</div>
+                    </router-link>
+                    </div>
+                  <div v-else>
+                    <router-link class="btn_text" :to="`/gameroom/${item.id}`">
+                    <div class="button button--brightness">입장</div>
+                  </router-link>
+              </div>
+                    </div>
+              
 
              <div v-if="!loggedIn" class="btn">
                 <router-link class="btn_text" :to="{ name: 'Login' }" >

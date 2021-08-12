@@ -22,11 +22,18 @@
             <img class="key" src="@/assets/key.png" alt="key">
           </div>
 
-            <div v-if="loggedIn" class="btn" id="enter">
-                <router-link class="btn_text" :to="`/gameroom/${item.id}`">
-                  <div class="button button--brightness">입장</div>
-                </router-link>
-            </div>
+            <div v-if="loggedIn" class="btn">
+                  <div v-if="item.privateRoom">
+                    <router-link class="btn_text" :to="{ name: 'RoomPasswordModal',params:{id:item.id} }">
+                      <div class="button button--brightness">입장</div>
+                    </router-link>
+                    </div>
+                  <div v-else>
+                    <router-link class="btn_text" :to="`/gameroom/${item.id}`">
+                    <div class="button button--brightness">입장</div>
+                  </router-link>
+              </div>
+              </div>
 
              <div v-if="!loggedIn" class="btn" id="enter">
                 <router-link class="btn_text" :to="{ name: 'Login' }" >

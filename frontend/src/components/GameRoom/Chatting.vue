@@ -103,7 +103,7 @@ export default {
    flex: 0 1 40px;
    width: 100%;
    background: rgba(0, 0, 0, 0.3);
-   padding: 20px;
+   padding: 15px;
    position: relative;
 }
 #chat-area {

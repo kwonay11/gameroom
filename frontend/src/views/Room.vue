@@ -1,11 +1,11 @@
 <template>
 
    <div  v-if="session">
-      <h3 style="color:white">
+      <h5 style="color:white" class="card1">
          방제목 : {{ roominfo.title }}  
          게임 종류 : {{ roominfo.gameName }}  
          최대 인원 : {{ roominfo.maxUser}}
-      </h3>
+      </h5>
    <!-- <div  > -->
       <div class='participation'>
          <div id="video-container" class="col-lg-12">
@@ -20,7 +20,14 @@
 
          <!-- 메인 화면 -->
          <div id="main-video" class="col-md-8">
-            <div class="player">
+            <button class="card" @click="song">
+            노래방
+         </button>
+         <div class="player" v-if="song_visible === true">
+            <Song />
+         </div>
+
+            <div class="player" v-else>
                <user-video :stream-manager="mainStreamManager"/>
                <div class="answer">
                   <input class="input_answer" placeholder="답을 입력해주세요." type="text" />
@@ -45,6 +52,7 @@ import axios from 'axios';
 import UserVideo from '@/components/UserVideo';
 import Chatting from '@/components/GameRoom/Chatting';
 import Button from '@/components/GameRoom/Button';
+import Song from '@/components/Game/Song/Song';
 import { video } from '@/mixins/video'
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -59,12 +67,14 @@ export default {
       UserVideo,
       Chatting,
       Button,
+      Song,
    },
 
 
    
    data () {
       return {
+         song_visible: false,
          OV: undefined,
          session: undefined,
          mainStreamManager: undefined,
@@ -93,6 +103,14 @@ export default {
 
       })
   },
+  methods: {
+      song(){
+         this.song_visible = !this.song_visible;
+      }
+
+   },
+
+
    
    mixins: [video]
 
@@ -101,22 +119,28 @@ export default {
 </script>
 
 <style>
+.card1{
+   width: 100%;
+   float:right;
+   background: rgba(104, 102, 163, 0.47);
+   color:white;
+}
 
 .input_answer {
    outline: none !important;
    color:white;
-   height: 83px;
+   /* height: 83px; */
    display: block;
-   font-size: 1.2rem;
+   font-size: 1rem;
    letter-spacing: 0.15rem;
-   padding: 3vh;
+   padding: 2vh;
    width: 100%;
  
 }
 .answer{
 display: inline-block;
-width: 30vw;
-height: 80px;
+width: 20vw;
+height: 60px;
 /* margin-left: 10vw; */
 position: relative;
 background: rgba(20, 17, 151, 0.47);
@@ -129,7 +153,7 @@ border-radius: 20px;
 
 .participation {
   margin: 0 2.2vw;
-  padding: 2.5vh;
+  padding: 2vh;
   /* width: 95vw; */
    /* height: 22vh; */
    /* text-align: justify; */
