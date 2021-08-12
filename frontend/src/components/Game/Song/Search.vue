@@ -2,7 +2,7 @@
   <div>
     <v-text-field class="card col-md-4" 
     dark
-    label="노래를 검색하세요 :)"
+    label="노래를 검색하세요 :) "
     color="#BDBDBD"
     @keyup.enter="onInputKeyword"
   ></v-text-field>
