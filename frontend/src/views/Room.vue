@@ -20,10 +20,10 @@
 
          <!-- 메인 화면 -->
          <div id="main-video" class="col-md-8">
-            <button class="card" @click="song">
+            <!-- <button class="card" @click="song">
             노래방
-         </button>
-         <div class="player" v-if="song_visible === true">
+         </button> -->
+         <div class="player" v-if="roominfo.gameName === '노래방'" >
             <Song />
          </div>
 

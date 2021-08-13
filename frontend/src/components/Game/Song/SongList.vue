@@ -1,10 +1,9 @@
 <template>
-  <div>
-    <ul>
-      <SongListItem v-for="(video, idx) in videos" :key="idx" :video="video" 
+  <div class="list p-4">
+      <SongListItem v-for="(video, idx) in videos" :key="idx" :video="video"
       @select-video="onSelectVideo"
       />
-    </ul>
+  
   </div>
 </template>
 
@@ -28,5 +27,34 @@ export default {
 </script>
 
 <style>
+.list{
+ color:white;
+ overflow-y: scroll;
+ height:32vh;
+ margin-top:2.5vh;
 
+}
+
+.list::-webkit-scrollbar {
+  width: 8px; 
+  height: 8px;
+ 
+}
+.list::-webkit-scrollbar-track {
+   background: #3f3150;
+   border-radius: 20px;
+}
+.list::-webkit-scrollbar-corner {
+   background: #3f3150;
+   border-radius: 20px;
+  
+}
+.list::-webkit-scrollbar-thumb {
+   background:  #b0a2c8;
+   border-radius: 20px;
+}
+.list::-webkit-scrollbar-button {
+  background-color: #dccbe0;
+ border-radius: 20px;
+}
 </style>

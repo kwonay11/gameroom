@@ -6,9 +6,6 @@ import createPersistedState from 'vuex-persistedstate';
 Vue.use(Vuex)
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
-const API_KEY = process.env.VUE_APP_YOUTUBE_API_KEY
-// const API_URL = 'https://www.googleapis.com/youtube/v3/search'
-
 
 export default new Vuex.Store({
     plugins: [
@@ -26,10 +23,6 @@ export default new Vuex.Store({
         // conference 방 번호
         conferenceid: null,
         gamecategory: null,
-
-        inputValue: '',
-        videos: [],
-        selectedVideo: '', // SongDetail.vue 로 보내고, 출력
 
 
     },
@@ -122,45 +115,7 @@ export default new Vuex.Store({
                         reject();
                     })
             })
-        },
-        inputsearch: function({ commit }, song) {
-            console.log(song)
-            const params = {
-                key: API_KEY,
-                part: 'snippet',
-                type: 'video',
-                q: song
-            }
-            // axios.get(API_URL, {
-            fetch(`https://www.googleapis.com/youtube/v3/search?key=AIzaSyBVVoBrjdTV12A560GRn9YiuS8kZRleKbQ&part=snippet&type=video&q=${song}`,)
-              .then((res) => {
-                // console.log(params)
-                
-                // console.log(res.json())
-                console.log('then부분')//여기로 안가요
-                // console.log(res)
-                // console.log(res.data.items)
-                // this.videos = res.data.items
-                // console.log(this.videos)
-                commit('GAMECATEGORY', res)
-                // if (!this.selectedVideo) {
-                //   this.selectedVideo = this.videos[0]
-                // }
-                return res.json();
-              })
-              .then((json)=> {
-                  console.log('두번째 then')
-                  console.log(json.items)
-                  
-              })
-              .catch((err) => {
-                console.log(params)
-                console.log('안된다')
-                console.log(err)
-
-              })
-
-
+        
         },
         gamecategory: function({ commit }, gamecategory_id) {
             commit('GAMECATEGORY', gamecategory_id)
