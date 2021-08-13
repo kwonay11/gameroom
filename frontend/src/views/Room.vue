@@ -24,7 +24,7 @@
             <!-- 크게 보이는 화면 -->
             <div class="player">
                   <!-- 노래방 -->
-                  <!-- <button class="card" @click="song">노래방</button> -->
+                  <button class="card" @click="song">노래방</button>
                   <div  v-if="song_visible === true">
                      <Song :mainStreamManager="mainStreamManager" :publisher='publisher'/>
                   </div>
@@ -32,18 +32,21 @@
 
                   <!-- 크게 보이는 화면 -->
                   <div class="main_box" v-else>
+                     <!-- <user-video :stream-manager="mainStreamManager"/> -->
 
                      <!-- 시작하기 버튼 -->
                      <div>
                         <div v-if="!start && !ready">
-                           <button @click="game_start">시작</button>
+                           <button style='margin: 20vh' @click="game_start">시작</button>
+                           
                         </div>
+
                         <div v-else-if="!ready && start ">
                            <Start />
                         </div>
+                        <div v-else>
                            <!-- 나 -->
                            <!-- 메인스트리머가 = 나 -->
-                        <div v-else-if="ready">
                            <user-video :stream-manager="mainStreamManager"/>
                         </div>
 
@@ -100,21 +103,21 @@ export default {
 
     data() {
         return {
-            song_visible: false,
-            OV: undefined,
-            session: undefined,
-            mainStreamManager: undefined,
-            // 이게 나
-            publisher: undefined,
-            // 이게 나를 뺀 방에 들어와있는 나머지 사람들
-            subscribers: [],
+            // song_visible: false,
+            // OV: undefined,
+            // session: undefined,
+            // mainStreamManager: undefined,
+            // // 이게 나
+            // publisher: undefined,
+            // // 이게 나를 뺀 방에 들어와있는 나머지 사람들
+            // subscribers: [],
 
-            mySessionId: null,
-            myUserName: '',
-            myUserNick: '',
-            canJoin: null,
+            // mySessionId: null,
+            // myUserName: '',
+            // myUserNick: '',
+            // canJoin: null,
 
-            roominfo: {},
+            // roominfo: {},
 
             start: false,
             ready: false,
@@ -123,24 +126,30 @@ export default {
         }
     },
    created() {
+      
 
     axios.get(`${SERVER_URL}/conferences/info/${this.mySessionId}`)
       .then((res) => {
         this.roominfo = res.data
       })
-  },
 
+  },
   methods: {
       song(){
          this.song_visible = !this.song_visible;
       },
       game_start() {
          this.start = true
-         setTimeout(function() {
+         setTimeout(() => {
             this.ready = true;
             console.log('ready')
             console.log(this.ready)
-         }, 4000);
+            console.log(this.start)
+         }, 3500);
+         console.log('이건언제됨')
+         this.mainStreamManager = this.publisher;
+
+
       },
    },
 
@@ -151,12 +160,6 @@ export default {
 </script>
 
 <style >
-@property --gradX {
-	syntax: "<percentage>";
-	initial-value: 50%;
-	inherits: true;
-}
-
 .player {
    /* 젤 크게 나오는 메인스트리머 화면 */
    /* border: 0.5px solid white; */
@@ -278,4 +281,8 @@ video {
    font-weight: bold;
    border-radius: 5px;
 }
+
+
+/* start 버튼*/
+
 </style>

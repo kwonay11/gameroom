@@ -12,26 +12,26 @@ const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export const video = {
 
-    // data() {
-    //     return {
-    //         song_visible: false,
-    //         OV: undefined,
-    //         session: undefined,
-    //         mainStreamManager: undefined,
-    //         // 이게 나
-    //         publisher: undefined,
-    //         // 이게 나를 뺀 방에 들어와있는 나머지 사람들
-    //         subscribers: [],
+    data() {
+        return {
+            song_visible: false,
+            OV: undefined,
+            session: undefined,
+            mainStreamManager: undefined,
+            // 이게 나
+            publisher: undefined,
+            // 이게 나를 뺀 방에 들어와있는 나머지 사람들
+            subscribers: [],
 
-    //         mySessionId: null,
-    //         myUserName: '',
-    //         myUserNick: '',
-    //         canJoin: null,
+            mySessionId: null,
+            myUserName: '',
+            myUserNick: '',
+            canJoin: null,
 
-    //         roominfo: {},
+            roominfo: {},
 
-    //     }
-    // },
+        }
+    },
     created: function() {
         console.log('1111111')
 
