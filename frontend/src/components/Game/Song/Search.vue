@@ -14,6 +14,7 @@ export default {
     name:'Search',
     methods: {
         onInputKeyword: function(event){
+          console.log(event)
           this.$emit('input-search', event.target.value)
         },
     }

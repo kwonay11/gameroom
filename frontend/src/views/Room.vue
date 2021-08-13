@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
 // import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '@/components/UserVideo';
 import Chatting from '@/components/GameRoom/Chatting';
@@ -55,7 +55,7 @@ import Button from '@/components/GameRoom/Button';
 import Song from '@/components/Game/Song/Song';
 import { video } from '@/mixins/video'
 
-axios.defaults.headers.post['Content-Type'] = 'application/json';
+// axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 // const OPENVIDU_SERVER_SECRET = "MY_SECRET";
@@ -94,7 +94,7 @@ export default {
     console.log('방 id')
     console.log(this.mySessionId)
 
-    axios.get(`${SERVER_URL}/conferences/info/${this.mySessionId}`)
+    this.$axios.get(`${SERVER_URL}/conferences/info/${this.mySessionId}`)
       .then((res) => {
         this.roominfo = res.data
         console.log('룽 정보')

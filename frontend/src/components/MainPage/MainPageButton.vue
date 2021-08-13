@@ -20,7 +20,7 @@
 <script>
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import { authComputed } from "@/store/helpers"
-import axios from 'axios'
+// import axios from 'axios'
 
 export default {
     name: "button",
@@ -34,7 +34,7 @@ export default {
     },
 
     created(){
-    axios.get(`${SERVER_URL}/conferences`)
+    this.$axios.get(`${SERVER_URL}/conferences`)
     .then((res) => {
       this.fast_start = res.data[0]
     })

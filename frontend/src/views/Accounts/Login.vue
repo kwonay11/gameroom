@@ -30,7 +30,7 @@
 <script>
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-import axios from 'axios'
+// import axios from 'axios'
 import swal from 'sweetalert';
 
 export default {
@@ -46,7 +46,7 @@ export default {
      },
      methods: {
       login: function () {
-        axios.post(`${SERVER_URL}/users/login`, this.credentials)
+        this.$axios.post(`${SERVER_URL}/users/login`, this.credentials)
         .then((res) => {
           localStorage.setItem('jwt', res.data.token)
           this.credentials.accessToken = res.data.accessToken

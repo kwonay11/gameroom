@@ -15,7 +15,7 @@
 <script>
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-import axios from 'axios'
+// import axios from 'axios'
 
 export default {
  
@@ -34,7 +34,7 @@ export default {
 
   methods: {
     SearchKeyword() {
-      axios.get(`${SERVER_URL}/conferences?keyword=${this.search_input}`)
+      this.$axios.get(`${SERVER_URL}/conferences?keyword=${this.search_input}`)
         .then((res) => {
           const content = {
             games: res.data,

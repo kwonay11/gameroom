@@ -60,6 +60,7 @@
         </div>
       </app-my-modal>
     <WinRate />
+  
 
   </div>
 </template>
@@ -71,7 +72,8 @@ import myModal from '@/components/myModal'
 // import myModal1 from '@/components/myModal1'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import { authComputed } from "@/store/helpers"
-import axios from 'axios'
+
+// import axios from 'axios'
 
 export default {
      name: "Mypage",
@@ -131,11 +133,11 @@ export default {
         this.visible2 = !this.visible2
       },
       out_save: function () {
-             axios.defaults.headers.common[
+             this.$axios.defaults.headers.common[
                 "Authorization"
             ] = `Bearer ${this.$store.state.accessToken}`;
             
-          axios.delete(`${SERVER_URL}/users/${this.$store.state.id}`)
+          this.$axios.delete(`${SERVER_URL}/users/${this.$store.state.id}`)
           .then(() => {
             this.$store.dispatch('logout')
             swal("정상적으로 탈퇴되었습니다.","이용해 주셔서 감사합니다.","success")
