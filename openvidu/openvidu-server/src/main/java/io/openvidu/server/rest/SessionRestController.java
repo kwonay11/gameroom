@@ -117,10 +117,10 @@ public class SessionRestController {
 			sessionId = sessionProperties.customSessionId();
 		} else {
 			sessionId = IdentifierPrefixes.SESSION_ID + RandomStringUtils.randomAlphabetic(1).toUpperCase()
-				+ RandomStringUtils.randomAlphanumeric(9);
-	}
+					+ RandomStringUtils.randomAlphanumeric(9);
+		}
 
-	Session sessionNotActive = sessionManager.storeSessionNotActive(sessionId, sessionProperties);
+		Session sessionNotActive = sessionManager.storeSessionNotActive(sessionId, sessionProperties);
 		log.info("New session {} created {}", sessionId, this.sessionManager.getSessionsWithNotActive().stream()
 				.map(Session::getSessionId).collect(Collectors.toList()).toString());
 

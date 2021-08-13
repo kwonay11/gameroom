@@ -29,6 +29,8 @@
             <Chatting :session="session"/>
          </div>
       </div>
+      <!-- test -->
+      <!-- <button @click="gametest"> -->
       <!-- </div> -->
    </div>
 
@@ -41,7 +43,7 @@ import UserVideo from '@/components/UserVideo';
 import Chatting from '@/components/GameRoom/Chatting';
 import Button from '@/components/GameRoom/Button';
 import { video } from '@/mixins/video'
-
+import { mapState } from 'vuex'
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
@@ -67,13 +69,19 @@ export default {
          
          
 
-         mySessionId: null,
+         // mySessionId: '',
          myUserName: '',
          myUserNick: '',
          canJoin: null,
 
 
    }},
+   computed: mapState(['conferenceid']),
+   methods: {
+      gametest : function() {
+
+      }
+   },
    
    mixins: [video]
 

@@ -25,8 +25,6 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import com.google.gson.JsonParser;
-
 import org.kurento.client.GenericMediaEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,15 +47,6 @@ import io.openvidu.server.kurento.endpoint.KurentoFilter;
 import io.openvidu.server.kurento.kms.Kms;
 import io.openvidu.server.recording.Recording;
 import io.openvidu.server.rpc.RpcNotificationService;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.swing.text.TabExpander;
 
 public class SessionEventsHandler {
 
@@ -74,7 +63,6 @@ public class SessionEventsHandler {
 
 	@Autowired
 	protected OpenviduBuildInfo openviduBuildConfig;
-
 
 	protected Map<String, Recording> recordingsToSendClientEvents = new ConcurrentHashMap<>();
 
@@ -386,28 +374,6 @@ public class SessionEventsHandler {
 				return;
 			}
 		}
-		if (message.has("type") && message.get("type").getAsString().equals("signal:leave")) {
-			JsonObject data = (JsonObject) JsonParser.parseString(message.get("data").getAsString());
-			// roomId와 jwt토큰 받아옴
-			int conferenceid = data.get("roomId").getAsInt();
-			String JWT = "Bearer " + data.get("JWT").getAsString();
-
-			System.out.println(JWT);
-			String deleteUrl = "http://localhost:8080/api/conferences/"+conferenceid;
-
-			// API서버로 /room/finish/{roomId} 요청 보냄
-			// endTime 저장됨!
-			RestTemplate restTemplate = new RestTemplate();
-			HttpHeaders httpHeaders = new HttpHeaders();
-			httpHeaders.add("Authorization", JWT);
-			httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-			UriComponents uri = UriComponentsBuilder.fromHttpUrl(deleteUrl).build();
-			HttpEntity<?> httpEntity = new HttpEntity<>(httpHeaders);
-			restTemplate.exchange(uri.toString(), HttpMethod.DELETE, httpEntity, String.class);
-		}
-//		if (message.has("type") && message.get("type").getAsString().equals("signal:game")) {
-//			testService.controlGame(participant, message, participants, rpcNotificationService);
-//		}
 
 		String from = null;
 		String type = null;

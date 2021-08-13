@@ -4,25 +4,26 @@ import { OpenVidu } from 'openvidu-browser';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
+const OPENVIDU_SERVER_URL = "https://localhost:4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 
 export const video = {
-    created: function() {
+    mounted: function() {
 
 
         // 방 ID 인거 같고
-        this.mySessionId = this.$route.params.roomid
-        this.myUserName = this.$store.state.id
-        this.myUserNick = this.$store.state.userData.nickname
+        
             // console.log(this.mySessionId)
             // console.log(this.myUserName)
         this.OV = new OpenVidu();
         // --- Init a session ---
         this.session = this.OV.initSession();
-
+        this.mySessionId = this.$route.params.conferenceid;
+        // console.log(this.mySessionId)
+        this.myUserName = this.$store.state.id
+        this.myUserNick = this.$store.state.userData.nickname
         // --- Specify the actions when events take place in the session ---
 
         // On every new Stream received...
@@ -64,7 +65,7 @@ export const video = {
 
         // 'getToken' method is simulating what your server-side should do.
         // 'token' parameter should be retrieved and returned by your own backend
-        this.getToken(this.mySessionId)
+        this.getToken(this.$store.state.conferenceid)
             .then(token => {
                 this.session.connect(token, { clientData: this.myUserNick })
                     .then(() => {
@@ -136,10 +137,12 @@ export const video = {
 
         // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessions
         createSession(sessionId) {
+            
             return new Promise((resolve, reject) => {
+                console.log(this.$store.state.conferenceid)
                 axios
                     .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, JSON.stringify({
-                        customSessionId: sessionId,
+                        customSessionId: String(sessionId),
                     }), {
                         auth: {
                             username: 'OPENVIDUAPP',
@@ -150,7 +153,7 @@ export const video = {
                     .then(data => resolve(data.id))
                     .catch(error => {
                         if (error.response.status === 409) {
-                            resolve(sessionId);
+                            resolve();
                         } else {
                             console.warn(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`);
                             if (window.confirm(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`)) {

@@ -67,7 +67,9 @@
 
 
 <script>
-import swal from 'sweetalert';
+// import swal from 'sweetalert';
+import axios from 'axios';
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name: 'CreateRoomModal',
@@ -98,6 +100,7 @@ export default {
                         console.log('sdsdsdsd')
                         // console.log(commit);
                         console.log(res.data.roomId)
+                        this.$store.dispatch('joinSession',res.data.roomId)
                         this.$router.push({ name: "Room" , params: {roomid: res.data.roomId }});
                         
                         resolve();

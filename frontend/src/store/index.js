@@ -130,22 +130,25 @@ export default new Vuex.Store({
                 })
         },
         joinSession: function({ commit }, contents) {
-            return new Promise((resolve, reject) => {
-                axios.defaults.headers.common[
-                    "Authorization"
-                ] = `Bearer ${this.state.accessToken}`;
-
-                axios.post(`${SERVER_URL}/conferences`, contents)
-                    .then((res) => {
-                        // console.log(res.data.roomId)
-                        commit('CONFERENCE_ID', res.data.roomId)
-                        resolve();
-                    })
-                    .catch(() => {
-                        reject();
-                    })
-            })
+            commit('CONFERENCE_ID', contents)
         },
+        // joinSession: function({ commit }, contents) {
+        //     return new Promise((resolve, reject) => {
+        //         axios.defaults.headers.common[
+        //             "Authorization"
+        //         ] = `Bearer ${this.state.accessToken}`;
+
+        //         axios.post(`${SERVER_URL}/conferences`, contents)
+        //             .then((res) => {
+        //                 // console.log(res.data.roomId)
+        //                 commit('CONFERENCE_ID', res.data.roomId)
+        //                 resolve();
+        //             })
+        //             .catch(() => {
+        //                 reject();
+        //             })
+        //     })
+        // },
         gamecategory: function({ commit }, gamecategory_id) {
             commit('GAMECATEGORY', gamecategory_id)
         },

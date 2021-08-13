@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.concurrent.Semaphore;
 
 import io.openvidu.server.core.TokenRegister;
-
 import org.bouncycastle.util.Arrays;
 import org.kurento.jsonrpc.internal.server.config.JsonRpcConfiguration;
 import org.kurento.jsonrpc.server.JsonRpcConfigurer;
@@ -190,7 +189,6 @@ public class OpenViduServer implements JsonRpcConfigurer {
 	public LoadManager loadManager() {
 		return new DummyLoadManager();
 	}
-
 
 	@Bean
 	@ConditionalOnMissingBean
