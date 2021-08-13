@@ -14,6 +14,8 @@ export default {
     name:'Search',
     methods: {
         onInputKeyword: function(event){
+          console.log('검색어')
+          console.log(event.target.value)
           this.$emit('input-search', event.target.value)
         },
     }

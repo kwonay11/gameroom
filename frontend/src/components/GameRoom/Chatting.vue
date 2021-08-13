@@ -2,14 +2,14 @@
   <div>
       <div id='chat-area'>
          <div v-for="val in chat" v-bind:key="val.id">
-         <div v-if="val.user === myUserNick" class="mychat">
-            {{ val.text }}
-         </div>
+            <div v-if="val.user === myUserNick" class="mychat">
+               {{ val.text }}
+            </div>
+            
+            <div v-else class="otherchat">
+               {{ val.user }} : {{ val.text }}
+            </div>
          
-         <div v-else class="otherchat">
-            {{ val.user }} : {{ val.text }}
-         </div>
-      
          </div>
    
       </div>
@@ -32,7 +32,7 @@ export default {
          chattings: '',
          // chatting_user: '',
          chat: [],
-         chatHeight: "33vh",
+         // chatHeight: "30vh",
          myUserNick: null,
        }
     },
@@ -54,6 +54,8 @@ export default {
    },
    created: function () {
         this.myUserNick = this.$store.state.userData.nickname
+
+      //  방에 들어와 있는 모든 사람이 받는거
         this.session.on('signal:my-chat', (event) => {
             console.log('여기')
             console.log(event)
@@ -78,6 +80,7 @@ export default {
    },
        methods: {
         sendMessage() {
+            // post 같은 느낌 = signal
             this.session.signal({
                     data: JSON.stringify(this.chattings),
                     type: 'my-chat'

@@ -15,34 +15,34 @@
       </app-my-modal>
 
       <div class='control'>
-            <!-- 음소거 -->
-            <span class="buttons" @click='muteAudio'>
-              <div v-if='publisher.stream.audioActive'>
-                <img  src="@/assets/microphone (3).png" alt="mike">
-              </div>
-              <div v-else>
-                <img  src="@/assets/microphone (2).png" alt="mike">
-              </div>
-            </span>
+        <!-- 음소거 -->
+        <span class="buttons" @click='muteAudio'>
+          <div v-if='publisher.stream.audioActive'>
+            <img  src="@/assets/microphone (3).png" alt="mike">
+          </div>
+          <div v-else>
+            <img  src="@/assets/microphone (2).png" alt="mike">
+          </div>
+        </span>
 
-            <!-- 비디오중지 -->
-            <span class="buttons" @click='muteVideo'>
-              <div v-if='publisher.stream.videoActive'>
-                <img  src="@/assets/video-player.png" alt="mike">
-              </div>
-              <div v-else>
-                <img   src="@/assets/video-player (2).png" alt="mike">
-              </div>
-            </span>
+        <!-- 비디오중지 -->
+        <span class="buttons" @click='muteVideo'>
+          <div v-if='publisher.stream.videoActive'>
+            <img  src="@/assets/video-player.png" alt="mike">
+          </div>
+          <div v-else>
+            <img   src="@/assets/video-player (2).png" alt="mike">
+          </div>
+        </span>
 
-            <span class="buttons">
-              <img  src="@/assets/delete.png" alt="delete">
-            </span>
+        <span class="buttons">
+          <img  src="@/assets/delete.png" alt="delete">
+        </span>
 
-            <!-- 게임 설명 -->
-            <span class="buttons">
-              <img  src="@/assets/question.png" alt="tutorial" @click='tutorial'>
-            </span>
+        <!-- 게임 설명 -->
+        <span class="buttons">
+          <img  src="@/assets/question.png" alt="tutorial" @click='tutorial'>
+        </span>
       </div>
       <app-my-modal :visible.sync="visible_tutorial">
         <div>
@@ -95,8 +95,6 @@ export default {
     },
     link() {
       this.visible_url = !this.visible_url
-      
-      // const urlInput = document.getElementById('urlInput');
       this.url = window.document.location.href
     },
     doCopy() {
@@ -104,8 +102,7 @@ export default {
       my_url.select();
       document.execCommand('copy')
       swal(`링크 복사 완료!`)
-      this.visible = false
-      
+      this.visible_url = false
     },
     tutorial() {
       this.visible_tutorial = !this.visible_tutorial
@@ -117,13 +114,10 @@ export default {
 </script>
 <style scoped>
 .button{
-  padding-top:3.6vh;
-  /* border: 1px solid rgb(255, 255, 255); */
-   border-radius:20px;
   display:flex;
   flex-direction: column;
   width: 100%;
-  height: 18vh;
+  height: 15vh;
 }
 .link {
   right:-40%;
@@ -134,7 +128,8 @@ export default {
   padding-bottom: 1.5vh;
 }
 .link > img {
-  width : 4.5vh;
+  width : 2.5vw;
+  height : 2.5vh;
   padding: 0 0.4vw;
 }
 .control {
@@ -151,7 +146,8 @@ export default {
   width: 25%;
 }
 img {
-  width : 7vh;
+  width : 4vw;
+  height : 6.7vh;
 }
 
 </style>

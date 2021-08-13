@@ -4,13 +4,36 @@ import { OpenVidu } from 'openvidu-browser';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
+const OPENVIDU_SERVER_URL = "https://127.0.0.1:5443";
+// const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 
 export const video = {
+
+    // data() {
+    //     return {
+    //         song_visible: false,
+    //         OV: undefined,
+    //         session: undefined,
+    //         mainStreamManager: undefined,
+    //         // 이게 나
+    //         publisher: undefined,
+    //         // 이게 나를 뺀 방에 들어와있는 나머지 사람들
+    //         subscribers: [],
+
+    //         mySessionId: null,
+    //         myUserName: '',
+    //         myUserNick: '',
+    //         canJoin: null,
+
+    //         roominfo: {},
+
+    //     }
+    // },
     created: function() {
+        console.log('1111111')
 
 
         // 방 ID 인거 같고
@@ -81,9 +104,15 @@ export const video = {
                             insertMode: 'APPEND', // How the video is inserted in the target element 'video-container'
                             mirror: false // Whether to mirror your local video or not
                         });
+                        console.log('!!!!!!!!!!!!!!')
+                        console.log(publisher)
 
-                        this.mainStreamManager = publisher;
+                        // this.mainStreamManager = publisher;
                         this.publisher = publisher;
+                        console.log('durldurdlurdlurdlul')
+
+                        console.log(this.mainStreamManager)
+                        console.log(this.publisher)
 
                         // --- Publish your stream ---
 
@@ -139,7 +168,7 @@ export const video = {
             return new Promise((resolve, reject) => {
                 axios
                     .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, JSON.stringify({
-                        customSessionId: sessionId,
+                        customSessionId: String(sessionId),
                     }), {
                         auth: {
                             username: 'OPENVIDUAPP',

@@ -4,6 +4,7 @@
           <img style="width:6%" src="@/assets/노래방.png" alt="노래방">
       </h3>
       <Search @input-search="onInputSearch" />
+      <user-video :stream-manager="mainStreamManager"/>
       <hr>
       <div class="d-flex">
         <SongDetail :video="selectedVideo" />
@@ -15,7 +16,7 @@
 
 <script>
 import axios from 'axios'
-
+import UserVideo from '@/components/UserVideo';
 import Search from '@/components/Game/Song/Search'
 import SongList from '@/components/Game/Song/SongList'
 import SongDetail from '@/components/Game/Song/SongDetail'
@@ -36,6 +37,15 @@ export default {
     Search,
     SongList,
     SongDetail,
+    UserVideo,
+  },
+  props: {
+    mainStreamManager: Object,
+    publisher: Object,
+  },
+  created() {
+    console.log('이건언제됨')
+    this.mainStreamManager = this.publisher;
   },
   methods: {
     onInputSearch: function (inputText) {
@@ -47,8 +57,17 @@ export default {
         key: API_KEY,
         part: 'snippet',
         type: 'video',
-        q: '[KY 금영노래방]'+ this.inputValue
+        // q: '[KY 금영노래방]'+ this.inputValue
+        q: this.inputValue
       }
+
+      console.log(API_URL, {
+        params,
+      })
+
+      axios.defaults.headers.common[
+          "Authorization"
+      ] = `Bearer ${this.$store.state.accessToken}`;
 
       axios.get(API_URL, {
         params,

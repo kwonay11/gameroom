@@ -1,5 +1,4 @@
 <template>
-
    <div  v-if="session">
       <h5 style="color:white" class="card1">
          방제목 : {{ roominfo.title }}  
@@ -7,31 +6,57 @@
          최대 인원 : {{ roominfo.maxUser}}
       </h5>
    <!-- <div  > -->
+      <!-- 참가자가 나오는 부분 -->
       <div class='participation'>
          <div id="video-container" class="col-lg-12">
          <!-- <div id="video-container" class=""> -->
-            <!-- 메인 스트리머 -->
+            <!-- 나 -->
             <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
-            <!-- 참가자들 -->
+            <!-- 나 빼고 나머지 참가자들 -->
             <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
          </div>
       </div>
+
+
+      <!-- 메인 화면 -->
       <div class='row p-4'>
+         <div class="col-md-8">
+            <!-- 크게 보이는 화면 -->
+            <div class="player">
+                  <!-- 노래방 -->
+                  <!-- <button class="card" @click="song">노래방</button> -->
+                  <div  v-if="song_visible === true">
+                     <Song :mainStreamManager="mainStreamManager" :publisher='publisher'/>
+                  </div>
 
-         <!-- 메인 화면 -->
-         <div id="main-video" class="col-md-8">
-            <button class="card" @click="song">
-            노래방
-         </button>
-         <div class="player" v-if="song_visible === true">
-            <Song />
-         </div>
 
-            <div class="player" v-else>
-               <user-video :stream-manager="mainStreamManager"/>
-               <div class="answer">
-                  <input class="input_answer" placeholder="답을 입력해주세요." type="text" />
-               </div>
+                  <!-- 크게 보이는 화면 -->
+                  <div class="main_box" v-else>
+
+                     <!-- 시작하기 버튼 -->
+                     <div>
+                        <div v-if="!start && !ready">
+                           <button @click="game_start">시작</button>
+                        </div>
+                        <div v-else-if="!ready && start ">
+                           <Start />
+                        </div>
+                           <!-- 나 -->
+                           <!-- 메인스트리머가 = 나 -->
+                        <div v-else-if="ready">
+                           <user-video :stream-manager="mainStreamManager"/>
+                        </div>
+
+                     </div>
+                  </div>
+
+                  <!-- 답 입력창 -->
+                  <div>
+                     <div class="answer">
+                        <input class="input_answer" placeholder="답을 입력해주세요." type="text" />
+                     </div>
+                  </div>
+
             </div>
          </div>
 
@@ -52,6 +77,7 @@ import axios from 'axios';
 import UserVideo from '@/components/UserVideo';
 import Chatting from '@/components/GameRoom/Chatting';
 import Button from '@/components/GameRoom/Button';
+import Start from '@/components/GameRoom/Start';
 import Song from '@/components/Game/Song/Song';
 import { video } from '@/mixins/video'
 
@@ -68,57 +94,87 @@ export default {
       Chatting,
       Button,
       Song,
+      Start,     
+      
    },
 
+    data() {
+        return {
+            song_visible: false,
+            OV: undefined,
+            session: undefined,
+            mainStreamManager: undefined,
+            // 이게 나
+            publisher: undefined,
+            // 이게 나를 뺀 방에 들어와있는 나머지 사람들
+            subscribers: [],
 
-   
-   data () {
-      return {
-         song_visible: false,
-         OV: undefined,
-         session: undefined,
-         mainStreamManager: undefined,
-         publisher: undefined,
-         subscribers: [],
+            mySessionId: null,
+            myUserName: '',
+            myUserNick: '',
+            canJoin: null,
 
-         mySessionId: null,
-         myUserName: '',
-         myUserNick: '',
-         canJoin: null,
+            roominfo: {},
 
-         roominfo: {},
+            start: false,
+            ready: false,
+            aa: false
 
-   }},
-
+        }
+    },
    created() {
-    console.log('방 id')
-    console.log(this.mySessionId)
 
     axios.get(`${SERVER_URL}/conferences/info/${this.mySessionId}`)
       .then((res) => {
         this.roominfo = res.data
-        console.log('룽 정보')
-        console.log(this.roominfo)
-        console.log(this.roominfo.gameSummary)
-
       })
   },
+
   methods: {
       song(){
          this.song_visible = !this.song_visible;
-      }
-
+      },
+      game_start() {
+         this.start = true
+         setTimeout(function() {
+            this.ready = true;
+            console.log('ready')
+            console.log(this.ready)
+         }, 4000);
+      },
    },
 
-
-   
    mixins: [video]
 
 }
 
 </script>
 
-<style>
+<style >
+@property --gradX {
+	syntax: "<percentage>";
+	initial-value: 50%;
+	inherits: true;
+}
+
+.player {
+   /* 젤 크게 나오는 메인스트리머 화면 */
+   /* border: 0.5px solid white; */
+   padding-top:3vh;
+   border-radius:20px;
+   align-items: center;
+   
+}
+.main_box {
+   width: 60%;
+   height: 48vh;
+   background: rgba(192, 192, 199, 0.47);
+   /* border: 3px solid white; */
+   
+   border-radius:20px;
+   margin: 0 auto 2.5vh;
+   display:flex;
+}
 .card1{
    width: 100%;
    float:right;
@@ -164,13 +220,7 @@ border-radius: 20px;
    justify-content: space-around;   */
 }
 
-.player {
-   /* 젤 크게 나오는 메인스트리머 화면 */
-   /* border: 3px solid white; */
-   padding-top:2vh;
-   border-radius:20px;
-   align-items: center;
-}
+
 #video-container video {
    /* position: relative; */
    float: left;
@@ -212,7 +262,7 @@ video {
    
    padding-top:1.8vh;
    /* 맨 아래에 나오는 카메라화면 */
-   width: 50%;
+   width: 40%;
    height: auto;
 
 }
