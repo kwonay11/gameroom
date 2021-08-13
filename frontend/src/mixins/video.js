@@ -4,13 +4,13 @@ import { OpenVidu } from 'openvidu-browser';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-const OPENVIDU_SERVER_URL = "https://localhost:4443";
+const OPENVIDU_SERVER_URL = "https://localhost:5443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 
 export const video = {
-    mounted: function() {
+    created: function() {
 
 
         // 방 ID 인거 같고
@@ -44,6 +44,10 @@ export const video = {
         this.session.on('exception', ({ exception }) => {
             console.warn(exception);
         });
+        this.session.on('signal:game', (event) => {
+            console.log(event);
+        });
+        
         axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
         // --- Connect to the session with a valid user token ---
         console.log('room확인')
@@ -65,7 +69,7 @@ export const video = {
 
         // 'getToken' method is simulating what your server-side should do.
         // 'token' parameter should be retrieved and returned by your own backend
-        this.getToken(this.$store.state.conferenceid)
+        this.getToken(this.mySessionId)
             .then(token => {
                 this.session.connect(token, { clientData: this.myUserNick })
                     .then(() => {
@@ -99,20 +103,19 @@ export const video = {
 
     },
     methods: {
-
-        leaveSession() {
-            // --- Leave the session by calling 'disconnect' method over the Session object ---
-            if (this.session) this.session.disconnect();
-
-            this.session = undefined;
-            this.mainStreamManager = undefined;
-            this.publisher = undefined;
-            this.subscribers = [];
-            this.OV = undefined;
-
-            window.removeEventListener('beforeunload', this.leaveSession);
-        },
-
+        // leaveSession() {
+        //     // --- Leave the session by calling 'disconnect' method over the Session object ---
+        //     console.log('leavesesion')
+        //     if (this.session) this.session.disconnect();
+        
+        //     this.session = undefined;
+        //     this.mainStreamManager = undefined;
+        //     this.publisher = undefined;
+        //     this.subscribers = [];
+        //     this.OV = undefined;
+        
+        //     window.removeEventListener('beforeunload', this.leaveSession);
+        // },
         updateMainVideoStreamManager(stream) {
             if (this.mainStreamManager === stream) return;
             this.mainStreamManager = stream;

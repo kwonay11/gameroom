@@ -25,13 +25,12 @@
 
          <!--  버튼 -->
          <div class="col-md-4">
-            <Button :publisher="publisher"/>
+            <Button :publisher="publisher" :session="session"/>
             <Chatting :session="session"/>
          </div>
       </div>
       <!-- test -->
-      <!-- <button @click="gametest"> -->
-      <!-- </div> -->
+      <button @click="gametest"> 게임테스트버튼</button>
    </div>
 
 </template>
@@ -78,9 +77,25 @@ export default {
    }},
    computed: mapState(['conferenceid']),
    methods: {
-      gametest : function() {
 
-      }
+      gametest() {
+         this.session.signal({
+            data: JSON.stringify({
+               "gameStatus": 0,
+               "category" :1,
+               "round":0,
+               "conferencid": this.conferenceid,
+            }),
+            type: 'game'
+         })
+         .then(() => {
+            console.log('Message success');
+         })
+         .catch(error => {
+            console.log(error);
+         })
+      },
+
    },
    
    mixins: [video]

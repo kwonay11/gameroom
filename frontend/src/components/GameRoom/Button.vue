@@ -36,7 +36,7 @@
               </div>
             </span>
 
-            <span class="buttons">
+            <span class="buttons" @click="leaveSession">
               <img  src="@/assets/delete.png" alt="delete">
             </span>
 
@@ -66,8 +66,14 @@ export default {
 
   props:{
     publisher: Object,
+    session: Object,
   },
-  
+  created: function () {
+        this.session.on('signal:leave',(event) =>{
+            console.log('leave')
+            console.log(event)
+        })
+  },
 
   methods: {
     muteAudio() {
@@ -98,6 +104,37 @@ export default {
       this.visible = false
       
     },
+    leaveSession () {
+         // --- Leave the session by calling 'disconnect' method over the Session object ---
+         this.session.signal({
+          
+         data: JSON.stringify({
+            "roomId" : this.$store.state.conferenceid,
+            "JWT": this.$store.state.accessToken
+         }),
+         type: 'leave'
+         })
+         .then(() => {
+				console.log('leave success');
+            this.$router.push({ name: "MainPage" });
+            
+			})
+			.catch(error => {
+				console.log(error);
+			})
+         if (this.session) this.session.disconnect();
+
+         this.session = undefined;
+         this.mainStreamManager = undefined;
+         this.publisher = undefined;
+         this.subscribers = [];
+         this.OV = undefined;
+
+         
+
+         window.removeEventListener('beforeunload', this.leaveSession);
+      },
+
   }
 
   
