@@ -1,5 +1,5 @@
 <template >
-  <div>
+
     <div class="demo">
       <div class="demo__colored-blocks">
         <div class="demo__colored-blocks-rotater">
@@ -28,7 +28,7 @@
         </svg>
       </div>
     </div>
-  </div>
+
 </template>
 <script>
 export default {
@@ -50,12 +50,12 @@ body {
 
 .demo {
   position: relative;
-  left: 40%;
-  top: 15vh;
+  left: 32%;
+  /* top: 15vh; */
   width: 50vw;
   height: 15vh;
   margin: auto;
-  padding: 10px;
+  /* padding: 10px; */
   border-radius: 20px;
   transform: translateX(-50%);
   

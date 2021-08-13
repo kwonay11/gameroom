@@ -98,16 +98,17 @@ export default {
 }
 </script>
 
-<style>
+<style >
 .chat_input {
    margin-top: 6px;
+   margin-right: 2.2vw;
    border: 3px solid rgb(255, 255, 255);
    border-radius:20px;
    flex: 0 1 40px;
-   width: 100%;
    background: rgba(0, 0, 0, 0.3);
    padding: 15px;
    position: relative;
+   
 }
 #chat-area {
    padding:5px;
@@ -116,6 +117,7 @@ export default {
    border-radius:20px;
    align-items: center;
    height: 39.5vh;
+   margin-right: 2.2vw;
    background: rgba(0, 0, 0, 0.5);
    color:white;
  

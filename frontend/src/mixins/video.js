@@ -14,7 +14,7 @@ export const video = {
 
     data() {
         return {
-            song_visible: false,
+
             OV: undefined,
             session: undefined,
             mainStreamManager: undefined,

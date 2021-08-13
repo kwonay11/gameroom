@@ -20,46 +20,33 @@
 
       <!-- 메인 화면 -->
       <div class='row p-4'>
-         <div class="col-md-8">
+         <div id="main-video" class="col-md-8">
             <!-- 크게 보이는 화면 -->
             <div class="player">
-                  <!-- 노래방 -->
-                  <button class="card" @click="song">노래방</button>
-                  <div  v-if="song_visible === true">
-                     <Song :mainStreamManager="mainStreamManager" :publisher='publisher'/>
-                  </div>
-
-
-                  <!-- 크게 보이는 화면 -->
-                  <div class="main_box" v-else>
-                     <!-- <user-video :stream-manager="mainStreamManager"/> -->
-
-                     <!-- 시작하기 버튼 -->
-                     <div>
-                        <div v-if="!start && !ready">
-                           <button style='margin: 20vh' @click="game_start">시작</button>
-                           
-                        </div>
-
-                        <div v-else-if="!ready && start ">
-                           <Start />
-                        </div>
-                        <div v-else>
-                           <!-- 나 -->
-                           <!-- 메인스트리머가 = 나 -->
-                           <user-video :stream-manager="mainStreamManager"/>
-                        </div>
-
+               <div class="main_box">
+                  <!-- 시작하기 버튼 -->
+                  <div v-if="!start && !ready">
+                     <div class="main_box_2">
+                        <button style='margin: 20vh' @click="game_start">시작</button>
                      </div>
                   </div>
-
-                  <!-- 답 입력창 -->
-                  <div>
-                     <div class="answer">
-                        <input class="input_answer" placeholder="답을 입력해주세요." type="text" />
-                     </div>
+                  
+                  <!-- 321 -->
+                  <div v-else-if="!ready && start ">
+                     <Start />
                   </div>
-
+                  
+                  <!-- 메인화면 -->
+                  <div v-else>
+                     <user-video :stream-manager="mainStreamManager"/>
+                  </div>
+               </div>
+               <!-- 답 입력창 -->
+               <div>
+                  <div class="answer">
+                     <input class="input_answer" placeholder="답을 입력해주세요." type="text" />
+                  </div>
+               </div>
             </div>
          </div>
 
@@ -81,7 +68,7 @@ import UserVideo from '@/components/UserVideo';
 import Chatting from '@/components/GameRoom/Chatting';
 import Button from '@/components/GameRoom/Button';
 import Start from '@/components/GameRoom/Start';
-import Song from '@/components/Game/Song/Song';
+// import Song from '@/components/Game/Song/Song';
 import { video } from '@/mixins/video'
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -96,14 +83,14 @@ export default {
       UserVideo,
       Chatting,
       Button,
-      Song,
+      // Song,
       Start,     
       
    },
 
     data() {
         return {
-            // song_visible: false,
+            song_visible: false,
             // OV: undefined,
             // session: undefined,
             // mainStreamManager: undefined,
@@ -126,8 +113,6 @@ export default {
         }
     },
    created() {
-      
-
     axios.get(`${SERVER_URL}/conferences/info/${this.mySessionId}`)
       .then((res) => {
         this.roominfo = res.data
@@ -142,11 +127,7 @@ export default {
          this.start = true
          setTimeout(() => {
             this.ready = true;
-            console.log('ready')
-            console.log(this.ready)
-            console.log(this.start)
-         }, 3500);
-         console.log('이건언제됨')
+         }, 3600);
          this.mainStreamManager = this.publisher;
 
 
@@ -169,14 +150,29 @@ export default {
    
 }
 .main_box {
-   width: 60%;
+   width: 33vw;
    height: 48vh;
-   background: rgba(192, 192, 199, 0.47);
-   /* border: 3px solid white; */
-   
+   /* background: rgba(192, 192, 199, 0.47); */
+   /* background: blue;
+   border: 3px solid white; */
    border-radius:20px;
    margin: 0 auto 2.5vh;
    display:flex;
+   /* justify-content: center; */
+   align-items: center;
+
+}
+.main_box_2 {
+   position: relative;
+   width: 150%;
+   background: rgba(192, 192, 199, 0.47);
+   border: 3px solid white;
+   border-radius:20px;
+   /* margin: 0 auto 2.5vh; */
+   /* display:flex;
+   justify-content: center;
+   align-items: center; */
+
 }
 .card1{
    width: 100%;
@@ -188,11 +184,10 @@ export default {
 .input_answer {
    outline: none !important;
    color:white;
-   /* height: 83px; */
    display: block;
    font-size: 1rem;
    letter-spacing: 0.15rem;
-   padding: 2vh;
+   padding: 1.5vh 2vh;
    width: 100%;
  
 }
@@ -265,8 +260,11 @@ video {
    
    padding-top:1.8vh;
    /* 맨 아래에 나오는 카메라화면 */
-   width: 40%;
+   /* width: ; */
+      width: 90%;
+   /* height: 48vh; */
    height: auto;
+   position: relative;
 
 }
 
