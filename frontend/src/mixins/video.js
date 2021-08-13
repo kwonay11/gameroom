@@ -71,11 +71,11 @@ export const video = {
         // 'token' parameter should be retrieved and returned by your own backend
         this.getToken(this.mySessionId)
             .then(token => {
-                this.session.connect(token, { clientData: this.myUserNick })
+                this.session.connect(token, { participantPublicId: this.myUserName })
                     .then(() => {
 
                         // --- Get your own camera stream with the desired properties ---
-
+                        console.log(this.myUserName)
                         let publisher = this.OV.initPublisher(undefined, {
                             audioSource: undefined, // The source of audio. If undefined default microphone
                             videoSource: undefined, // The source of video. If undefined default webcam

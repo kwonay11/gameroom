@@ -27,9 +27,11 @@ public class GameService {
     static RpcNotificationService rpcNotificationService;
     public void controlGame(Participant participant, JsonObject message, Set<Participant> participants, RpcNotificationService rnfs) {
         rpcNotificationService = rnfs;
-        System.out.println(participant);
-        System.out.println(message);
-        System.out.println(participants);
+        System.out.println("controlgame 시작");
+        System.out.println(participant); // [participantPrivateId=7ld50k6qfslg5ao22malv3lve8, participantPublicId=con_HxGJQoxLm8, streaming=true]
+        System.out.println(message); // {"to":[],"data":"{\"gameStatus\":0,\"category\":1,\"round\":0,\"conferencid\":\"15\"}","type":"signal:game"}
+        System.out.println(participants); //[[participantPrivateId=hp7f9t6at49glgiv6ncgaa0t83, participantPublicId=con_CTrBt4LyO2, streaming=true],
+                                          // [participantPrivateId=7ld50k6qfslg5ao22malv3lve8, participantPublicId=con_HxGJQoxLm8, streaming=true]]
         JsonObject params = new JsonObject();
 
         // 요청 보낸 사람 ID 저장
@@ -88,5 +90,26 @@ public class GameService {
         }
     }
 }
+    // 게임 시작
+//    private void startGame(Participant participant, JsonObject message, Set<Participant> participants,
+//                           JsonObject params, JsonObject data, RpcNotificationService rnfs) {
+//        log.info("startGame is called by {}", participant.getParticipantPublicId());
+//        int gameId = data.get("gameId").getAsInt();
+//
+//        switch (gameId) {
+//            case SMILE: // 웃으면 술이와요
+//                // 스레드 시작
+//
+//
+//
+//                params.add("data", data);
+//                for (Participant p : participants) {
+//                    rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
+//                            ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
+//                }
+//                break;
+//        }
+//    }
+
 
 

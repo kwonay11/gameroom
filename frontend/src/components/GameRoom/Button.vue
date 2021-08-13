@@ -69,10 +69,10 @@ export default {
     session: Object,
   },
   created: function () {
-        this.session.on('signal:leave',(event) =>{
-            console.log('leave')
-            console.log(event)
-        })
+    this.session.on('signal:leave',(event) =>{
+        console.log('leave')
+        console.log(event)
+    })
   },
 
   methods: {
@@ -109,7 +109,7 @@ export default {
          this.session.signal({
           
          data: JSON.stringify({
-            "roomId" : this.$store.state.conferenceid,
+            "roomId" : this.$route.params.roomid,
             "JWT": this.$store.state.accessToken
          }),
          type: 'leave'

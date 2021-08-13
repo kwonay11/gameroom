@@ -27,6 +27,12 @@ import java.util.stream.Collectors;
 
 import com.google.gson.JsonParser;
 import io.openvidu.server.game.GameService;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+
+
 import org.kurento.client.GenericMediaEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,10 +55,7 @@ import io.openvidu.server.kurento.endpoint.KurentoFilter;
 import io.openvidu.server.kurento.kms.Kms;
 import io.openvidu.server.recording.Recording;
 import io.openvidu.server.rpc.RpcNotificationService;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -403,7 +406,25 @@ public class SessionEventsHandler {
 			httpHeaders.setContentType(MediaType.APPLICATION_JSON);
 			UriComponents uri = UriComponentsBuilder.fromHttpUrl(deleteUrl).build();
 			HttpEntity<?> httpEntity = new HttpEntity<>(httpHeaders);
-			restTemplate.exchange(uri.toString(), HttpMethod.DELETE, httpEntity, String.class);
+			ResponseEntity<String> response = restTemplate.exchange(uri.toString(), HttpMethod.DELETE, httpEntity, String.class);
+			System.out.println("확인");
+			try {
+				JSONParser jsonParser = new JSONParser();
+				JSONObject jsonObject = (JSONObject) jsonParser.parse(response.getBody());
+
+				System.out.println("jsonobject"+ jsonObject);
+				for (Participant p : participants) {
+					rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
+							ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, jsonObject);
+				}
+
+			}
+			catch (ParseException e) {
+				e.printStackTrace();
+			}
+
+
+
 		}
 		if (message.has("type") && message.get("type").getAsString().equals("signal:game")) {
 			gameService.controlGame(participant, message, participants, rpcNotificationService);

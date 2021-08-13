@@ -109,16 +109,7 @@ export default {
                         reject(error);
                     })
             })
-        
-          // this.$store
-          //   .dispatch("joinSession", this.contents)
-          //   .then(() => {
-          //     swal(`즐거운 게임하세요!`);
-              // this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid }});
-          //   })
-          // .catch(() => {
-          //    swal(`잘못된 정보입니다.`);
-          // })
+
 
       },
 
