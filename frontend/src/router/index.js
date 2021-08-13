@@ -60,8 +60,6 @@ const routes = [{
         name: 'RoomPasswordModal',
         component: RoomPasswordModal,
     },
-
-
 ]
 
 const router = new VueRouter({

@@ -27,13 +27,16 @@
                   <!-- 시작하기 버튼 -->
                   <div v-if="!start && !ready">
                      <div class="main_box_2">
-                        <button style='margin: 20vh' @click="game_start">시작</button>
+                        <!-- <button  @click="game_start">시작</button> -->
+                        <div @click="game_start">
+                           <Start />
+                        </div>
                      </div>
                   </div>
                   
                   <!-- 321 -->
                   <div v-else-if="!ready && start ">
-                     <Start />
+                     <Ready />
                   </div>
                   
                   <!-- 메인화면 -->
@@ -41,6 +44,7 @@
                      <user-video :stream-manager="mainStreamManager"/>
                   </div>
                </div>
+
                <!-- 답 입력창 -->
                <div>
                   <div class="answer">
@@ -67,6 +71,7 @@ import axios from 'axios';
 import UserVideo from '@/components/UserVideo';
 import Chatting from '@/components/GameRoom/Chatting';
 import Button from '@/components/GameRoom/Button';
+import Ready from '@/components/GameRoom/Ready';
 import Start from '@/components/GameRoom/Start';
 // import Song from '@/components/Game/Song/Song';
 import { video } from '@/mixins/video'
@@ -84,7 +89,8 @@ export default {
       Chatting,
       Button,
       // Song,
-      Start,     
+      Ready, 
+      Start,    
       
    },
 
@@ -164,14 +170,16 @@ export default {
 }
 .main_box_2 {
    position: relative;
-   width: 150%;
+   width: 33vw;
+   height: 48vh;
+   /* width: 150%; */
    background: rgba(192, 192, 199, 0.47);
    border: 3px solid white;
    border-radius:20px;
    /* margin: 0 auto 2.5vh; */
-   /* display:flex;
+   display:flex;
    justify-content: center;
-   align-items: center; */
+   align-items: center;
 
 }
 .card1{
@@ -282,5 +290,7 @@ video {
 
 
 /* start 버튼*/
+
+
 
 </style>
