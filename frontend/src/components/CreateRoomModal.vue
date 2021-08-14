@@ -130,10 +130,28 @@ export default {
 
 
       },
-    }
+
+  
+    },
+    
 
   }
+ //   this.$store.dispatch("createConference", this.contents)
+        //     .then((res) => {
+        //       console.log(res)
+        //       swal(`즐거운 게임하세요!`);
+        //       console.log( this.$store.state.conferenceid)
+        //       this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid}});
+              
+        //     })
+        //     .catch(() => {
+        //       reject();
+        //       console.log('error')
+        //       swal(`잘못된 정보입니다.`);
+        //     })
 
+        // })
+      
 </script>
 
 

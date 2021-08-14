@@ -57,6 +57,13 @@ public class ConferenceServiceImpl implements ConferenceService {
     public ConferenceHistory exitConference(User user, Long conferenceId){
         // 방 정보(user_conference) 삭제 (userId, RoomId를 통한 삭제)
         Optional<UserConference> conference = userConferenceRepository.findByUserId(user.getId());
+        // 방의 마지막사람은 컨퍼런스 종료시간+ isactive = false로 하고 방을 없애준다.
+        long count = userConferenceRepository.countByConferenceId(conferenceId);
+        if (count == 1L) {
+            Conference one = conferenceRepository.getOne(conferenceId);
+            one.setActive(false);
+            conferenceRepository.save(one);
+        }
         userConferenceRepository.delete(conference.get());
         //컨퍼런스 테이블에 남겨두기 , create(0), join(1), exit(2)
         ConferenceHistory conferenceHistory = ConferenceHistory.builder()
@@ -80,11 +87,11 @@ public class ConferenceServiceImpl implements ConferenceService {
                 .build();
         Conference result = conferenceRepository.save(conference);
 
-//        UserConference userConference = UserConference.builder()
-//                .conference(result)
-//                .user(user)
-//                .build();
-//        userConferenceRepository.save(userConference);
+        UserConference userConference = UserConference.builder()
+                .conference(result)
+                .user(user)
+                .build();
+        userConferenceRepository.save(userConference);
 
         ConferenceHistory conferenceHistory =ConferenceHistory.builder()
                 .conference(result)
@@ -95,6 +102,12 @@ public class ConferenceServiceImpl implements ConferenceService {
 
         return result.getId();
     }
+
+    @Override
+    public Conference saveConference(Conference conference) {
+        return conferenceRepository.save(conference);
+    }
+
 }
 
 

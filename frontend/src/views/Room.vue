@@ -68,11 +68,12 @@
 
          <!--  버튼 -->
          <div class="col-md-4">
-            <Button :publisher="publisher" :roominfo="roominfo" />
+            <Button :publisher="publisher" :roominfo="roominfo" :session="session"/>
             <Chatting :session="session"/>
          </div>
       </div>
-      <!-- </div> -->
+      <!-- test -->
+      <button @click="gametest"> 게임테스트버튼</button>
    </div>
 
 </template>
@@ -89,6 +90,12 @@ import Header from '@/components/GameRoom/Header';
 import { video } from '@/mixins/video'
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
+import { mapState } from 'vuex'
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+// const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
+// const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+// const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
    name: 'Room',
 
@@ -101,8 +108,6 @@ export default {
       CatchMind,
       Song,
       Header,
-
-      
    },
 
     data() {
@@ -153,7 +158,32 @@ export default {
             console.log(err)
          })
       },
+
+
+      
+      gametest() {
+         this.session.signal({
+            // test 용 하드 코딩 
+            data: JSON.stringify({
+               "gameStatus": 3,
+               "category" :2,
+               "round":5,
+               "conferenceId": this.$route.params.roomid,
+               "JWT":this.$store.state.accessToken
+            }),
+            type: 'game'
+         })
+         .then(() => {
+            console.log('Message success');
+         })
+         .catch(error => {
+            console.log(error);
+         })
+      },
    },
+
+   
+   computed: mapState(['conferenceid']),
 
    mixins: [video]
 
