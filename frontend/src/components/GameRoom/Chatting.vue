@@ -53,6 +53,9 @@ export default {
       },
    },
    created: function () {
+      console.log('세션')
+      console.log(this.session)
+
         this.myUserNick = this.$store.state.userData.nickname
 
       //  방에 들어와 있는 모든 사람이 받는거
@@ -84,6 +87,7 @@ export default {
             // post 같은 느낌 = signal
             console.log('채팅')
                   console.log(this.chattings)
+
             this.session.signal({
                     data: JSON.stringify(this.chattings),
                     type: 'my-chat'

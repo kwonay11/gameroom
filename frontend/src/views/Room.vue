@@ -45,7 +45,7 @@
                   <!-- 메인화면 -->
                   <div v-else>
                      <div v-if='roominfo.gameId === 2'>
-                        <CatchMind />
+                        <CatchMind :session="session"/>
                      </div>
                      <div v-else>
                         <user-video :stream-manager="mainStreamManager"/>
@@ -125,18 +125,14 @@ export default {
       this.session.on('signal:start-btn', (event) => {
          console.log('room임!!')
          console.log(event)
+
          this.start = true
          setTimeout(() => {
             this.ready = true;
             }, 3600);
 
-         // this.ready = true
-         console.log('이거 언제나옴')
-
-         console.log(this.ready)
          this.mainStreamManager = this.publisher;
-         this.publisher.accessAllowed = true
-         this.publisher.accessDenied = false
+
 
       })
 
@@ -146,9 +142,6 @@ export default {
          this.song_visible = !this.song_visible;
       },
       game_start() {
-         this.start = true
-
-         this.mainStreamManager = this.publisher;
          this.session.signal({
             data: JSON.stringify(this.ready),
             type: 'start-btn'
@@ -159,8 +152,6 @@ export default {
          .catch(err => {
             console.log(err)
          })
-
-
       },
    },
 
