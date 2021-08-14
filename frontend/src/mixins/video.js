@@ -74,9 +74,9 @@ export const video = {
         // openvidu에서 new signal로 뿌려지는곳은 signal로 response함 
         this.session.on('signal', (event) => {
             console.log(event.data.data);
-            const status = JSON.parse(event.data.data);
-            console.log(status);
-            console.log(typeof(status));
+            // const status = JSON.parse(event.data.data);
+            // console.log(status);
+            // console.log(typeof(status));
             console.log(typeof(event.data.data));
         });
 

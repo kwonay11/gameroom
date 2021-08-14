@@ -88,7 +88,7 @@ import CatchMind from '@/components/Game/CatchMind/CatchMind';
 import Song from '@/components/Game/Song/Song';
 import Header from '@/components/GameRoom/Header';
 import { video } from '@/mixins/video'
-
+import axios from 'axios'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import { mapState } from 'vuex'
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -120,6 +120,8 @@ export default {
         }
     },
    created() {
+      console.log('4555554')
+      console.log(this.mySessionId)
     this.$axios.get(`${SERVER_URL}/conferences/info/${this.mySessionId}`)
       .then((res) => {
         this.roominfo = res.data
