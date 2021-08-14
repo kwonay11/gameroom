@@ -201,12 +201,6 @@ export default {
    align-items: center;
 
 }
-.card1{
-   width: 100%;
-   float:right;
-   background: rgba(104, 102, 163, 0.47);
-   color:white;
-}
 
 .input_answer {
    outline: none !important;

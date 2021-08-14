@@ -2,7 +2,33 @@
   <div class='button'>
       <div class="link">
         <!-- 방장만 보이게 하기 -->
-        <img  src="@/assets/settings.png" alt="setting">
+        <img  src="@/assets/settings.png" alt="setting" @click='setting'>
+        
+        <app-my-modal :visible.sync="visible_setting">
+          <div class="title">
+            게임 변경
+          </div>
+          <div>
+            <div class="row_box row">
+          <div class="left">
+            <img class="room_img1 p-2" src="@/assets/game.png" alt="games">
+          </div>
+          <div class="right">
+            <select  v-model="games" class="card__input " >
+              <option disabled value="">게임 선택</option>
+              <option >몸으로 말해요</option>
+              <option >캐치마인드</option>
+              <option >고요속의 외침</option>
+              <option >노래방</option>
+              <option >순간포착</option>
+              <option >글자 맞추기</option>
+            </select>
+        </div>
+      </div>
+      <br>
+            <button class="btn-animate" @click="changeGame()">start</button>
+          </div>
+          </app-my-modal>
 
         <img  src="@/assets/link.png" alt="link" @click='link'>
       </div>
@@ -57,6 +83,7 @@
 <script>
 import myModal from '@/components/myModal'
 import swal from 'sweetalert';
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name: 'Button',
@@ -64,8 +91,15 @@ export default {
   data() {
     return {
        visible_url: false,
+       visible_setting: false,
        visible_tutorial: false,
        url: null,
+       contents: {
+          title:'',
+          password:'',
+          maxUser: '',
+          gamecategory: '',
+        },
     }
   },
   components: {
@@ -109,6 +143,38 @@ export default {
     },
     tutorial() {
       this.visible_tutorial = !this.visible_tutorial
+    },
+    setting() {
+      this.visible_setting = !this.visible_setting
+    },
+    changeGame(){
+      console.log(this.games)
+      if (this.games === '몸으로 말해요'){
+        this.contents.gamecategory = 1
+      }else if (this.games === '캐치 마인드'){
+        this.contents.gamecategory = 2
+      }else if (this.games === '고요속의 외침'){
+        this.contents.gamecategory = 3
+      }else if (this.games === '노래방'){
+        this.contents.gamecategory = 4
+      }else if (this.games === '순간포착'){
+        this.contents.gamecategory = 5
+      }else if (this.games === '글자 맞추기'){
+        this.contents.gamecategory = 6
+      }
+      console.log(this.contents.gamecategory)
+      this.$axios.post(`${SERVER_URL}/conferences`, this.contents)
+        .then((res) => {
+            console.log('성공')
+            console.log(res)//contents 빈값 들어옴 방 생성할 때 연결시켜줘야함
+            // this.$store.dispatch('joinSession',res.data.roomId)
+            // this.$router.push({ name: "Room" , params: {roomid: res.data.roomId }});
+            
+            this.visible_setting = !this.visible_setting
+        })
+        .catch((error) => {
+            console.log(error);
+        })
     }
   }
 
@@ -116,6 +182,14 @@ export default {
 }
 </script>
 <style scoped>
+.title{
+  text-shadow: 5px 5px 70px rgba(190, 209, 212, 0.582);
+  font-size: 65px;
+  background: linear-gradient(to bottom,#a769d6 ,#6f92d8);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   
+}
 .button{
   display:flex;
   flex-direction: column;

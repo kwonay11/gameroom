@@ -55,7 +55,8 @@ export default new Vuex.Store({
         },
         GAMECATEGORY: function(state, gamecategory_id) {
             state.gamecategory = gamecategory_id
-        }
+        },
+      
     },
 
     actions: {
