@@ -80,13 +80,17 @@ export default {
    },
        methods: {
         sendMessage() {
+
             // post 같은 느낌 = signal
+            console.log('채팅')
+                  console.log(this.chattings)
             this.session.signal({
                     data: JSON.stringify(this.chattings),
                     type: 'my-chat'
                 })
                 .then(() => {
                     this.chattings = '';
+                    
                     console.log('Message success');
                 })
                 .catch(error => {

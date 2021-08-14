@@ -78,8 +78,6 @@
 </template>
 
 <script>
-// import axios from 'axios';
-// import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '@/components/UserVideo';
 import Chatting from '@/components/GameRoom/Chatting';
 import Button from '@/components/GameRoom/Button';
@@ -90,10 +88,6 @@ import Song from '@/components/Game/Song/Song';
 import Header from '@/components/GameRoom/Header';
 import { video } from '@/mixins/video'
 
-// axios.defaults.headers.post['Content-Type'] = 'application/json';
-
-// const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
-// const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
    name: 'Room',
@@ -114,21 +108,6 @@ export default {
     data() {
         return {
             song_visible: false,
-            // OV: undefined,
-            // session: undefined,
-            // mainStreamManager: undefined,
-            // // 이게 나
-            // publisher: undefined,
-            // // 이게 나를 뺀 방에 들어와있는 나머지 사람들
-            // subscribers: [],
-
-            // mySessionId: null,
-            // myUserName: '',
-            // myUserNick: '',
-            // canJoin: null,
-
-            // roominfo: {},
-
             start: false,
             ready: false,
             aa: false
@@ -143,6 +122,24 @@ export default {
         console.log(this.roominfo)
       })
 
+      this.session.on('signal:start-btn', (event) => {
+         console.log('room임!!')
+         console.log(event)
+         this.start = true
+         setTimeout(() => {
+            this.ready = true;
+            }, 3600);
+
+         // this.ready = true
+         console.log('이거 언제나옴')
+
+         console.log(this.ready)
+         this.mainStreamManager = this.publisher;
+         this.publisher.accessAllowed = true
+         this.publisher.accessDenied = false
+
+      })
+
   },
   methods: {
       song(){
@@ -150,10 +147,18 @@ export default {
       },
       game_start() {
          this.start = true
-         setTimeout(() => {
-            this.ready = true;
-         }, 3600);
+
          this.mainStreamManager = this.publisher;
+         this.session.signal({
+            data: JSON.stringify(this.ready),
+            type: 'start-btn'
+         })
+         .then(() => {
+            console.log('스타트버튼')
+         })
+         .catch(err => {
+            console.log(err)
+         })
 
 
       },
