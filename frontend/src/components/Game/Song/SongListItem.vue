@@ -1,10 +1,11 @@
 <template>
-<div class="d-flex p-2 bd-highlight">
-  <ol @click="selectVideo" >
-    <img :src="youtubeImageSrc" alt="youtube-thumbnail-image" width="100">
-    {{ video.snippet.title | stringUnescape }}
-    <hr>
-  </ol>
+<div class="p-2">
+  <section @click="selectVideo">
+    <img :src="youtubeImageSrc" alt="youtube-thumbnail-image" width="200px">
+    <span class="listitem"><h5>{{ video.snippet.title | stringUnescape }}</h5>
+    </span>
+    
+  </section>
 </div>
 </template>
 
@@ -16,7 +17,8 @@ export default {
   props: {
     video: {
       type: Object,
-    }
+    },
+    
   },
   filters: {
     stringUnescape: function (rawText) {
@@ -36,6 +38,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.listitem h5{
+  color:white;
+  font-size: 15px;
+  width:40%;
+  float:right;
+  padding-top: 30px;
+
+}
 
 </style>

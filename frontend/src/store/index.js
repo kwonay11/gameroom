@@ -7,7 +7,6 @@ Vue.use(Vuex)
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 
-
 export default new Vuex.Store({
     plugins: [
         createPersistedState()
@@ -28,7 +27,6 @@ export default new Vuex.Store({
 
     },
     mutations: {
-
         SET_USER_DATA(state, data) {
             state.user = data;
         },

@@ -165,6 +165,8 @@ export const video = {
 
         // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessions
         createSession(sessionId) {
+            console.log('세션 확인')
+            console.log(sessionId)
             return new Promise((resolve, reject) => {
                 axios
                     .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, JSON.stringify({

@@ -56,7 +56,7 @@
 import { authComputed } from "@/store/helpers"
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import VueHorizontalList from "vue-horizontal-list";
-import axios from 'axios'
+// import axios from 'axios'
 import _ from "lodash"
 
 export default {
@@ -91,7 +91,7 @@ export default {
     ...authComputed,
   },
     created(){
-    axios.get(`${SERVER_URL}/conferences`)
+    this.$axios.get(`${SERVER_URL}/conferences`)
     .then((res) => {
       this.waiting_games = res.data
       // console.log(this.waiting_games)

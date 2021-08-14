@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-text-field class="card col-md-4" 
+    <v-text-field class="card col-md-3" 
     dark
     label="노래를 검색하세요 :) "
     color="#BDBDBD"
@@ -14,8 +14,7 @@ export default {
     name:'Search',
     methods: {
         onInputKeyword: function(event){
-          console.log('검색어')
-          console.log(event.target.value)
+          console.log(event)
           this.$emit('input-search', event.target.value)
         },
     }
@@ -26,10 +25,10 @@ export default {
 <style scoped>
 .card{
     position: relative;
-    left:33%;
+    left:36%;
     padding:2vh 1vw 0 1vw ;
     background: rgba(77, 14, 114, 0.47);
-    border: 3px solid #FFFFFF;
+    border: 2px solid #FFFFFF;
 }
 
 </style>

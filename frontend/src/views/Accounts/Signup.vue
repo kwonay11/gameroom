@@ -43,7 +43,7 @@
 <script>
 import swal from 'sweetalert';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-import axios from 'axios'
+// import axios from 'axios'
 
 export default {
      name: "Signup",
@@ -74,7 +74,7 @@ export default {
       },
       check: function(){
         
-        axios.post(`${SERVER_URL}/users/check`,this.credentials)
+        this.$axios.post(`${SERVER_URL}/users/check`,this.credentials)
          .then((res) => {
            if (res.status === 200) {
             this.id_check = true

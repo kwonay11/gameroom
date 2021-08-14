@@ -39,14 +39,17 @@
           <img  src="@/assets/delete.png" alt="delete">
         </span>
 
-        <!-- 게임 설명 -->
-        <span class="buttons">
-          <img  src="@/assets/question.png" alt="tutorial" @click='tutorial'>
-        </span>
+            <!-- 게임 설명 -->
+            <span class="buttons">
+              <img src="@/assets/question.png" alt="tutorial" @click='tutorial'>
+            </span>
       </div>
       <app-my-modal :visible.sync="visible_tutorial">
-        <div>
-          <p> {{ roominfo.gameSummary }}</p>
+        <div class="gamename">
+          <h1>
+            {{ roominfo.gameName }}
+         </h1>
+          <p style="color:white"> {{ roominfo.gameSummary }}</p>
         </div>
       </app-my-modal>
   </div>
@@ -149,5 +152,10 @@ img {
   width : 4vw;
   height : 6.7vh;
 }
-
+.gamename h1{
+  padding-top:1vh;
+  background: linear-gradient(to bottom,#B993D6 ,#8CA6DB);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+}
 </style>
