@@ -68,11 +68,12 @@
 
          <!--  버튼 -->
          <div class="col-md-4">
-            <Button :publisher="publisher" :roominfo="roominfo" />
+            <Button :publisher="publisher" :roominfo="roominfo" :session="session"/>
             <Chatting :session="session"/>
          </div>
       </div>
-      <!-- </div> -->
+      <!-- test -->
+      <button @click="gametest"> 게임테스트버튼</button>
    </div>
 
 </template>
@@ -87,8 +88,14 @@ import CatchMind from '@/components/Game/CatchMind/CatchMind';
 import Song from '@/components/Game/Song/Song';
 import Header from '@/components/GameRoom/Header';
 import { video } from '@/mixins/video'
-
+import axios from 'axios'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
+import { mapState } from 'vuex'
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+
+// const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
+// const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+// const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
    name: 'Room',
 
@@ -101,8 +108,6 @@ export default {
       CatchMind,
       Song,
       Header,
-
-      
    },
 
     data() {
@@ -115,7 +120,9 @@ export default {
         }
     },
    created() {
-    this.$axios.get(`${SERVER_URL}/conferences/info/${this.mySessionId}`)
+      console.log('4555554')
+      const room_id = this.$route.params.roomid;
+      this.$axios.get(`${SERVER_URL}/conferences/info/${room_id}`)
       .then((res) => {
         this.roominfo = res.data
         console.log('여기ㅐ')
@@ -136,6 +143,16 @@ export default {
 
       })
 
+
+              // openvidu에서 new signal로 뿌려지는곳은 signal로 response함 
+        this.session.on('signal', (event) => {
+            console.log(event.data.data);
+            // const status = JSON.parse(event.data.data);
+            // console.log(status);
+            // console.log(typeof(status));
+            // console.log(typeof(event.data.data));
+        });
+
   },
   methods: {
       song(){
@@ -153,7 +170,32 @@ export default {
             console.log(err)
          })
       },
+
+
+      
+      gametest() {
+         this.session.signal({
+            // test 용 하드 코딩 
+            data: JSON.stringify({
+               "gameStatus": 0,
+               "category" :1,
+               "round":0,
+               "conferenceId": this.$route.params.roomid,
+               "JWT":this.$store.state.accessToken
+            }),
+            type: 'game'
+         })
+         .then(() => {
+            console.log('Message success');
+         })
+         .catch(error => {
+            console.log(error);
+         })
+      },
    },
+
+   
+   computed: mapState(['conferenceid']),
 
    mixins: [video]
 

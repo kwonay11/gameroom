@@ -3,7 +3,10 @@ package com.ssafy.api.service;
 import com.ssafy.api.request.UserUpdateNicknamePutReq;
 import com.ssafy.api.request.UserRegisterPostReq;
 import com.ssafy.api.request.UserUpdatePasswordPostReq;
+import com.ssafy.db.entity.Game;
+import com.ssafy.db.entity.GameCategory;
 import com.ssafy.db.entity.User;
+import com.ssafy.db.entity.WinRate;
 import org.springframework.http.ResponseEntity;
 
 /**
@@ -12,7 +15,7 @@ import org.springframework.http.ResponseEntity;
 public interface UserService {
 	User createUser(UserRegisterPostReq userRegisterInfo);
 	User getUserByUserId(String userId);
-
+	User getUserById(Long id);
 	void removeUser(String userId); //user 삭제
 
 	void modifyUser(UserUpdateNicknamePutReq userDTO);
@@ -39,4 +42,6 @@ public interface UserService {
 	}
 
 	ResponseEntity updateUserPassword(String id, UserUpdatePasswordPostReq userReq);
+	WinRate getWinRateByUserAndGameCategory(User user, GameCategory gameCategory);
+	WinRate saveWinRate(WinRate winRate);
 }

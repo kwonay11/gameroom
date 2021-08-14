@@ -7,7 +7,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 const OPENVIDU_SERVER_URL = "https://127.0.0.1:5443";
 // const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
+// const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 
 export const video = {
@@ -37,16 +37,19 @@ export const video = {
 
 
         // 방 ID 인거 같고
-        this.mySessionId = this.$route.params.roomid
-        this.myUserName = this.$store.state.id
-        this.myUserNick = this.$store.state.userData.nickname
-            // console.log(this.mySessionId)
-            // console.log(this.myUserName)
+
+        // console.log(this.mySessionId)
+        // console.log(this.myUserName)
         this.OV = new OpenVidu();
         // --- Init a session ---
         this.session = this.OV.initSession();
-
-        // --- Specify the actions when events take place in the session ---
+        this.mySessionId = this.$route.params.conferenceid;
+        console.log('세션!!!!!!!!')
+        console.log(this.$route.params)
+        console.log(this.mySessionId)
+        this.myUserName = this.$store.state.id
+        this.myUserNick = this.$store.state.userData.nickname
+            // --- Specify the actions when events take place in the session ---
 
         // On every new Stream received...
         this.session.on('streamCreated', ({ stream }) => {
@@ -62,38 +65,44 @@ export const video = {
             }
         });
 
+
         // On every asynchronous exception...
         this.session.on('exception', ({ exception }) => {
             console.warn(exception);
         });
+        this.session.on('signal:game', (event) => {
+            console.log(event);
+        });
+
+
         axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
         // --- Connect to the session with a valid user token ---
         console.log('room확인')
-        axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
-            .then((res) => {
-                console.log(res.status)
-                if (res.status == 200) {
-                    this.canJoin = true;
-                } else {
-                    this.canJoin = false;
-                }
-                if (!this.canJoin)
-                    return;
-            })
-            .catch(() => {
-                this.$router.push({ name: 'MainPage' })
-                this.canJoin = false;
-            });
+            // axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
+            //     .then((res) => {
+            //         console.log(res.status)
+            //         if (res.status == 200) {
+            //             this.canJoin = true;
+            //         } else {
+            //             this.canJoin = false;
+            //         }
+            //         if (!this.canJoin)
+            //             return;
+            //     })
+            //     .catch(() => {
+            //         this.$router.push({ name: 'MainPage' })
+            //         this.canJoin = false;
+            //     });
 
         // 'getToken' method is simulating what your server-side should do.
         // 'token' parameter should be retrieved and returned by your own backend
         this.getToken(this.mySessionId)
             .then(token => {
-                this.session.connect(token, { clientData: this.myUserNick })
+                this.session.connect(token, { participantPublicId: this.myUserName })
                     .then(() => {
 
                         // --- Get your own camera stream with the desired properties ---
-
+                        console.log(this.myUserName)
                         let publisher = this.OV.initPublisher(undefined, {
                             audioSource: undefined, // The source of audio. If undefined default microphone
                             videoSource: undefined, // The source of video. If undefined default webcam
@@ -127,20 +136,19 @@ export const video = {
 
     },
     methods: {
+        // leaveSession() {
+        //     // --- Leave the session by calling 'disconnect' method over the Session object ---
+        //     console.log('leavesesion')
+        //     if (this.session) this.session.disconnect();
 
-        leaveSession() {
-            // --- Leave the session by calling 'disconnect' method over the Session object ---
-            if (this.session) this.session.disconnect();
+        //     this.session = undefined;
+        //     this.mainStreamManager = undefined;
+        //     this.publisher = undefined;
+        //     this.subscribers = [];
+        //     this.OV = undefined;
 
-            this.session = undefined;
-            this.mainStreamManager = undefined;
-            this.publisher = undefined;
-            this.subscribers = [];
-            this.OV = undefined;
-
-            window.removeEventListener('beforeunload', this.leaveSession);
-        },
-
+        //     window.removeEventListener('beforeunload', this.leaveSession);
+        // },
         updateMainVideoStreamManager(stream) {
             if (this.mainStreamManager === stream) return;
             this.mainStreamManager = stream;
@@ -168,6 +176,7 @@ export const video = {
             console.log('세션 확인')
             console.log(sessionId)
             return new Promise((resolve, reject) => {
+                console.log(this.$store.state.conferenceid)
                 axios
                     .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, JSON.stringify({
                         customSessionId: String(sessionId),
@@ -181,7 +190,7 @@ export const video = {
                     .then(data => resolve(data.id))
                     .catch(error => {
                         if (error.response.status === 409) {
-                            resolve(sessionId);
+                            resolve();
                         } else {
                             console.warn(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`);
                             if (window.confirm(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`)) {

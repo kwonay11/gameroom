@@ -1,8 +1,11 @@
 package com.ssafy.db.entity;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import java.time.LocalDateTime;
@@ -14,6 +17,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor // @Builder를 사용하기 위한 어노테이션
 @NoArgsConstructor // @Builder를 사용하기 위한 어노테이션
 @ToString(exclude = {"user","game"})
+@EntityListeners(AuditingEntityListener.class)
 public class GameHistory extends BaseEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -24,6 +28,7 @@ public class GameHistory extends BaseEntity{
 
     private int action; // 게임 끝날떄와 시작되는것 판단용
 
+    @CreatedDate
     private LocalDateTime insertedTime; // 생성시간
 
     private int ranking; // 게임 끝날때 자신의 순위 기록용

@@ -7,7 +7,7 @@
 
       <template v-slot:default="{ item }">
         <div>
-          <div class="image-container">
+          <div class="image-container" v-if="item">
 
             <img :src="image_url[item.gameId-1]" />
 

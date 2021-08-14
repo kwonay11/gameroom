@@ -4,6 +4,10 @@ import com.ssafy.api.request.UserUpdateNicknamePutReq;
 import com.ssafy.api.request.UserUpdatePasswordPostReq;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.common.util.JwtTokenUtil;
+import com.ssafy.db.entity.Game;
+import com.ssafy.db.entity.GameCategory;
+import com.ssafy.db.entity.WinRate;
+import com.ssafy.db.repository.WinRateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,7 +30,10 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	UserRepositorySupport userRepositorySupport;
-	
+
+	@Autowired
+	WinRateRepository winRateRepository;
+
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	
@@ -45,6 +52,11 @@ public class UserServiceImpl implements UserService {
 		// 디비에 유저 정보 조회 (userId 를 통한 조회).
 		User user = userRepositorySupport.findUserByUserId(userId).get();
 		return user;
+	}
+
+	@Override
+	public User getUserById(Long id) {
+		return userRepository.findById(id).get();
 	}
 
 	@Override
@@ -85,5 +97,15 @@ public class UserServiceImpl implements UserService {
 		}
 		// 유효하지 않는 패스워드인 경우, 인증 실패로 응답.
 		return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", JwtTokenUtil.getToken(id)));
+	}
+
+	@Override
+	public WinRate getWinRateByUserAndGameCategory(User user, GameCategory gameCategory) {
+		return winRateRepository.findWinRateByUserAndGameCategory(user, gameCategory);
+	}
+
+	@Override
+	public WinRate saveWinRate(WinRate winRate) {
+		return winRateRepository.save(winRate);
 	}
 }
