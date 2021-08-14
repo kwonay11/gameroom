@@ -1,4 +1,6 @@
 package com.ssafy.api.controller;
+import com.ssafy.api.response.UserRes;
+import com.ssafy.api.response.testres;
 import com.ssafy.api.service.GameCategoryService;
 import com.ssafy.db.entity.*;
 import io.swagger.annotations.Api;
@@ -8,6 +10,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
@@ -38,5 +41,16 @@ public class GameCategoryController {
         List<GameCategory> res = gameService.getGameCategoryList();
 
         return ResponseEntity.status(200).body(res);
+    }
+    @PostMapping("/test")
+    public ResponseEntity<testres> test(){
+
+        testres res = new testres();
+        res.setKeyword("키워드");
+        res.setQuestioner("1");
+        res.setRound("1");
+
+        return ResponseEntity.status(200).body(res);
+
     }
 }

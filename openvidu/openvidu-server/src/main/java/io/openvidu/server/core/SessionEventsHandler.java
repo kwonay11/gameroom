@@ -56,6 +56,8 @@ import io.openvidu.server.kurento.kms.Kms;
 import io.openvidu.server.recording.Recording;
 import io.openvidu.server.rpc.RpcNotificationService;
 import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -413,9 +415,15 @@ public class SessionEventsHandler {
 				JSONObject jsonObject = (JSONObject) jsonParser.parse(response.getBody());
 
 				System.out.println("jsonobject"+ jsonObject);
+
+				data.addProperty("status", String.valueOf(jsonObject));
+
+				JsonObject params = new JsonObject();
+				params.add("data",data);
+
 				for (Participant p : participants) {
 					rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
-							ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, jsonObject);
+							ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
 				}
 
 			}

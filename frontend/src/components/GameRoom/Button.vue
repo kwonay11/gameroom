@@ -115,8 +115,8 @@ export default {
          type: 'leave'
          })
          .then(() => {
-				console.log('leave success');
-            this.$router.push({ name: "MainPage" });
+          console.log('leave success');
+          this.$router.push({ name: "MainPage" });
             
 			})
 			.catch(error => {

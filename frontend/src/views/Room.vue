@@ -85,7 +85,7 @@ export default {
                "gameStatus": 0,
                "category" :1,
                "round":0,
-               "conferencid": this.$route.params.roomid,
+               "conferenceId": this.$route.params.roomid,
             }),
             type: 'game'
          })
