@@ -95,6 +95,12 @@ public class ConferenceServiceImpl implements ConferenceService {
 
         return result.getId();
     }
+
+    @Override
+    public Conference saveConference(Conference conference) {
+        return conferenceRepository.save(conference);
+    }
+
 }
 
 
