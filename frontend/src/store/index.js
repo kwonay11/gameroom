@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import axios from "axios";
+import axios from "axios";
 import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex)
@@ -39,7 +39,7 @@ export default new Vuex.Store({
             state.user = null
             state.id = null
             localStorage.removeItem('user')
-            this.$axios.defaults.headers.common['Authorization'] = null
+            axios.defaults.headers.common['Authorization'] = null
         },
         FETCH_USER: function(state, res) {
             state.userData = res.data
@@ -60,7 +60,7 @@ export default new Vuex.Store({
 
     actions: {
         signup({ commit }, credentials) {
-            return this.$axios
+            return axios
                 .post(`${SERVER_URL}/users`, credentials)
                 .then(({ data }) => {
                     commit("SET_USER_DATA", data);
@@ -73,39 +73,39 @@ export default new Vuex.Store({
             commit("LOGOUT");
         },
         fetchUser: function({ commit }, id) {
-            this.$axios.get(`${SERVER_URL}/users/${id}`)
+            axios.get(`${SERVER_URL}/users/${id}`)
                 .then((res) => {
                     commit('FETCH_USER', res)
                 })
         },
         newnickname: function({ commit }, content) {
-            this.$axios.defaults.headers.common[
+            axios.defaults.headers.common[
                 "Authorization"
             ] = `Bearer ${this.state.accessToken}`;
 
-            this.$axios.put(`${SERVER_URL}/users/nickname/${this.state.id}`, content)
+            axios.put(`${SERVER_URL}/users/nickname/${this.state.id}`, content)
                 .then(() => {
                     commit('NEW_NICKNAME', content.nickname)
                 })
         },
         newpassword: function({ commit }, content) {
 
-            this.$axios.defaults.headers.common[
+            axios.defaults.headers.common[
                 "Authorization"
             ] = `Bearer ${this.state.accessToken}`;
 
-            this.$axios.put(`${SERVER_URL}/users/${this.state.id}`, content)
+            axios.put(`${SERVER_URL}/users/${this.state.id}`, content)
                 .then(() => {
                     commit('NEW_PASSWORD', content.changePassword)
                 })
         },
         joinSession: function({ commit }, contents) {
             return new Promise((resolve, reject) => {
-                // this.$axios.defaults.headers.common[
-                //     "Authorization"
-                // ] = `Bearer ${this.state.accessToken}`;
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${this.state.accessToken}`;
 
-                this.$axios.post(`${SERVER_URL}/conferences`, contents)
+                axios.post(`${SERVER_URL}/conferences`, contents)
                     .then((res) => {
                         // console.log(res.data.roomId)
                         commit('CONFERENCE_ID', res.data.roomId)
