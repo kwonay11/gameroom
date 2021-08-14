@@ -21,6 +21,7 @@ public interface ConferenceService {
     Optional<List<ConferenceMapping>> getConferenceByActiveTrue();
     Long register(ConferenceRegisterPostReq dto);
     Conference saveConference(Conference conference);
+    String getPasswordById(Long id);
 }
 
 
