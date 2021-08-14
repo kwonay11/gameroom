@@ -23,11 +23,11 @@
          <div id="main-video" class="col-md-8">
             <!-- 크게 보이는 화면 -->
             <div class="player">
-               <div class="main_box">
+               <!-- <CatchMind /> -->
+              <div class="main_box">
                   <!-- 시작하기 버튼 -->
                   <div v-if="!start && !ready">
                      <div class="main_box_2">
-                        <!-- <button  @click="game_start">시작</button> -->
                         <div @click="game_start">
                            <Start />
                         </div>
@@ -41,12 +41,21 @@
                   
                   <!-- 메인화면 -->
                   <div v-else>
-                     <user-video :stream-manager="mainStreamManager"/>
+                     <div v-if='roominfo.gameId == 2'>
+                        <CatchMind />
+                     </div>
+                     <div v-else>
+                        <user-video :stream-manager="mainStreamManager"/>
+                     </div>
                   </div>
                </div>
 
                <!-- 답 입력창 -->
                <div>
+                  <!-- 출제자 일때 -> 답 입력창 안보이고, 캐치마인드는 색 변경, 클리어버튼 -->
+                  <div>
+
+                  </div>
                   <div class="answer">
                      <input class="input_answer" placeholder="답을 입력해주세요." type="text" />
                   </div>
@@ -74,6 +83,8 @@ import Button from '@/components/GameRoom/Button';
 import Ready from '@/components/GameRoom/Ready';
 import Start from '@/components/GameRoom/Start';
 // import Song from '@/components/Game/Song/Song';
+import CatchMind from '@/components/Game/CatchMind/CatchMind';
+
 import { video } from '@/mixins/video'
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -90,7 +101,8 @@ export default {
       Button,
       // Song,
       Ready, 
-      Start,    
+      Start,
+      CatchMind,    
       
    },
 
@@ -122,6 +134,8 @@ export default {
     axios.get(`${SERVER_URL}/conferences/info/${this.mySessionId}`)
       .then((res) => {
         this.roominfo = res.data
+        console.log('여기ㅐ')
+        console.log(this.roominfo)
       })
 
   },
