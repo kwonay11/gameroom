@@ -121,8 +121,8 @@ export default {
     },
    created() {
       console.log('4555554')
-      console.log(this.mySessionId)
-    this.$axios.get(`${SERVER_URL}/conferences/info/${this.mySessionId}`)
+      const room_id = this.$route.params.roomid;
+      this.$axios.get(`${SERVER_URL}/conferences/info/${room_id}`)
       .then((res) => {
         this.roominfo = res.data
         console.log('여기ㅐ')
@@ -142,6 +142,16 @@ export default {
 
 
       })
+
+
+              // openvidu에서 new signal로 뿌려지는곳은 signal로 response함 
+        this.session.on('signal', (event) => {
+            console.log(event.data.data);
+            // const status = JSON.parse(event.data.data);
+            // console.log(status);
+            // console.log(typeof(status));
+            // console.log(typeof(event.data.data));
+        });
 
   },
   methods: {
@@ -167,9 +177,9 @@ export default {
          this.session.signal({
             // test 용 하드 코딩 
             data: JSON.stringify({
-               "gameStatus": 3,
-               "category" :2,
-               "round":5,
+               "gameStatus": 0,
+               "category" :1,
+               "round":0,
                "conferenceId": this.$route.params.roomid,
                "JWT":this.$store.state.accessToken
             }),

@@ -69,6 +69,8 @@ export default new Vuex.Store({
         },
         CONFERENCE_ID: function(state, conferenceid) {
             state.conferenceid = conferenceid
+            console.log('store')
+            console.log(state.conferenceid)
         },
         GAMECATEGORY: function(state, gamecategory_id) {
             state.gamecategory = gamecategory_id
@@ -146,6 +148,8 @@ export default new Vuex.Store({
         // },
 
         joinSession: function({ commit }, contents) {
+            console.log('store_joinsession')
+            console.log(contents)
             commit('CONFERENCE_ID', contents)
         },
 

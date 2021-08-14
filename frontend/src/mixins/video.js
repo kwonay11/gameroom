@@ -44,7 +44,9 @@ export const video = {
         // --- Init a session ---
         this.session = this.OV.initSession();
         this.mySessionId = this.$route.params.conferenceid;
-        // console.log(this.mySessionId)
+        console.log('세션!!!!!!!!')
+        console.log(this.$route.params)
+        console.log(this.mySessionId)
         this.myUserName = this.$store.state.id
         this.myUserNick = this.$store.state.userData.nickname
             // --- Specify the actions when events take place in the session ---
@@ -71,14 +73,7 @@ export const video = {
         this.session.on('signal:game', (event) => {
             console.log(event);
         });
-        // openvidu에서 new signal로 뿌려지는곳은 signal로 response함 
-        this.session.on('signal', (event) => {
-            console.log(event.data.data);
-            // const status = JSON.parse(event.data.data);
-            // console.log(status);
-            // console.log(typeof(status));
-            console.log(typeof(event.data.data));
-        });
+
 
         axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
         // --- Connect to the session with a valid user token ---
