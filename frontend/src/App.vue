@@ -40,9 +40,20 @@ export default {
 </script>
 
 <style lang="scss">
-
+@font-face {
+    font-family: '양진체';
+    src: url('https://cdn.jsdelivr.net/gh/supernovice-lab/font@0.9/yangjin.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'IM_Hyemin-Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/IM_Hyemin-Bold.woff2') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 #total {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: '양진체','IM_Hyemin-Bold';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #000000;

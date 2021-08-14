@@ -66,6 +66,7 @@ export default {
   
 }
 .btn_text1 {
+  font-family: 'IM_Hyemin-Bold';
   margin: auto;
   font-weight: 600;
   display: block;
