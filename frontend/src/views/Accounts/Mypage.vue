@@ -14,7 +14,9 @@
     <button class="v113_111" @click="nickname"><img style="width:90%" src="@/assets/연필1.png" alt="img"></button>
     <app-my-modal :visible.sync="visible">
       <div>
-        <img style="width:90%" src="@/assets/닉네임변경.png" alt="img">
+        <div class="title">
+            닉네임 변경
+          </div>
         <input class="_input" v-model="new_nickname" placeholder="새로운 닉네임" type="text" />
         <div v-if="!new_nickname" style="color:white">변경할 닉네임을 입력해 주세요.</div>
         <button v-if="new_nickname" @click="nick_save" class="btn-animate">확인
@@ -30,7 +32,9 @@
     <button class="learn-more" @click="password">비밀번호 변경</button>
       <app-my-modal :visible.sync="visible1">
         <div>
-          <img style="width:90%" src="@/assets/비번변경.png" alt="img">
+          <div class="title">
+            비밀번호 변경
+          </div>
           <input class="_input" 
           v-model="origin_password" placeholder="현재 비밀번호" type="password" />
           <div v-if="origin_password === $store.state.password">
@@ -51,7 +55,9 @@
       <button class="out" @click="out">회원탈퇴</button>
       <app-my-modal :visible.sync="visible2">
         <div>
-          <img style="width:90%" src="@/assets/회원탈퇴.png" alt="img">
+          <div class="title">
+            회원탈퇴
+          </div>
           <input class="_input" 
           v-model="origin_password" placeholder="비밀번호 확인" type="password" />
           <div v-if="!origin_password" style="color:white">비밀번호를 입력해 주세요.</div>
@@ -154,6 +160,14 @@ export default {
 </script>
 
 <style>
+.title{
+  text-shadow: 5px 5px 70px rgba(190, 209, 212, 0.582);
+  font-size: 65px;
+  background: linear-gradient(to bottom,#a769d6 ,#6f92d8);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   
+}
 ._input {
   border-radius: 20px;
   box-sizing: border-box;
@@ -221,20 +235,19 @@ export default {
 .v26_63 {
   width: 80px;
   position: absolute;
-  top: 365px;
+  top: 370px;
   left: 57px;
-  font-size: 24px;
+  font-size: 20px;
   opacity: 1;
   text-align: center;
   color: aqua;
 }
 .v26_64 {
   width: 130px;
-  color: rgba(255,255,255,1);
+  color: rgb(223, 161, 194);
   position: absolute;
-  top: 363px;
+  top: 369px;
   left: 137px;
-  font-family: Roboto;
   font-weight: Regular;
   font-size: 27px;
   opacity: 1;

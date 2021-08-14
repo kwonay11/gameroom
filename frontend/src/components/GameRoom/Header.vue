@@ -33,10 +33,5 @@ export default {
    -webkit-background-clip: text;
    -webkit-text-fill-color: transparent;
 }
-.h{
-    background: linear-gradient(to bottom,#cad693 ,#8CA6DB);
-   -webkit-background-clip: text;
-   -webkit-text-fill-color: transparent;
 
-}
 </style>

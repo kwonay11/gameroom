@@ -1,7 +1,9 @@
 <template>
   <div>            
     <form class="room_box">
-      <img class="card__image" style="width:60%" src="@/assets/방비밀번호.png" alt="roomcreate"/>
+     <div class="title">
+            방 비밀번호
+          </div>
       <div class="row_box">
         <div class="left">
           <img class="room_img" src="@/assets/key1.png" alt="key">
@@ -48,7 +50,14 @@ export default {
 
 
 <style scoped >
-
+.title{
+  text-shadow: 5px 5px 70px rgba(190, 209, 212, 0.582);
+  font-size: 65px;
+  background: linear-gradient(to bottom,#a769d6 ,#6f92d8);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   
+}
 .room_box {
   width: 38%;
   height:58vh;
