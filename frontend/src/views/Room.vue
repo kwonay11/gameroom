@@ -19,8 +19,14 @@
       <div class='row p-4'>
          <div id="main-video" class="col-md-8">
             <!-- 크게 보이는 화면 -->
-            <div class="player">
-               <!-- <CatchMind /> -->
+            <div v-if="roominfo.gameId === 4" >
+               <Song />
+            </div>
+            <div v-else class="player">
+
+               <!-- 얘가 노래방 -->
+
+               <!-- 시작, 레디, 화면 -->
               <div class="main_box">
                   <!-- 시작하기 버튼 -->
                   <div v-if="!start && !ready">
@@ -38,7 +44,7 @@
                   
                   <!-- 메인화면 -->
                   <div v-else>
-                     <div v-if='roominfo.gameId == 2'>
+                     <div v-if='roominfo.gameId === 2'>
                         <CatchMind />
                      </div>
                      <div v-else>
@@ -79,9 +85,9 @@ import Chatting from '@/components/GameRoom/Chatting';
 import Button from '@/components/GameRoom/Button';
 import Ready from '@/components/GameRoom/Ready';
 import Start from '@/components/GameRoom/Start';
-// import Song from '@/components/Game/Song/Song';
 import CatchMind from '@/components/Game/CatchMind/CatchMind';
-
+import Song from '@/components/Game/Song/Song';
+import Header from '@/components/GameRoom/Header';
 import { video } from '@/mixins/video'
 
 // axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -96,10 +102,12 @@ export default {
       UserVideo,
       Chatting,
       Button,
-      // Song,
       Ready, 
       Start,
-      CatchMind,    
+      CatchMind,
+      Song,
+      Header,
+
       
    },
 
@@ -128,7 +136,7 @@ export default {
         }
     },
    created() {
-    axios.get(`${SERVER_URL}/conferences/info/${this.mySessionId}`)
+    this.$axios.get(`${SERVER_URL}/conferences/info/${this.mySessionId}`)
       .then((res) => {
         this.roominfo = res.data
         console.log('여기ㅐ')

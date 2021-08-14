@@ -37,7 +37,7 @@ export default {
     Search,
     SongList,
     SongDetail,
-    UserVideo,
+
   },
   props: {
     mainStreamManager: Object,
