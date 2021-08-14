@@ -1,9 +1,7 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.GameStatusGetReq;
-import com.ssafy.api.response.ConferenceRes;
-import com.ssafy.api.response.GameStatusRes;
-import com.ssafy.api.response.UserAnswerSet;
+import com.ssafy.api.response.*;
 import com.ssafy.api.service.*;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
@@ -12,10 +10,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
@@ -69,9 +72,15 @@ public class GameController {
     })
     public ResponseEntity<?> getGameStatus(@ApiIgnore Authentication authentication,
                                            GameStatusGetReq gameStatusGetReq) {
-        if(gameStatusGetReq.getStatus() == null)
-            return ResponseEntity.ok(ConferenceRes.of(404,"fail"));
-        if(gameStatusGetReq.getStatus() == 0) {  // 0: 게임 시작
+        System.out.println(gameStatusGetReq);
+        if (gameStatusGetReq.getStatus() == null) {
+            System.out.println("걸리는지 확인");
+            return ResponseEntity.ok(ConferenceRes.of(404, "fail"));
+        }
+
+
+
+        if (gameStatusGetReq.getStatus() == 0) {  // 0: 게임 시작
             // game db 저장
             Game game = gameService.saveGame(gameStatusGetReq.getConference(), gameStatusGetReq.getCategory());
 
@@ -79,7 +88,7 @@ public class GameController {
             List<UserConference> userConferenceList = userConferenceService.getUserConferenceByConferenceId(gameStatusGetReq.getConference());
 
             // db에 플레이어 별 user_game, game_history 저장
-            for(UserConference userConference : userConferenceList) {
+            for (UserConference userConference : userConferenceList) {
                 userGameService.saveUserGame(userConference.getUser(), game);
                 gameService.saveGameHistory(userConference.getUser(), game, 0, 0);
             }
@@ -110,9 +119,9 @@ public class GameController {
 
             // db에 플레이어 별 game_history 저장
             Game game = userGameService.getUserGameByUser(userDetails.getUser()).getGame();
-            for(UserConference userConference : userConferenceList) {
+            for (UserConference userConference : userConferenceList) {
                 User user = userConference.getUser();
-                if(user.getId() == userDetails.getUser().getId())
+                if (user.getId() == userDetails.getUser().getId())
                     gameService.saveGameHistory(user, game, 1, 1);
                 else
                     gameService.saveGameHistory(user, game, 1, 0);
@@ -130,9 +139,9 @@ public class GameController {
 
             // db에 플레이어 별 game_history 저장, user_game 삭제
             Game game = userGameService.getUserGameByUser(userDetails.getUser()).getGame();
-            for(UserConference userConference : userConferenceList) {
+            for (UserConference userConference : userConferenceList) {
                 User user = userConference.getUser();
-                if(user.getId() == userDetails.getUser().getId())
+                if (user.getId() == userDetails.getUser().getId())
                     gameService.saveGameHistory(user, game, 2, 1);
                 else
                     gameService.saveGameHistory(user, game, 2, 0);
@@ -142,15 +151,15 @@ public class GameController {
             // 플레이어 별 맞춘 문제 수 구하기
             HashMap<Long, Integer> answerMap = new HashMap<>();
             List<GameHistory> gameHistoryList = gameService.getGameHistoryListByGameAndRanking(game, 1);
-            for(GameHistory gameHistory : gameHistoryList) {
+            for (GameHistory gameHistory : gameHistoryList) {
                 Long key = gameHistory.getUser().getId();
-                if(answerMap.containsKey(key))
+                if (answerMap.containsKey(key))
                     answerMap.put(key, answerMap.get(key) + 1);
                 else
                     answerMap.put(key, 1);
             }
             List<UserAnswerSet> userAnswerList = new LinkedList<>();
-            for(Long key : answerMap.keySet()) {
+            for (Long key : answerMap.keySet()) {
                 User user = userService.getUserById(key);
                 userAnswerList.add(new UserAnswerSet(user.getId(), user.getNickname(), answerMap.get(key)));
             }
@@ -158,13 +167,13 @@ public class GameController {
 
             // 플레이어 별 win_rate 테이블 갱신, user_game 테이블 데이터 삭제
             Long firstRankedPlayer = userAnswerList.get(0).getId();
-            for(UserConference userConference : userConferenceList) {
+            for (UserConference userConference : userConferenceList) {
                 User user = userConference.getUser();
                 WinRate winRate = userService.getWinRateByUserAndGameCategory(user, gameService.getGameCategoryById(gameStatusGetReq.getCategory()));
-                if(winRate == null) {
+                if (winRate == null) {
                     winRate = WinRate.builder().user(user).gameCategory(gameService.getGameCategoryById(gameStatusGetReq.getCategory())).firstRanked(0).gameCount(0).build();
                 }
-                if(user.getId() == firstRankedPlayer)
+                if (user.getId() == firstRankedPlayer)
                     winRate.setFirstRanked(winRate.getFirstRanked() + 1);
                 winRate.setGameCount(winRate.getGameCount() + 1);
                 userService.saveWinRate(winRate);
@@ -175,15 +184,25 @@ public class GameController {
             game.setGameEndTime(LocalDateTime.now());
             gameService.saveGame(game);
 
-            return ResponseEntity.status(200).body(userAnswerList);
+            JSONObject obj = new JSONObject();
+            obj.put("data",userAnswerList);
+
+
+            return ResponseEntity.status(200).body(obj);
         } else if (gameStatusGetReq.getStatus() == 3) {  // 3: 게임 카테고리 변경
             // conference 테이블 game_category 변경
             Conference conference = conferenceService.getConferenceById(gameStatusGetReq.getConference()).get();
             conference.setGameCategory(gameService.getGameCategoryById(gameStatusGetReq.getCategory()));
-            conferenceService.saveConference(conference);
+            Conference result = conferenceService.saveConference(conference);
 
-            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "true"));
+
+            GameChagneRes res = GameChagneRes.builder().category(result.getGameCategory().getId()).build();
+            return ResponseEntity.status(200).body(res);
+
+//            return ResponseEntity.status(200).body(BaseResponseBody.of(200, "true"));
         }
         return ResponseEntity.status(200).body(BaseResponseBody.of(404, "invalid Parameters"));
     }
 }
+
+

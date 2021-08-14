@@ -6,7 +6,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 const OPENVIDU_SERVER_URL = "https://localhost:5443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
+// const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 
 export const video = {
@@ -60,21 +60,21 @@ export const video = {
         axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
         // --- Connect to the session with a valid user token ---
         console.log('room확인')
-        axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
-            .then((res) => {
-                console.log(res.status)
-                if (res.status == 200) {
-                    this.canJoin = true;
-                } else {
-                    this.canJoin = false;
-                }
-                if (!this.canJoin)
-                    return;
-            })
-            .catch(() => {
-                this.$router.push({ name: 'MainPage' })
-                this.canJoin = false;
-            });
+        // axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
+        //     .then((res) => {
+        //         console.log(res.status)
+        //         if (res.status == 200) {
+        //             this.canJoin = true;
+        //         } else {
+        //             this.canJoin = false;
+        //         }
+        //         if (!this.canJoin)
+        //             return;
+        //     })
+        //     .catch(() => {
+        //         this.$router.push({ name: 'MainPage' })
+        //         this.canJoin = false;
+        //     });
 
         // 'getToken' method is simulating what your server-side should do.
         // 'token' parameter should be retrieved and returned by your own backend

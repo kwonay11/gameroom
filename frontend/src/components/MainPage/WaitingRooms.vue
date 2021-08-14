@@ -39,7 +39,7 @@
           <img class="key" src="@/assets/key.png" alt="key">
           </div>
 
-            <div v-if="loggedIn" class="btn">
+            <div v-if="loggedIn" class="btn" @click="entersession">
                 <router-link class="btn_text" :to="`/gameroom/${item.id}`">
                   <div class="button button--brightness">입장</div>
                 </router-link>
@@ -96,6 +96,25 @@ export default {
       },
       },
     };
+  },
+  methods:{
+    entersession: function(){
+      axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
+    .then((res) => {
+        console.log(res.status)
+        if (res.status == 200) {
+            this.canJoin = true;
+        } else {
+            this.canJoin = false;
+        }
+        if (!this.canJoin)
+            return;
+    })
+    .catch(() => {
+        this.$router.push({ name: 'MainPage' })
+        this.canJoin = false;
+    });
+    } 
   },
    computed: {
     ...authComputed,

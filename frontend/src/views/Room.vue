@@ -82,10 +82,11 @@ export default {
          this.session.signal({
             // test 용 하드 코딩 
             data: JSON.stringify({
-               "gameStatus": 0,
-               "category" :1,
-               "round":0,
+               "gameStatus": 3,
+               "category" :2,
+               "round":5,
                "conferenceId": this.$route.params.roomid,
+               "JWT":this.$store.state.accessToken
             }),
             type: 'game'
          })

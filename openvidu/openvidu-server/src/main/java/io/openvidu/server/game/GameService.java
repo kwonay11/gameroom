@@ -7,18 +7,24 @@ import io.openvidu.client.internal.ProtocolElements;
 import io.openvidu.server.core.Participant;
 import io.openvidu.server.rpc.RpcNotificationService;
 import netscape.javascript.JSObject;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class GameService {
@@ -99,22 +105,23 @@ public class GameService {
 
         System.out.println("데이터 체크 ");
         System.out.println(category + " " + round + " " + conferenceId);
-        String apiUrl = "http://localhost:8080/api/games/test"; // 아직 안정해짐
+        String apiUrl = "http://localhost:8080/api/games/play";
 
         switch (category) {
             case BODYTALK: //  몸으로 말해요
-                RestTemplate restTemplate = new RestTemplate();
-                HttpHeaders httpHeaders = new HttpHeaders();
-                MultiValueMap<String, Integer> prs = new LinkedMultiValueMap<>();
-                prs.add("gameStatus", 0);
-                prs.add("category", category);
-                prs.add("round", round);
-                prs.add("conferenceId", conferenceId);
+                UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                        .queryParam("status",0)
+                        .queryParam("category",category)
+                        .queryParam("round",round)
+                        .queryParam("conference",conferenceId);
+                HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
 
-                httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-                UriComponents uri = UriComponentsBuilder.fromHttpUrl(apiUrl).build();
-                HttpEntity<?> httpEntity = new HttpEntity<>(prs, httpHeaders);
-                ResponseEntity<String> response = restTemplate.exchange(uri.toString(), HttpMethod.POST, httpEntity, String.class);
+
+                RestTemplate restTpl = new RestTemplate(httpRequestFactory);
+                HttpHeaders headers = new HttpHeaders(); // 담아줄 header
+                HttpEntity entity = new HttpEntity<>(headers); // http entity에 header 담아줌
+                ResponseEntity<String> response  = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+
 
                 System.out.println("return 확인");
                 System.out.println(response);
@@ -128,7 +135,7 @@ public class GameService {
                     e.printStackTrace();
                 }
                 break;
-//
+
         }
         for (Participant p : participants) {
             rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
@@ -145,23 +152,24 @@ public class GameService {
         int category = data.get("category").getAsInt();
         String cat = data.get("category").getAsString();
         String round = data.get("round").getAsString();
+        int conferenceId = data.get("conferenceId").getAsInt();
         String JWT = "Bearer " + data.get("JWT").getAsString();
-        String apiUrl = "http://localhost:8080/api/conferences/"; // 아직 안정해짐
+        String apiUrl = "http://localhost:8080/api/games/play";
         switch (category) {
             case BODYTALK: //  몸으로 말해요
+                UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                        .queryParam("status",1)
+                        .queryParam("category",category)
+                        .queryParam("conference",conferenceId)
+                        .queryParam("round",round);
+                HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
 
-                RestTemplate restTemplate = new RestTemplate();
-                HttpHeaders httpHeaders = new HttpHeaders();
-                MultiValueMap<String, String> prs = new LinkedMultiValueMap<>();
-                prs.add("gameStatus", "1");
-                prs.add("category", cat);
-                prs.add("round", round);
-                prs.add("id", JWT);
 
-                httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-                UriComponents uri = UriComponentsBuilder.fromHttpUrl(apiUrl).build();
-                HttpEntity<?> httpEntity = new HttpEntity<>(prs, httpHeaders);
-                ResponseEntity<String> response = restTemplate.exchange(uri.toString(), HttpMethod.POST, httpEntity, String.class);
+                RestTemplate restTpl = new RestTemplate(httpRequestFactory);
+                HttpHeaders headers = new HttpHeaders(); // 담아줄 header
+                headers.add("Authorization", JWT);
+                HttpEntity entity = new HttpEntity<>(headers); // http entity에 header 담아줌
+                ResponseEntity<String> response  = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
 
                 System.out.println("return 확인");
                 System.out.println(response);
@@ -188,25 +196,31 @@ public class GameService {
         log.info("finishGame is called by {}", participant.getParticipantPublicId());
 
         int category = data.get("category").getAsInt();
-        String cat = data.get("category").getAsString();
-        String round = data.get("round").getAsString();
+        int conferenceId = data.get("conferenceId").getAsInt();
+        int round = data.get("round").getAsInt();
         String JWT = "Bearer " + data.get("JWT").getAsString();
-        String apiUrl = "http://localhost:8080/api/conferences/"; // 아직 안정해짐
+
+        String apiUrl = "http://localhost:8080/api/games/play";
         switch (category) {
             case BODYTALK: //  몸으로 말해요
+                UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                        .queryParam("status",2)
+                        .queryParam("category",category)
+                        .queryParam("conference",conferenceId)
+                        .queryParam("round",round);
+                HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
 
-                RestTemplate restTemplate = new RestTemplate();
-                HttpHeaders httpHeaders = new HttpHeaders();
-                MultiValueMap<String, String> prs = new LinkedMultiValueMap<>();
-                prs.add("gameStatus", "2");
-                prs.add("category", cat);
-                prs.add("round", round);
-                prs.add("id", JWT);
 
-                httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-                UriComponents uri = UriComponentsBuilder.fromHttpUrl(apiUrl).build();
-                HttpEntity<?> httpEntity = new HttpEntity<>(prs, httpHeaders);
-                ResponseEntity<String> response = restTemplate.exchange(uri.toString(), HttpMethod.POST, httpEntity, String.class);
+                RestTemplate restTpl = new RestTemplate(httpRequestFactory);
+                HttpHeaders headers = new HttpHeaders(); // 담아줄 header
+                headers.add("Authorization", JWT);
+                HttpEntity entity = new HttpEntity<>(headers); // http entity에 header 담아줌
+                System.out.println("확인");
+                ResponseEntity<String> response  = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+
+
+
+
 
                 System.out.println("return 확인");
                 System.out.println(response);
@@ -214,9 +228,10 @@ public class GameService {
                     JSONParser jsonParsers = new JSONParser();
                     JSONObject jsonObject = (JSONObject) jsonParsers.parse(response.getBody());
 
+
                     data.addProperty("data", String.valueOf(jsonObject));
                     params.add("data", data);
-                } catch (ParseException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
@@ -232,25 +247,36 @@ public class GameService {
                             JsonObject params, JsonObject data) {
         log.info("selectGame is called by {}", participant.getParticipantPublicId());
         int category = data.get("category").getAsInt();
+        int conferenceId = data.get("conferenceId").getAsInt();
         String cat = data.get("category").getAsString();
 
-        String apiUrl = "http://localhost:8080/api/conferences/"; // 아직 안정해짐
+        String apiUrl = "http://localhost:8080/api/games/play";
+
+        UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                .queryParam("status",3)
+                .queryParam("conference",conferenceId)
+                .queryParam("category",category);
+        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
 
 
-        RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        MultiValueMap<String, String> prs = new LinkedMultiValueMap<>();
-        prs.add("gameStatus", "3");
-        prs.add("category", cat);
+        RestTemplate restTpl = new RestTemplate(httpRequestFactory);
+        HttpHeaders headers = new HttpHeaders(); // 담아줄 header
+        HttpEntity entity = new HttpEntity<>(headers); // http entity에 header 담아줌
+        ResponseEntity<String> response  = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+
+        try {
+            JSONParser jsonParsers = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParsers.parse(response.getBody());
+            System.out.println(jsonObject);
+
+            data.addProperty("data", String.valueOf(jsonObject));
+//            data.addProperty("data", category);
+            params.add("data", data);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
 
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON);
-        UriComponents uri = UriComponentsBuilder.fromHttpUrl(apiUrl).build();
-        HttpEntity<?> httpEntity = new HttpEntity<>(prs, httpHeaders);
-        restTemplate.exchange(uri.toString(), HttpMethod.POST, httpEntity, String.class);
-
-        data.addProperty("category", cat);
-        params.add("data", data);
 
         for (Participant p : participants) {
             rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
