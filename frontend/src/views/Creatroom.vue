@@ -34,8 +34,6 @@
 </template>
 
 <script>
-
-import axios from 'axios'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import _ from "lodash"
 
@@ -58,7 +56,7 @@ export default {
       for (var i=0; i<6; i++) {
         this.image_url.push(`url(https://unsplash.it/${url_value[i]}/${url_value[i]}/)`)
       }
-      axios.get(`${SERVER_URL}/games`)
+      this.$axios.get(`${SERVER_URL}/games`)
       .then((res) => {
         this.games = res.data
       })

@@ -55,7 +55,7 @@
 import { authComputed } from "@/store/helpers"
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import VueHorizontalList from "vue-horizontal-list";
-import axios from 'axios'
+// import axios from 'axios'
 import _ from "lodash"
 
 export default {
@@ -91,7 +91,7 @@ export default {
   },
 
 created(){
-    axios.get(`${SERVER_URL}/conferences`)
+    this.$axios.get(`${SERVER_URL}/conferences`)
     .then((res) => {
       const numbers =_.range(0, res.data.length-1);
       const sampleNums =_.sampleSize(numbers, 5);

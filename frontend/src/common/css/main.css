@@ -16,6 +16,7 @@
 }
 
 .btn_text {
+    font-family: 'IM_Hyemin-Bold';
     /* 버튼 그냥 봤을 때 */
     /* margin: auto; */
     font-weight: 600;
@@ -92,6 +93,8 @@
     text-align: left;
     margin: 0 8vw -0.6vw;
     font-size: 20px;
-    font-weight: bold;
     color: white;
+    background: linear-gradient(to bottom,#B993D6 ,#8CA6DB);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }

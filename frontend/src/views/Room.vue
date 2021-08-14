@@ -1,11 +1,7 @@
 <template>
 
-   <div  v-if="session">
-      <h5 style="color:white" class="card1">
-         방제목 : {{ roominfo.title }}  
-         게임 종류 : {{ roominfo.gameName }}  
-         최대 인원 : {{ roominfo.maxUser}}
-      </h5>
+   <div v-if="session">
+      <Header :roominfo="roominfo" />
    <!-- <div  > -->
       <div class='participation'>
          <div id="video-container" class="col-lg-12">
@@ -20,10 +16,10 @@
 
          <!-- 메인 화면 -->
          <div id="main-video" class="col-md-8">
-            <button class="card" @click="song">
+            <!-- <button class="card" @click="song">
             노래방
-         </button>
-         <div class="player" v-if="song_visible === true">
+         </button> -->
+         <div class="player" v-if="roominfo.gameName === '노래방'" >
             <Song />
          </div>
 
@@ -47,15 +43,16 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
 // import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '@/components/UserVideo';
 import Chatting from '@/components/GameRoom/Chatting';
 import Button from '@/components/GameRoom/Button';
+import Header from '@/components/GameRoom/Header';
 import Song from '@/components/Game/Song/Song';
 import { video } from '@/mixins/video'
 
-axios.defaults.headers.post['Content-Type'] = 'application/json';
+// axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 // const OPENVIDU_SERVER_SECRET = "MY_SECRET";
@@ -68,6 +65,7 @@ export default {
       Chatting,
       Button,
       Song,
+      Header,
    },
 
 
@@ -88,13 +86,14 @@ export default {
 
          roominfo: {},
 
+
    }},
 
    created() {
     console.log('방 id')
     console.log(this.mySessionId)
 
-    axios.get(`${SERVER_URL}/conferences/info/${this.mySessionId}`)
+    this.$axios.get(`${SERVER_URL}/conferences/info/${this.mySessionId}`)
       .then((res) => {
         this.roominfo = res.data
         console.log('룽 정보')
@@ -119,12 +118,8 @@ export default {
 </script>
 
 <style>
-.card1{
-   width: 100%;
-   float:right;
-   background: rgba(104, 102, 163, 0.47);
-   color:white;
-}
+
+
 
 .input_answer {
    outline: none !important;
@@ -199,11 +194,12 @@ border-radius: 20px;
 }
 
 #video-container p {
+   font-family:'IM_Hyemin-Bold';
    display: inline-block;
    background: #f8f8f8;
    padding-left: 5px;
    padding-right: 5px;
-   color: #777777;
+   color: #3c90c9;
    font-weight: bold;
    border-radius: 8px;
 }
