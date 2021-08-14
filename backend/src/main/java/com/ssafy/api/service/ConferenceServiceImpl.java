@@ -108,6 +108,11 @@ public class ConferenceServiceImpl implements ConferenceService {
         return conferenceRepository.save(conference);
     }
 
+    @Override
+    public String getPasswordById(Long id) {
+        return conferenceRepository.findById(id).get().getPassword();
+    }
+
 }
 
 
