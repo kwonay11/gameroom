@@ -25,29 +25,8 @@ export default {
       const ctx = canvas.getContext('2d');
       
 
-
-
       // canvas.height = window.innerHeight
       // canvas.width = window.innerWidth
-
-
-      // // 색을 넣으려면 직사각형이 만들어 지기 전에 색 부터 정의하고 시작
-      // ctx.strokeStyle = 'red'
-      //     // 선 너비 변경
-      // ctx.lineWidth = '5'
-      //     // 색 칠해져있는 사각형이 나옴
-      //     // x,y,가로, 세로 -> like position:absolute
-      // ctx.fillRect(50, 50, 200, 300)
-
-      // // 색 없이 테두리만 있는 직사각형 나옴
-      // ctx.strokeStyle = 'blue'
-      // ctx.strokeRect(400, 50, 200, 300)
-
-      // // 점 시작 경로
-      // ctx.beginPath()
-      // ctx.moveTo(500, 500)
-      // ctx.lineTo(600, 500)
-      // ctx.stroke()
 
 
       let painting = false
