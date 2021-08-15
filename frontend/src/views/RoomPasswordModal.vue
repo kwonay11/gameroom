@@ -34,6 +34,8 @@
 
 <script>
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
+import axios from 'axios'
+
 export default {
   name: 'RoomPasswordModal',
   data: function() {
@@ -44,8 +46,9 @@ export default {
        }
     },
     created(){
-      console.log(this.$route.params)
-    this.$axios.get(`${SERVER_URL}/conferences/${this.$route.params.id}`)
+    console.log('77777777777777')
+    console.log(this.$route.params)
+    axios.get(`${SERVER_URL}/conferences/${this.$route.params.id}?password=${this.room_password}`)
         .then((res) => {
           console.log(res)
           
