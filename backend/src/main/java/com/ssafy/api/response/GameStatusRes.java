@@ -9,6 +9,6 @@ import lombok.Setter;
 @Builder
 public class GameStatusRes {
     String keyword;
-    Long questioner;
+    String questioner;
     int round;
 }
