@@ -29,7 +29,7 @@ export const video = {
             myUserNick: '',
             canJoin: null,
 
-            roominfo: {},
+
             members: [],
 
         }

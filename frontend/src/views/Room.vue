@@ -60,7 +60,7 @@
 
                   </div>
                   <div class="answer">
-                     <input class="input_answer" placeholder="답을 입력해주세요." type="text" />
+                     <input v-model="game_answer" class="input_answer" placeholder="답을 입력해주세요." type="text" @keyup.enter="check_answer"/>
                   </div>
                </div>
             </div>
@@ -73,7 +73,7 @@
          </div>
       </div>
       <!-- test -->
-      <button @click="gametest" style="color:white"> 게임테스트버튼</button>
+      <!-- <button @click="gametest" style="color:white"> 게임테스트버튼</button> -->
    </div>
 
 </template>
@@ -115,9 +115,13 @@ export default {
             song_visible: false,
             start: false,
             ready: false,
+            game_ing: undefined, // {"questioner":"ddd","round":1,"keyword":"key5"}
+            game_answer: '',
 
+            roominfo: {}, //gameId: 1, gameName: "1", gameSummary: "1-1", maxUser: 4, ownerNicknames: "ASDFADF"
 
-            game_ing: undefined,
+            gameStatus: 0,
+            round: 0,
             
         }
     },
@@ -146,22 +150,10 @@ export default {
       })
       
          this.session.on('signal:game', (event) => {
-            console.log('시그널')
-            console.log(event);
-            console.log(event.data);
-            console.log(event.data.data);
             this.game_ing = JSON.parse(event.data.data)
+            console.log('게임 키워드 데이터들')
             console.log(this.game_ing)
-
-            console.log('여기어디임??????????')
-            console.log(this.publisher)
-
-         //   if(this.id == this.game_ing.questioner) {
-            //    }
-               // this.mainStreamManager = this.publisher;
-
-            console.log('45324.3.33')
-            console.log(this.members[number])
+            this.round = this.game_ing.round
             this.mainStreamManager = this.members[number]
 
         });
@@ -180,6 +172,7 @@ export default {
       song(){
          this.song_visible = !this.song_visible;
       },
+
       game_start() {
          // ----------------스타트 버튼 누르고-------------------
          this.session.signal({
@@ -198,9 +191,9 @@ export default {
          this.session.signal({
             // test 용 하드 코딩 
             data: JSON.stringify({
-               "gameStatus": 0, // 게임 상태
-               "category" :1, // 게임 종류
-               "round":0, //라운드
+               "gameStatus": this.gameStatus, // 게임 상태
+               "category" :this.roominfo.gameId, // 게임 종류
+               "round":this.round, //라운드
                "conferenceId": this.$route.params.roomid, //방 id
                "JWT":this.$store.state.accessToken //토큰?
             }),
@@ -208,33 +201,70 @@ export default {
          })
          .then(() => {
             console.log('몸으로 말해요');
+            this.gameStatus = 1
          })
          .catch(error => {
             console.log(error);
          })
+      },
+
+      check_answer() {
+         console.log('게임 status 바뀌는거 확인')
+         console.log(this.gameStatus)
+         if(this.game_answer === this.game_ing.keyword) {
+            console.log('라운드헷갈림')
+            console.log(this.round)
+            
+            if (this.round === 5) {
+               this.gameStatus = 2
+            }
+            // if (this.round)
+
+            
+            this.session.signal({
+            // test 용 하드 코딩 
+            data: JSON.stringify({
+               "gameStatus": this.gameStatus, // 게임 상태
+               "category" :this.roominfo.gameId, // 게임 종류
+               "round":this.round, //라운드
+               "conferenceId": this.$route.params.roomid, //방 id
+               "JWT":this.$store.state.accessToken //토큰?
+            }),
+            type: 'game'
+            })
+            .then(() => {
+               console.log('몸으로 말해요');
+               
+            })
+            .catch(error => {
+               console.log(error);
+            })
+            }
       },
 
 
       
-      gametest() {
-         this.session.signal({
-            // test 용 하드 코딩 
-            data: JSON.stringify({
-               "gameStatus": 0,
-               "category" :1,
-               "round":0,
-               "conferenceId": this.$route.params.roomid,
-               "JWT":this.$store.state.accessToken
-            }),
-            type: 'game'
-         })
-         .then(() => {
-            console.log('Message success');
-         })
-         .catch(error => {
-            console.log(error);
-         })
-      },
+      // gametest() {
+      //    this.session.signal({
+      //       // test 용 하드 코딩 
+      //       data: JSON.stringify({
+      //          "gameStatus": 0,
+      //          "category" :this.roominfo.gameId,
+      //          "round":0,
+      //          "conferenceId": this.$route.params.roomid,
+      //          "JWT":this.$store.state.accessToken
+      //       }),
+      //       type: 'game'
+      //    })
+      //    .then(() => {
+      //       console.log('Message success');
+      //    })
+      //    .catch(error => {
+      //       console.log(error);
+      //    })
+      // },
+   
+   
    },
 
 
