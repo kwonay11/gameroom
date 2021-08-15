@@ -10,6 +10,7 @@ const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 // const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 
+import { mapState } from 'vuex'
 export const video = {
 
     data() {
@@ -29,13 +30,14 @@ export const video = {
             canJoin: null,
 
             roominfo: {},
+            members: [],
 
         }
     },
     created: function() {
         console.log('video.js')
-        // console.log(this.mySessionId)
-        // console.log(this.myUserName)
+            // console.log(this.mySessionId)
+            // console.log(this.myUserName)
         this.OV = new OpenVidu();
         // --- Init a session ---
         this.session = this.OV.initSession();
@@ -51,6 +53,11 @@ export const video = {
         this.session.on('streamCreated', ({ stream }) => {
             const subscriber = this.session.subscribe(stream);
             this.subscribers.push(subscriber);
+            console.log('참가자들')
+            console.log(this.subscribers)
+            this.members.push(subscriber)
+            console.log('멤버')
+            console.log(this.members)
         });
 
         // On every Stream destroyed...
@@ -65,9 +72,6 @@ export const video = {
         // On every asynchronous exception...
         this.session.on('exception', ({ exception }) => {
             console.warn(exception);
-        });
-        this.session.on('signal:game', (event) => {
-            console.log(event);
         });
 
 
@@ -116,10 +120,10 @@ export const video = {
                         this.publisher = publisher;
                         console.log('durldurdlurdlurdlul')
 
-                        console.log(this.mainStreamManager)
+                        // console.log(this.mainStreamManager)
                         console.log(this.publisher)
-
-                        // --- Publish your stream ---
+                        this.members.push(this.publisher)
+                            // --- Publish your stream ---
 
                         this.session.publish(this.publisher);
                     })
@@ -214,4 +218,7 @@ export const video = {
             });
         },
     },
+
+    computed: mapState(['conferenceid', 'id']),
+
 }

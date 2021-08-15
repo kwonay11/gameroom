@@ -114,37 +114,37 @@ export default {
   },
 
   
-  created: function () {
-      this.$axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
-      .then((res) => {
-        // this.cotents.password = this.roominfo.password
-        this.roominfo = res.data
-        console.log('룸 정보')
-        console.log(this.roominfo)
-        this.cotents.title = this.roominfo.title
-        this.cotents.maxUser = this.roominfo.maxUser
+  // created: function () {
+  //     this.$axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
+  //     .then((res) => {
+  //       // this.cotents.password = this.roominfo.password
+  //       this.roominfo = res.data
+  //       console.log('룸 정보')
+  //       console.log(this.roominfo)
+  //       this.cotents.title = this.roominfo.title
+  //       this.cotents.maxUser = this.roominfo.maxUser
 
-        console.log(this.games)
-        if (this.games === '몸으로 말해요'){
-          this.contents.gamecategory = 1
-        }else if (this.games === '캐치 마인드'){
-          this.contents.gamecategory = 2
-        }else if (this.games === '고요속의 외침'){
-          this.contents.gamecategory = 3
-        }else if (this.games === '노래방'){
-          this.contents.gamecategory = 4
-        }else if (this.games === '순간포착'){
-          this.contents.gamecategory = 5
-        }else {
-          this.contents.gamecategory = 6
-        }
-      })
+  //       console.log(this.games)
+  //       if (this.games === '몸으로 말해요'){
+  //         this.contents.gamecategory = 1
+  //       }else if (this.games === '캐치 마인드'){
+  //         this.contents.gamecategory = 2
+  //       }else if (this.games === '고요속의 외침'){
+  //         this.contents.gamecategory = 3
+  //       }else if (this.games === '노래방'){
+  //         this.contents.gamecategory = 4
+  //       }else if (this.games === '순간포착'){
+  //         this.contents.gamecategory = 5
+  //       }else {
+  //         this.contents.gamecategory = 6
+  //       }
+  //     })
 
-    this.session.on('signal:leave',(event) =>{
-        console.log('leave')
-        console.log(event)
-    })
-  },
+  //   this.session.on('signal:leave',(event) =>{
+  //       console.log('leave')
+  //       console.log(event)
+  //   })
+  // },
 
   methods: {
     muteAudio() {

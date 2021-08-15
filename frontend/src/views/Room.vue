@@ -90,7 +90,7 @@ import Header from '@/components/GameRoom/Header';
 import { video } from '@/mixins/video'
 import axios from 'axios'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-import { mapState } from 'vuex'
+
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
 // const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
@@ -115,11 +115,16 @@ export default {
             song_visible: false,
             start: false,
             ready: false,
-            aa: false
 
+
+            game_ing: undefined,
+            
         }
     },
    created() {
+
+      const number = 0
+
       console.log('4555554')
       const room_id = this.$route.params.roomid;
       this.$axios.get(`${SERVER_URL}/conferences/info/${room_id}`)
@@ -138,20 +143,37 @@ export default {
             this.ready = true;
             }, 3600);
 
-         this.mainStreamManager = this.publisher;
-
-
       })
+      
+         this.session.on('signal:game', (event) => {
+            console.log('시그널')
+            console.log(event);
+            console.log(event.data);
+            console.log(event.data.data);
+            this.game_ing = JSON.parse(event.data.data)
+            console.log(this.game_ing)
 
+            console.log('여기어디임??????????')
+            console.log(this.publisher)
+
+         //   if(this.id == this.game_ing.questioner) {
+            //    }
+               // this.mainStreamManager = this.publisher;
+
+            console.log('45324.3.33')
+            console.log(this.members[number])
+            this.mainStreamManager = this.members[number]
+
+        });
 
               // openvidu에서 new signal로 뿌려지는곳은 signal로 response함 
-        this.session.on('signal', (event) => {
-            console.log(event.data.data);
-            // const status = JSON.parse(event.data.data);
-            // console.log(status);
-            // console.log(typeof(status));
-            // console.log(typeof(event.data.data));
-        });
+      //   this.session.on('signal', (event) => {
+      //       console.log(event.data.data);
+      //       // const status = JSON.parse(event.data.data);
+      //       // console.log(status);
+      //       // console.log(typeof(status));
+      //       // console.log(typeof(event.data.data));
+      //   });
 
   },
   methods: {
@@ -159,6 +181,7 @@ export default {
          this.song_visible = !this.song_visible;
       },
       game_start() {
+         // ----------------스타트 버튼 누르고-------------------
          this.session.signal({
             data: JSON.stringify(this.ready),
             type: 'start-btn'
@@ -168,6 +191,26 @@ export default {
          })
          .catch(err => {
             console.log(err)
+         })
+
+         // ----------------몸으로 말하기 때 오픈비두로 시그널 보내기-------------------
+
+         this.session.signal({
+            // test 용 하드 코딩 
+            data: JSON.stringify({
+               "gameStatus": 0, // 게임 상태
+               "category" :1, // 게임 종류
+               "round":0, //라운드
+               "conferenceId": this.$route.params.roomid, //방 id
+               "JWT":this.$store.state.accessToken //토큰?
+            }),
+            type: 'game'
+         })
+         .then(() => {
+            console.log('몸으로 말해요');
+         })
+         .catch(error => {
+            console.log(error);
          })
       },
 
@@ -194,8 +237,10 @@ export default {
       },
    },
 
+
    
-   computed: mapState(['conferenceid']),
+
+   
 
    mixins: [video]
 
