@@ -113,6 +113,8 @@ public class ConferenceController {
          * -> 현재 방 인원을 확인하기 위해 user_conference 테이블에서 conferenceId를 검색 후 갯수를 확인해야함
          * 위에 해당하지 않는다면 user_conference와 conference_history에 데이터를 넣어주고 200을 response 해줌
          */
+
+        System.out.println("enterconference");
         Optional<Conference> conference = conferenceService.getConferenceById(conferenceId);
         if(!conference.isPresent() || !conference.get().isActive())  // 방이 존재하지 않거나 is_active가 false일 경우
             return ResponseEntity.status(200).body(BaseResponseBody.of(404, "false"));
@@ -198,6 +200,8 @@ public class ConferenceController {
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
         String userId = userDetails.getUsername();
 
+
+        System.out.println("register");
         if(registerPostReq.getMaxUser() < 2 ||  // 최대 인원 수가 2 이하거나
                 registerPostReq.getTitle() == null ||  // 방제가 null 이거나
                 registerPostReq.getTitle().equals(""))  // 공백일 경우 방을 만들지 않고 401 response
