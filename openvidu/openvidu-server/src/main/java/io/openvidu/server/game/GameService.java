@@ -35,7 +35,7 @@ public class GameService {
 
     //게임종류
     static final int BODYTALK = 1; // 몸으로 말해요
-
+    static final int CILENCETALK = 3; // 고요속의외침
     static final int INITIAL = 2;
     static final int LIAR = 3;
     static final int SMILE = 4;
@@ -108,7 +108,7 @@ public class GameService {
         String apiUrl = "http://localhost:8080/api/games/play";
 
         switch (category) {
-            case BODYTALK: //  몸으로 말해요
+            case BODYTALK | CILENCETALK: //  몸으로 말해요 or 고요속의 외침
                 UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
                         .queryParam("status",0)
                         .queryParam("category",category)
@@ -156,7 +156,7 @@ public class GameService {
         String JWT = "Bearer " + data.get("JWT").getAsString();
         String apiUrl = "http://localhost:8080/api/games/play";
         switch (category) {
-            case BODYTALK: //  몸으로 말해요
+            case BODYTALK | CILENCETALK : //  몸으로 말해요 고요속의 외침
                 UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
                         .queryParam("status",1)
                         .queryParam("category",category)
@@ -202,7 +202,7 @@ public class GameService {
 
         String apiUrl = "http://localhost:8080/api/games/play";
         switch (category) {
-            case BODYTALK: //  몸으로 말해요
+            case BODYTALK | CILENCETALK: //  몸으로 말해요 or 고요속의 외침
                 UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
                         .queryParam("status",2)
                         .queryParam("category",category)
