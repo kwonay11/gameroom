@@ -95,7 +95,7 @@ public class GameController {
 
             // 출제자 랜덤 선택
             Random rand = new Random();
-            Long questioner = userConferenceList.get(rand.nextInt(userConferenceList.size())).getUser().getId();
+            String questioner = userConferenceList.get(rand.nextInt(userConferenceList.size())).getUser().getUserId();
 
             // keyword 랜덤 선택
             String keyword = gameService.getKeywordRand(gameStatusGetReq.getCategory());
@@ -112,7 +112,7 @@ public class GameController {
 
             // 출제자 랜덤 선택
             Random rand = new Random();
-            long questioner = userConferenceList.get(rand.nextInt(userConferenceList.size())).getUser().getId();
+            String questioner = userConferenceList.get(rand.nextInt(userConferenceList.size())).getUser().getUserId();
 
             // keyword 랜덤 선택
             String keyword = gameService.getKeywordRand(gameStatusGetReq.getCategory());
