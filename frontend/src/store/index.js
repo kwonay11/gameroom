@@ -35,6 +35,12 @@ export default new Vuex.Store({
         conferenceid: null,
         canJoin: null,
 
+        // //방 정보
+        // room_title:'',
+        // room_password:'',
+        // room_maxUser: '',
+        // room_gamecategory: '',
+
         // openviudu 
         OV: undefined,
         session: undefined,
@@ -75,6 +81,13 @@ export default new Vuex.Store({
         GAMECATEGORY: function(state, gamecategory_id) {
             state.gamecategory = gamecategory_id
         },
+        // ROOMINFO : function(state, roominfo) {
+        //     state.room_title = roominfo.title
+        //     state.room_password = roominfo.password
+        //     state.room_maxUser = roominfo.maxUser
+        //     state.room_gamecategory = roominfo.gamecategory
+
+        // }
         // OPENVIDU: function(state, data) {
         //     console.log('72 ' + data.OV)
         //     state.OV = data.OV,
@@ -145,6 +158,12 @@ export default new Vuex.Store({
         //                 reject();
         //             })
         //     })
+        // },
+        // roomInfo: function({ commit }, contents){
+         
+        //     console.log(contents)
+        //     commit('ROOMINFO',contents)
+
         // },
 
         joinSession: function({ commit }, contents) {

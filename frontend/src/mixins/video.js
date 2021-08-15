@@ -66,9 +66,9 @@ export const video = {
         this.session.on('exception', ({ exception }) => {
             console.warn(exception);
         });
-        this.session.on('signal:game', (event) => {
-            console.log(event);
-        });
+        // this.session.on('signal:game', (event) => {
+        //     console.log(event);
+        // });
 
 
         axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
