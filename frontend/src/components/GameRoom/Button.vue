@@ -61,9 +61,9 @@
           </div>
         </span>
 
-        <span class="buttons">
-          <img  src="@/assets/delete.png" alt="delete">
-        </span>
+            <span class="buttons" @click="leaveSession">
+              <img  src="@/assets/delete.png" alt="delete">
+            </span>
 
             <!-- 게임 설명 -->
             <span class="buttons">
@@ -94,6 +94,7 @@ export default {
        visible_setting: false,
        visible_tutorial: false,
        url: null,
+       games:'',
        contents: {
           title:'',
           password:'',
@@ -109,10 +110,40 @@ export default {
   props: {
     publisher: Object,
     roominfo: Object,
+    session: Object,
   },
-  
-  created() {
 
+  
+  created: function () {
+      this.$axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
+      .then((res) => {
+        // this.cotents.password = this.roominfo.password
+        this.roominfo = res.data
+        console.log('룸 정보')
+        console.log(this.roominfo)
+        this.cotents.title = this.roominfo.title
+        this.cotents.maxUser = this.roominfo.maxUser
+
+        console.log(this.games)
+        if (this.games === '몸으로 말해요'){
+          this.contents.gamecategory = 1
+        }else if (this.games === '캐치 마인드'){
+          this.contents.gamecategory = 2
+        }else if (this.games === '고요속의 외침'){
+          this.contents.gamecategory = 3
+        }else if (this.games === '노래방'){
+          this.contents.gamecategory = 4
+        }else if (this.games === '순간포착'){
+          this.contents.gamecategory = 5
+        }else {
+          this.contents.gamecategory = 6
+        }
+      })
+
+    this.session.on('signal:leave',(event) =>{
+        console.log('leave')
+        console.log(event)
+    })
   },
 
   methods: {
@@ -148,34 +179,52 @@ export default {
       this.visible_setting = !this.visible_setting
     },
     changeGame(){
-      console.log(this.games)
-      if (this.games === '몸으로 말해요'){
-        this.contents.gamecategory = 1
-      }else if (this.games === '캐치 마인드'){
-        this.contents.gamecategory = 2
-      }else if (this.games === '고요속의 외침'){
-        this.contents.gamecategory = 3
-      }else if (this.games === '노래방'){
-        this.contents.gamecategory = 4
-      }else if (this.games === '순간포착'){
-        this.contents.gamecategory = 5
-      }else if (this.games === '글자 맞추기'){
-        this.contents.gamecategory = 6
-      }
-      console.log(this.contents.gamecategory)
+      console.log(this.contents)
       this.$axios.post(`${SERVER_URL}/conferences`, this.contents)
         .then((res) => {
             console.log('성공')
-            console.log(res)//contents 빈값 들어옴 방 생성할 때 연결시켜줘야함
+            console.log(res)//contents 빈값 
             // this.$store.dispatch('joinSession',res.data.roomId)
             // this.$router.push({ name: "Room" , params: {roomid: res.data.roomId }});
             
             this.visible_setting = !this.visible_setting
         })
         .catch((error) => {
+          console.log('에러')
             console.log(error);
         })
-    }
+    },
+    leaveSession () {
+         // --- Leave the session by calling 'disconnect' method over the Session object ---
+         this.session.signal({
+          
+         data: JSON.stringify({
+            "roomId" : this.$route.params.roomid,
+            "JWT": this.$store.state.accessToken
+         }),
+         type: 'leave'
+         })
+         .then(() => {
+          console.log('leave success');
+          this.$router.push({ name: "MainPage" });
+            
+			})
+			.catch(error => {
+				console.log(error);
+			})
+         if (this.session) this.session.disconnect();
+
+         this.session = undefined;
+         this.mainStreamManager = undefined;
+         this.publisher = undefined;
+         this.subscribers = [];
+         this.OV = undefined;
+
+         
+
+         window.removeEventListener('beforeunload', this.leaveSession);
+      },
+
   }
 
   

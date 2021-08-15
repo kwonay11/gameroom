@@ -6,6 +6,7 @@ import com.ssafy.db.entity.Conference;
 import java.util.List;
 import java.util.Optional;
 import com.ssafy.api.request.ConferenceRegisterPostReq;
+import com.ssafy.db.entity.GameCategory;
 import com.ssafy.db.entity.User;
 import com.ssafy.db.repository.UserRepository;
 import com.ssafy.db.repository.UserRepositorySupport;
@@ -19,6 +20,8 @@ public interface ConferenceService {
     Optional<Conference> getConferenceById(Long id);
     Optional<List<ConferenceMapping>> getConferenceByActiveTrue();
     Long register(ConferenceRegisterPostReq dto);
+    Conference saveConference(Conference conference);
+    String getPasswordById(Long id);
 }
 
 

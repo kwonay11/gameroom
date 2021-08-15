@@ -12,9 +12,13 @@
           <input v-model="room_password" class="card__input" placeholder="방 비밀번호" type="password" />
       <p v-if="!room_password" style="color:white; margin-top:10px">방 비밀번호를 입력해주세요.</p>
       <!-- 비번일치하지 않을 때 처리해주기 -->
-        </div>
+      <div v-else>
+        <!-- <p v-if="room_password != real_password" style="color:white; margin-top:10px">방 비밀번호가 일치하지 않습니다.</p> -->
+          </div>
       </div>
-      <div v-if="room_password">
+      </div>
+      <!-- <div v-if="room_password === real_password"> -->
+      <div>
         <router-link  :to="`/gameroom/${$route.params.id}`" class='btn-animate'>
         입장
         </router-link>
@@ -29,7 +33,7 @@
 
 
 <script>
-
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
   name: 'RoomPasswordModal',
   data: function() {
@@ -40,7 +44,12 @@ export default {
        }
     },
     created(){
-    //  this.room_password = this.$store.state.
+      console.log(this.$route.params)
+    this.$axios.get(`${SERVER_URL}/conferences/${this.$route.params.id}`)
+        .then((res) => {
+          console.log(res)
+          
+        })
     }
 
 

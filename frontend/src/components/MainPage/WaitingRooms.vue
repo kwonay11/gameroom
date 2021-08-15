@@ -21,7 +21,7 @@
           <img class="key" src="@/assets/key.png" alt="key">
           </div>
 
-            <div v-if="loggedIn" class="btn">
+            <div v-if="loggedIn" class="btn"  @click="entersession">
                   <div v-if="item.privateRoom">
                     <router-link class="btn_text" :to="{ name: 'RoomPasswordModal',params:{id:item.id} }">
                       <div class="button button--brightness">입장</div>
@@ -32,10 +32,9 @@
                     <div class="button button--brightness">입장</div>
                   </router-link>
               </div>
-                    </div>
-              
+              </div>
 
-             <div v-if="!loggedIn" class="btn">
+             <div v-if="!loggedIn" class="btn" id="enter">
                 <router-link class="btn_text" :to="{ name: 'Login' }" >
                     <div class="button button--brightness">입장</div>
                   </router-link>
@@ -56,7 +55,7 @@
 import { authComputed } from "@/store/helpers"
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import VueHorizontalList from "vue-horizontal-list";
-// import axios from 'axios'
+import axios from 'axios'
 import _ from "lodash"
 
 export default {
@@ -86,6 +85,26 @@ export default {
       },
       },
     };
+  },
+  methods: {
+    
+    entersession(){
+      axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
+    .then((res) => {
+        console.log(res.status)
+        if (res.status == 200) {
+            this.canJoin = true;
+        } else {
+            this.canJoin = false;
+        }
+        if (!this.canJoin)
+            return;
+    })
+    .catch(() => {
+        this.$router.push({ name: 'MainPage' })
+        this.canJoin = false;
+    });
+    } 
   },
    computed: {
     ...authComputed,
