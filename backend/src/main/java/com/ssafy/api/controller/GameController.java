@@ -12,13 +12,11 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
@@ -34,16 +32,12 @@ public class GameController {
 
     @Autowired
     GameService gameService;
-
     @Autowired
     UserService userService;
-
     @Autowired
     UserConferenceService userConferenceService;
-
     @Autowired
     UserGameService userGameService;
-
     @Autowired
     ConferenceService conferenceService;
 
@@ -95,7 +89,7 @@ public class GameController {
 
             // 출제자 랜덤 선택
             Random rand = new Random();
-            String questioner = userConferenceList.get(rand.nextInt(userConferenceList.size())).getUser().getUserId();
+            int questioner = rand.nextInt(userConferenceList.size());
 
             // keyword 랜덤 선택
             String keyword = gameService.getKeywordRand(gameStatusGetReq.getCategory());
@@ -112,7 +106,7 @@ public class GameController {
 
             // 출제자 랜덤 선택
             Random rand = new Random();
-            String questioner = userConferenceList.get(rand.nextInt(userConferenceList.size())).getUser().getUserId();
+            int questioner = rand.nextInt(userConferenceList.size());
 
             // keyword 랜덤 선택
             String keyword = gameService.getKeywordRand(gameStatusGetReq.getCategory());
