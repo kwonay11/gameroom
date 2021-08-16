@@ -134,28 +134,24 @@ export default {
             gameStatus: 0,
             round: 0,
             
+            questioner: undefined,
+            
         }
     },
    created() {
 
 
 
-      const number = 0
 
-      console.log('4555554')
+      // 게임 정보 가져와서 게임 화면 맨 위에 띄우려고
       const room_id = this.$route.params.roomid;
       this.$axios.get(`${SERVER_URL}/conferences/info/${room_id}`)
       .then((res) => {
-        console.log(res)
         this.roominfo = res.data
-        console.log('여기ㅐ')
-        console.log(this.roominfo)
       })
 
-      this.session.on('signal:start-btn', (event) => {
-         console.log('room임!!')
-         console.log(event)
-
+      this.session.on('signal:start-btn', () => {
+         // 스타트 버튼이 눌렸다는 신호가 오면 사람들한데도 알려줌
          this.start = true
          setTimeout(() => {
             this.ready = true;
@@ -177,13 +173,15 @@ export default {
 
          // 게임중일때
          this.game_ing = status
-         // console.log('게임 키워드 데이터들')
-         // console.log(this.game_ing)
+         console.log('게임 키워드 데이터들')
+         console.log(this.game_ing)
          this.round = this.game_ing.round
-         this.mainStreamManager = this.members[number]
-
-         
-         
+         this.questioner = this.game_ing.questioner
+         // this.mainStreamManager = this.members[this.questioner]
+         // console.log('출제자 정보 보기')
+         // console.log(this.questioner)
+         // console.log(this.members[this.questioner])
+         // console.log(this.questioner)
 
 
         });
@@ -223,7 +221,7 @@ export default {
             console.log(err)
          })
 
-         // ----------------몸으로 말하기 때 오픈비두로 시그널 보내기-------------------
+         // ----------------몸으로 말하기 시작할 때 오픈비두로 시그널 보내기-------------------
 
          this.session.signal({
             data: JSON.stringify({
@@ -337,11 +335,19 @@ export default {
 
     
    },
+   watch: {
+      questioner(newVal, oldVal) {
+         console.log(newVal, oldVal)
+         console.log('출제자 정보 보기')
+         console.log(this.questioner)
+         console.log(this.members[this.questioner])
+         this.mainStreamManager = this.members[this.questioner]
+         console.log('메인스트리머 확인')
+         console.log(this.mainStreamManager.stream.streamId)
 
+      }
 
-   
-
-   
+   },
 
    mixins: [video]
 
