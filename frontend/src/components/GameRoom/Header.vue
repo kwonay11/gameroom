@@ -1,6 +1,6 @@
 <template>
    <div class="aa p-1">
-      <h5 class="mt-2 ">
+      <h5 class="mt-2 " >
          방제목 : {{ roominfo.title }}&nbsp;
          게임 종류 : {{ roominfo.gameName }}&nbsp;
          최대 인원 : {{ roominfo.maxUser}}&nbsp;

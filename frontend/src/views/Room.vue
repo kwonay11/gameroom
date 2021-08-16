@@ -142,6 +142,7 @@ export default {
       const room_id = this.$route.params.roomid;
       this.$axios.get(`${SERVER_URL}/conferences/info/${room_id}`)
       .then((res) => {
+        console.log(res)
         this.roominfo = res.data
         console.log('여기ㅐ')
         console.log(this.roominfo)
@@ -156,15 +157,28 @@ export default {
             this.ready = true;
             }, 3600);
 
+         this.gameStatus = 1
+
       })
 
          this.session.on('signal:game', (event) => {
-            this.gameStatus = 1
+            // 게임 변경 됐을 때
+            const status = JSON.parse(event.data);
+            console.log('status')
+            console.log(status)
+
+            // 게임중일때
             this.game_ing = JSON.parse(event.data.data)
             console.log('게임 키워드 데이터들')
             console.log(this.game_ing)
             this.round = this.game_ing.round
             this.mainStreamManager = this.members[number]
+
+            
+         if (status.gameStatus === 3){
+            this.changecategory(status.category);
+         }
+
 
         });
          this.session.on('signal:game_finish', (event) => {
@@ -181,6 +195,8 @@ export default {
             console.log('내 닉네임')
       
       console.log(this.myUserNick)
+
+
 
   },
   methods: {
@@ -204,7 +220,6 @@ export default {
          // ----------------몸으로 말하기 때 오픈비두로 시그널 보내기-------------------
 
          this.session.signal({
-            // test 용 하드 코딩 
             data: JSON.stringify({
                "gameStatus": this.gameStatus, // 게임 상태
                "category" :this.roominfo.gameId, // 게임 종류
@@ -275,6 +290,27 @@ export default {
       },
   
    
+      changecategory(category) {
+         this.roominfo.gameId=category;
+               console.log('되나??')
+
+         if (category === 1) {
+            this.roominfo.gameName = '1'
+         }else if (category === 2) {
+            this.roominfo.gameName = '2'
+         }else if (category === 3) {
+            this.roominfo.gameName = '3'
+         }else if (category === 4) {
+            this.roominfo.gameName = '4'
+         }else if (category === 5) {
+            this.roominfo.gameName = '5'
+         }else if (category === 6) {
+            this.roominfo.gameName = "6"
+         }
+
+      }
+
+    
    },
 
 
