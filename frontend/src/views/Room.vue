@@ -131,6 +131,7 @@ export default {
       const room_id = this.$route.params.roomid;
       this.$axios.get(`${SERVER_URL}/conferences/info/${room_id}`)
       .then((res) => {
+        console.log(res)
         this.roominfo = res.data
         console.log('여기ㅐ')
         console.log(this.roominfo)
@@ -158,6 +159,11 @@ export default {
             console.log(event.data.data);
             console.log(event.data);
             const status = JSON.parse(event.data);
+            if (status.gameStatus ==3){
+               this.changecategory(status.category);
+               
+               
+            }
             console.log(status.gameStatus);
             console.log(status.category);
             console.log(status.round);
@@ -202,6 +208,26 @@ export default {
             console.log(error);
          })
       },
+      changecategory(category) {
+         this.roominfo.gameId=category;
+               console.log('되나??')
+
+         if (category === 1) {
+            this.roominfo.gameName = '몸으로 말해요'
+         }else if (category === 2) {
+            this.roominfo.gameName = '캐치 마인드'
+         }else if (category === 3) {
+            this.roominfo.gameName = '고요속의 외침'
+         }else if (category === 4) {
+            this.roominfo.gameName = '노래방'
+         }else if (category === 5) {
+            this.roominfo.gameName = '순간 포착'
+         }else if (category === 6) {
+            this.roominfo.gameName = "글자 맞추기"
+         }
+
+      }
+
     
    },
 

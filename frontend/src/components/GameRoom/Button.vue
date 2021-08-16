@@ -116,7 +116,7 @@ export default {
   //       console.log('leave')
   //       console.log(event)
   //   })
-  // },
+  },
 
   methods: {
     muteAudio() {
@@ -161,7 +161,7 @@ export default {
          
         if (this.games === '몸으로 말해요'){
           this.gamecategory = 1
-        }else if (this.games === '캐치 마인드'){
+        }else if (this.games === '캐치마인드'){
           this.gamecategory = 2
         }else if (this.games === '고요속의 외침'){
           this.gamecategory = 3
