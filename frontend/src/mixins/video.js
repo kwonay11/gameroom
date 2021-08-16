@@ -47,6 +47,8 @@ export const video = {
         console.log(this.mySessionId)
         this.myUserName = this.$store.state.id
         this.myUserNick = this.$store.state.userData.nickname
+        console.log('video.js에서 내 닉네임')
+        console.log(this.myUserNick)
             // --- Specify the actions when events take place in the session ---
 
         // On every new Stream received...

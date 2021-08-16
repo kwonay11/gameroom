@@ -134,9 +134,7 @@ export default {
     },
    created() {
 
-      console.log('내 닉네임')
-      
-      console.log(this.myUserNick)
+
 
       const number = 0
 
@@ -161,6 +159,7 @@ export default {
       })
 
          this.session.on('signal:game', (event) => {
+            this.gameStatus = 1
             this.game_ing = JSON.parse(event.data.data)
             console.log('게임 키워드 데이터들')
             console.log(this.game_ing)
@@ -173,9 +172,16 @@ export default {
             console.log(event)
             this.ready = false
                   this.start = false
+                  this.gameStatus = 2
+
          })
 
       //   });
+
+            console.log('내 닉네임')
+      
+      console.log(this.myUserNick)
+
   },
   methods: {
       song(){
@@ -210,7 +216,7 @@ export default {
          })
          .then(() => {
             console.log('몸으로 말해요');
-            this.gameStatus = 1
+            
          })
          .catch(error => {
             console.log(error);
