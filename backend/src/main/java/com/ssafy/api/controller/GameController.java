@@ -177,7 +177,7 @@ public class GameController {
             Conference result = conferenceService.saveConference(conference);
 
 
-            GameChagneRes res = GameChagneRes.builder().category(result.getGameCategory().getId()).build();
+            GameChagneRes res = GameChagneRes.builder().category(result.getGameCategory().getId()).gameStatus(3L).round(0L).build();
             return ResponseEntity.status(200).body(res);
         }
         return ResponseEntity.status(200).body(BaseResponseBody.of(404, "invalid Parameters"));
@@ -191,7 +191,7 @@ public class GameController {
             // 출제자 랜덤 선택
             Random rand = new Random();
             int questioner = rand.nextInt(userConferenceList.size());
-            GameStatusRes res = GameStatusRes.builder().keyword(keyword).questioner(questioner).round(gameStatusGetReq.getRound() + 1).build();
+            GameStatusRes res = GameStatusRes.builder().keyword(keyword).questioner(questioner).round(gameStatusGetReq.getRound() + 1).gameStatus(1L).build();
             return ResponseEntity.status(200).body(res);
         } else if (gameStatusGetReq.getCategory() == 5 || gameStatusGetReq.getCategory() == 6) {  // 순간 포착 || 글자맞추기
             String question = null;
@@ -218,7 +218,7 @@ public class GameController {
                 question = keyword.substring(0, 2) + "**";
                 System.out.println("question : " + question);
             }
-            GameStatusRes2 res = GameStatusRes2.builder().keyword(keyword).question(question).round(gameStatusGetReq.getRound() + 1).build();
+            GameStatusRes2 res = GameStatusRes2.builder().keyword(keyword).question(question).round(gameStatusGetReq.getRound() + 1).gameStatus(1L).build();
             return ResponseEntity.status(200).body(res);
         }
         return ResponseEntity.status(200).body(BaseResponseBody.of(404, "invalid Parameters"));

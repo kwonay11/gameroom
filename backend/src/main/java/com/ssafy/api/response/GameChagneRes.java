@@ -9,4 +9,6 @@ import lombok.Setter;
 @Builder
 public class GameChagneRes {
     Long category;
+    Long gameStatus;
+    Long round;
 }
