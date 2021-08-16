@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class GameStatusRes {
+public class GameStatusRes2 {
     String keyword;
-    int questioner;
+    String question;
     int round;
 }

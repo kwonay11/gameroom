@@ -35,7 +35,7 @@ public class GameService {
 
     //게임종류
     static final int BODYTALK = 1; // 몸으로 말해요
-
+    static final int CILENCETALK = 3; // 고요속의외침
     static final int INITIAL = 2;
     static final int LIAR = 3;
     static final int SMILE = 4;
@@ -52,6 +52,7 @@ public class GameService {
         System.out.println(message); // {"to":[],"data":"{\"gameStatus\":0,\"category\":1,\"round\":0,\"conferencid\":\"15\"}","type":"signal:game"}
         System.out.println(participants); //[[participantPrivateId=hp7f9t6at49glgiv6ncgaa0t83, participantPublicId=con_CTrBt4LyO2, streaming=true],
         // [participantPrivateId=7ld50k6qfslg5ao22malv3lve8, participantPublicId=con_HxGJQoxLm8, streaming=true]]
+
         JsonObject params = new JsonObject();
 
         // 요청 보낸 사람 ID 저장
@@ -107,36 +108,36 @@ public class GameService {
         System.out.println(category + " " + round + " " + conferenceId);
         String apiUrl = "http://localhost:8080/api/games/play";
 
-        switch (category) {
-            case BODYTALK: //  몸으로 말해요
-                UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
-                        .queryParam("status",0)
-                        .queryParam("category",category)
-                        .queryParam("round",round)
-                        .queryParam("conference",conferenceId);
-                HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+//        switch (category) {
+//            case BODYTALK | CILENCETALK: //  몸으로 말해요 or 고요속의 외침
+        UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                .queryParam("status",0)
+                .queryParam("category",category)
+                .queryParam("round",round)
+                .queryParam("conference",conferenceId);
+        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
 
 
-                RestTemplate restTpl = new RestTemplate(httpRequestFactory);
-                HttpHeaders headers = new HttpHeaders(); // 담아줄 header
-                HttpEntity entity = new HttpEntity<>(headers); // http entity에 header 담아줌
-                ResponseEntity<String> response  = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+        RestTemplate restTpl = new RestTemplate(httpRequestFactory);
+        HttpHeaders headers = new HttpHeaders(); // 담아줄 header
+        HttpEntity entity = new HttpEntity<>(headers); // http entity에 header 담아줌
+        ResponseEntity<String> response  = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
 
 
-                System.out.println("return 확인");
-                System.out.println(response);
-                try {
-                    JSONParser jsonParsers = new JSONParser();
-                    JSONObject jsonObject = (JSONObject) jsonParsers.parse(response.getBody());
+        System.out.println("return 확인");
+        System.out.println(response);
+        try {
+            JSONParser jsonParsers = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParsers.parse(response.getBody());
 
-                    data.addProperty("data", String.valueOf(jsonObject));
-                    params.add("data", data);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                break;
-
+            data.addProperty("data", String.valueOf(jsonObject));
+            params.add("data", data);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
+//                break;
+//
+//        }
         for (Participant p : participants) {
             rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
                     ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
@@ -155,35 +156,35 @@ public class GameService {
         int conferenceId = data.get("conferenceId").getAsInt();
         String JWT = "Bearer " + data.get("JWT").getAsString();
         String apiUrl = "http://localhost:8080/api/games/play";
-        switch (category) {
-            case BODYTALK: //  몸으로 말해요
-                UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
-                        .queryParam("status",1)
-                        .queryParam("category",category)
-                        .queryParam("conference",conferenceId)
-                        .queryParam("round",round);
-                HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+//        switch (category) {
+//            case BODYTALK | CILENCETALK : //  몸으로 말해요 고요속의 외침
+        UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                .queryParam("status",1)
+                .queryParam("category",category)
+                .queryParam("conference",conferenceId)
+                .queryParam("round",round);
+        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
 
 
-                RestTemplate restTpl = new RestTemplate(httpRequestFactory);
-                HttpHeaders headers = new HttpHeaders(); // 담아줄 header
-                headers.add("Authorization", JWT);
-                HttpEntity entity = new HttpEntity<>(headers); // http entity에 header 담아줌
-                ResponseEntity<String> response  = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+        RestTemplate restTpl = new RestTemplate(httpRequestFactory);
+        HttpHeaders headers = new HttpHeaders(); // 담아줄 header
+        headers.add("Authorization", JWT);
+        HttpEntity entity = new HttpEntity<>(headers); // http entity에 header 담아줌
+        ResponseEntity<String> response  = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
 
-                System.out.println("return 확인");
-                System.out.println(response);
-                try {
-                    JSONParser jsonParsers = new JSONParser();
-                    JSONObject jsonObject = (JSONObject) jsonParsers.parse(response.getBody());
+        System.out.println("return 확인");
+        System.out.println(response);
+        try {
+            JSONParser jsonParsers = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParsers.parse(response.getBody());
 
-                    data.addProperty("data", String.valueOf(jsonObject));
-                    params.add("data", data);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                break;
+            data.addProperty("data", String.valueOf(jsonObject));
+            params.add("data", data);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
+//                break;
+//        }
         for (Participant p : participants) {
             rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
                     ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
@@ -201,41 +202,41 @@ public class GameService {
         String JWT = "Bearer " + data.get("JWT").getAsString();
 
         String apiUrl = "http://localhost:8080/api/games/play";
-        switch (category) {
-            case BODYTALK: //  몸으로 말해요
-                UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
-                        .queryParam("status",2)
-                        .queryParam("category",category)
-                        .queryParam("conference",conferenceId)
-                        .queryParam("round",round);
-                HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
+//        switch (category) {
+//            case BODYTALK  | CILENCETALK: //  몸으로 말해요 or 고요속의 외침
+        UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                .queryParam("status",2)
+                .queryParam("category",category)
+                .queryParam("conference",conferenceId)
+                .queryParam("round",round);
+        HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
 
 
-                RestTemplate restTpl = new RestTemplate(httpRequestFactory);
-                HttpHeaders headers = new HttpHeaders(); // 담아줄 header
-                headers.add("Authorization", JWT);
-                HttpEntity entity = new HttpEntity<>(headers); // http entity에 header 담아줌
-                System.out.println("확인");
-                ResponseEntity<String> response  = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+        RestTemplate restTpl = new RestTemplate(httpRequestFactory);
+        HttpHeaders headers = new HttpHeaders(); // 담아줄 header
+        headers.add("Authorization", JWT);
+        HttpEntity entity = new HttpEntity<>(headers); // http entity에 header 담아줌
+        System.out.println("확인");
+        ResponseEntity<String> response  = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
 
 
 
 
 
-                System.out.println("return 확인");
-                System.out.println(response);
-                try {
-                    JSONParser jsonParsers = new JSONParser();
-                    JSONObject jsonObject = (JSONObject) jsonParsers.parse(response.getBody());
+        System.out.println("return 확인");
+        System.out.println(response);
+        try {
+            JSONParser jsonParsers = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParsers.parse(response.getBody());
 
 
-                    data.addProperty("data", String.valueOf(jsonObject));
-                    params.add("data", data);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
+            data.addProperty("data", String.valueOf(jsonObject));
+            params.add("data", data);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+//                break;
+//        }
         for (Participant p : participants) {
             rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
                     ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, params);
