@@ -17,14 +17,13 @@
 
       <!-- 메인 화면 -->
       <div class='row p-4'>
-         <div id="main-video" class="col-md-8">
             <!-- 크게 보이는 화면 -->
+         <div id="main-video" class="col-md-8">
+            <!-- 노래방일때 -->
             <div v-if="roominfo.gameId === 4" >
                <Song />
             </div>
             <div v-else class="player">
-
-               <!-- 얘가 노래방 -->
 
                <!-- 시작, 레디, 화면 -->
               <div class="main_box">
@@ -51,11 +50,16 @@
                   
                   <!-- 메인화면 -->
                   <div v-else>
+                     <!-- 캐치마인드 -->
                      <div v-if='roominfo.gameId === 2'>
                         <CatchMind :session="session"/>
                      </div>
-                     <div v-else>
+                     <!-- 1 : 몸으로 말해요, 3 : 고요속의 외침 -->
+                     <div v-else-if='roominfo.gameId === 1 ||  roominfo.gameId === 3'>
                         <user-video :stream-manager="mainStreamManager"/>
+                     </div>
+                     <div v-else>
+                        순간포착, 글자맞추기
                      </div>
                   </div>
                </div>

@@ -28,7 +28,7 @@
                       <div class="button button--brightness">입장</div>
                     </router-link>
                     </div>
-                  <div v-else>
+                  <div v-else @click="entersession">
                     <router-link class="btn_text" :to="`/gameroom/${item.id}`">
                     <div class="button button--brightness">입장</div>
                   </router-link>
@@ -54,6 +54,8 @@
 import { authComputed } from "@/store/helpers"
 import VueHorizontalList from "vue-horizontal-list";
 import _ from "lodash"
+import axios from 'axios'
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name:'GameList',
@@ -93,12 +95,26 @@ export default {
           this.image_url.push(`https://unsplash.it/${url_value[i]}/${url_value[i]}/`)
         }
       },
-  // methods: {
-  //   enter:function(){
-  //     this.$router.push({name: 'RoomPasswordModal', params: {item.id}})
 
-  //   }
-  // }
+  methods: {
+  entersession(){
+    axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
+    .then((res) => {
+        console.log(res.status)
+        if (res.status == 200) {
+            this.canJoin = true;
+        } else {
+            this.canJoin = false;
+        }
+        if (!this.canJoin)
+            return;
+    })
+    .catch(() => {
+        this.$router.push({ name: 'MainPage' })
+        this.canJoin = false;
+    });
+  } 
+},
 }
 </script>
 
