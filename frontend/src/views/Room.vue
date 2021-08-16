@@ -31,8 +31,15 @@
                   <!-- 시작하기 버튼 -->
                   <div v-if="!start && !ready">
                      <div class="main_box_2">
-                        <div @click="game_start">
-                           <Start />
+                        <!-- 방장만 스타트 버튼 보이기 -->
+                        <div v-if='this.myUserNick === this.roominfo.ownerNicknames'>
+                           <div @click="game_start">
+                              <Start />
+                           </div>
+                        </div>
+                        <!-- 방장 아닌 사람은 준비중 -->
+                        <div v-else>
+                           <p>준비중</p>
                         </div>
                      </div>
                   </div>
@@ -148,7 +155,6 @@ export default {
             }, 3600);
 
       })
-      
          this.session.on('signal:game', (event) => {
             this.game_ing = JSON.parse(event.data.data)
             console.log('게임 키워드 데이터들')
@@ -157,15 +163,6 @@ export default {
             this.mainStreamManager = this.members[number]
 
         });
-
-              // openvidu에서 new signal로 뿌려지는곳은 signal로 response함 
-      //   this.session.on('signal', (event) => {
-      //       console.log(event.data.data);
-      //       // const status = JSON.parse(event.data.data);
-      //       // console.log(status);
-      //       // console.log(typeof(status));
-      //       // console.log(typeof(event.data.data));
-      //   });
 
   },
   methods: {
@@ -209,6 +206,7 @@ export default {
       },
 
       check_answer() {
+         this.game_answer = '',
          console.log('게임 status 바뀌는거 확인')
          console.log(this.gameStatus)
          if(this.game_answer === this.game_ing.keyword) {
@@ -217,6 +215,8 @@ export default {
             
             if (this.round === 5) {
                this.gameStatus = 2
+               this.ready = false
+               this.start = false
             }
             // if (this.round)
 
@@ -241,29 +241,7 @@ export default {
             })
             }
       },
-
-
-      
-      // gametest() {
-      //    this.session.signal({
-      //       // test 용 하드 코딩 
-      //       data: JSON.stringify({
-      //          "gameStatus": 0,
-      //          "category" :this.roominfo.gameId,
-      //          "round":0,
-      //          "conferenceId": this.$route.params.roomid,
-      //          "JWT":this.$store.state.accessToken
-      //       }),
-      //       type: 'game'
-      //    })
-      //    .then(() => {
-      //       console.log('Message success');
-      //    })
-      //    .catch(error => {
-      //       console.log(error);
-      //    })
-      // },
-   
+  
    
    },
 
