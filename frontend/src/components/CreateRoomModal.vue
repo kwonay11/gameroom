@@ -103,6 +103,9 @@ export default {
       //     })
 
       // },
+      room_info: function(){
+        this.$store.dispatch('roomInfo',this.contents)
+      },
 
       joinSession: function() {
         event.preventDefault();
@@ -118,6 +121,7 @@ export default {
                         console.log('sdsdsdsd')
                         // console.log(commit);
                         console.log(res.data.roomId)
+                        // this.$store.dispatch('roomInfo',this.contents)
                         this.$store.dispatch('joinSession',res.data.roomId)
                         this.$router.push({ name: "Room" , params: {roomid: res.data.roomId }});
                         

@@ -83,24 +83,20 @@
 <script>
 import myModal from '@/components/myModal'
 import swal from 'sweetalert';
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
+
 
 export default {
   name: 'Button',
 
   data() {
     return {
-       visible_url: false,
-       visible_setting: false,
-       visible_tutorial: false,
-       url: null,
-       games:'',
-       contents: {
-          title:'',
-          password:'',
-          maxUser: '',
-          gamecategory: '',
-        },
+      visible_url: false,
+      visible_setting: false,
+      visible_tutorial: false,
+      url: null,
+      games:'',
+      gamecategory:'',
+   
     }
   },
   components: {
@@ -114,31 +110,7 @@ export default {
   },
 
   
-  // created: function () {
-  //     this.$axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
-  //     .then((res) => {
-  //       // this.cotents.password = this.roominfo.password
-  //       this.roominfo = res.data
-  //       console.log('룸 정보')
-  //       console.log(this.roominfo)
-  //       this.cotents.title = this.roominfo.title
-  //       this.cotents.maxUser = this.roominfo.maxUser
-
-  //       console.log(this.games)
-  //       if (this.games === '몸으로 말해요'){
-  //         this.contents.gamecategory = 1
-  //       }else if (this.games === '캐치 마인드'){
-  //         this.contents.gamecategory = 2
-  //       }else if (this.games === '고요속의 외침'){
-  //         this.contents.gamecategory = 3
-  //       }else if (this.games === '노래방'){
-  //         this.contents.gamecategory = 4
-  //       }else if (this.games === '순간포착'){
-  //         this.contents.gamecategory = 5
-  //       }else {
-  //         this.contents.gamecategory = 6
-  //       }
-  //     })
+  created: function () {
 
   //   this.session.on('signal:leave',(event) =>{
   //       console.log('leave')
@@ -179,20 +151,45 @@ export default {
       this.visible_setting = !this.visible_setting
     },
     changeGame(){
-      console.log(this.contents)
-      this.$axios.post(`${SERVER_URL}/conferences`, this.contents)
-        .then((res) => {
-            console.log('성공')
-            console.log(res)//contents 빈값 
-            // this.$store.dispatch('joinSession',res.data.roomId)
-            // this.$router.push({ name: "Room" , params: {roomid: res.data.roomId }});
-            
+      console.log('룸 정보')
+        // console.log(this.roominfo)
+        this.session.on('signal',(event)=>{
+          console.log('제이슨 정보~~')
+          console.log(event.data)
+          
+        })
+         
+        if (this.games === '몸으로 말해요'){
+          this.gamecategory = 1
+        }else if (this.games === '캐치 마인드'){
+          this.gamecategory = 2
+        }else if (this.games === '고요속의 외침'){
+          this.gamecategory = 3
+        }else if (this.games === '노래방'){
+          this.gamecategory = 4
+        }else if (this.games === '순간포착'){
+          this.gamecategory = 5
+        }else {
+          this.gamecategory = 6
+        }
+        this.session.signal({
+          data: JSON.stringify({
+               "gameStatus": 3,
+               "category" :this.gamecategory,
+               "conferenceId": this.$route.params.roomid,
+         
+            }),
+            type: 'game'
+          })
+          .then(() => {
+            console.log('게임변경 성공then이다')
             this.visible_setting = !this.visible_setting
-        })
-        .catch((error) => {
-          console.log('에러')
-            console.log(error);
-        })
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      
+      
     },
     leaveSession () {
          // --- Leave the session by calling 'disconnect' method over the Session object ---

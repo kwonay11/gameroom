@@ -115,11 +115,18 @@ export default {
             song_visible: false,
             start: false,
             ready: false,
-            aa: false
+            aa: false,
+
+            gamecategory: 1,
+            gameStatus:0,
+            gameround:0,
+            gameconferenceid:this.$route.params.roomid,
+
 
         }
     },
    created() {
+      
       console.log('4555554')
       const room_id = this.$route.params.roomid;
       this.$axios.get(`${SERVER_URL}/conferences/info/${room_id}`)
@@ -143,6 +150,22 @@ export default {
 
       })
 
+
+              // openvidu에서 new signal로 뿌려지는곳은 signal로 response함 
+        this.session.on('signal:game', (event) => {
+           console.log(event)
+           console.log('제이슨 파스~~~~~')
+            console.log(event.data.data);
+            console.log(event.data);
+            const status = JSON.parse(event.data);
+            console.log(status.gameStatus);
+            console.log(status.category);
+            console.log(status.round);
+            console.log(status.conferenceId);
+            // console.log(typeof(status));
+            // console.log(typeof(event.data.data));
+        });
+
   },
   methods: {
       song(){
@@ -160,16 +183,13 @@ export default {
             console.log(err)
          })
       },
-
-
       
       gametest() {
          this.session.signal({
-            // test 용 하드 코딩 
             data: JSON.stringify({
-               "gameStatus": 0,
-               "category" :1,
-               "round":0,
+               "gameStatus": this.gameStatus,
+               "category" :this.gameCategory,
+               "round":this.gameround,
                "conferenceId": this.$route.params.roomid,
                "JWT":this.$store.state.accessToken
             }),
@@ -182,6 +202,7 @@ export default {
             console.log(error);
          })
       },
+    
    },
 
    
