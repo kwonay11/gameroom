@@ -134,6 +134,10 @@ export default {
     },
    created() {
 
+      console.log('내 닉네임')
+      
+      console.log(this.myUserNick)
+
       const number = 0
 
       console.log('4555554')
@@ -155,6 +159,7 @@ export default {
             }, 3600);
 
       })
+
          this.session.on('signal:game', (event) => {
             this.game_ing = JSON.parse(event.data.data)
             console.log('게임 키워드 데이터들')
@@ -163,7 +168,14 @@ export default {
             this.mainStreamManager = this.members[number]
 
         });
+         this.session.on('signal:game_finish', (event) => {
+            console.log('게임끝')
+            console.log(event)
+            this.ready = false
+                  this.start = false
+         })
 
+      //   });
   },
   methods: {
       song(){
@@ -206,7 +218,7 @@ export default {
       },
 
       check_answer() {
-         this.game_answer = '',
+         
          console.log('게임 status 바뀌는거 확인')
          console.log(this.gameStatus)
          if(this.game_answer === this.game_ing.keyword) {
@@ -215,8 +227,21 @@ export default {
             
             if (this.round === 5) {
                this.gameStatus = 2
-               this.ready = false
-               this.start = false
+
+                  this.ready = false,
+                  this.start = false,
+            
+
+                     this.session.signal({
+                     data: JSON.stringify(this.ready, this.start),
+                     type: 'game_finish'
+                     })
+                     .then(() => {
+                        console.log('게임끝')
+                     })
+                     .catch(err => {
+                        console.log(err)
+                     })
             }
             // if (this.round)
 
@@ -233,7 +258,8 @@ export default {
             type: 'game'
             })
             .then(() => {
-               console.log('몸으로 말해요');
+               console.log('몸으로 말해요')
+               this.game_answer = ''
                
             })
             .catch(error => {
