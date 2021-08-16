@@ -161,23 +161,25 @@ export default {
 
       })
 
-         this.session.on('signal:game', (event) => {
-            // 게임 변경 됐을 때
-            const status = JSON.parse(event.data);
-            console.log('status')
-            console.log(status)
-
-            // 게임중일때
-            this.game_ing = JSON.parse(event.data.data)
-            console.log('게임 키워드 데이터들')
-            console.log(this.game_ing)
-            this.round = this.game_ing.round
-            this.mainStreamManager = this.members[number]
-
-            
-         if (status.gameStatus === 3){
+      this.session.on('signal:game', (event) => {
+         // 게임 변경 됐을 때
+         console.log(event);
+         const status = JSON.parse(event.data.data);
+         if (status.gameStatus == 3){
             this.changecategory(status.category);
          }
+         console.log('status')
+         console.log(status)
+
+         // 게임중일때
+         this.game_ing = status
+         // console.log('게임 키워드 데이터들')
+         // console.log(this.game_ing)
+         this.round = this.game_ing.round
+         this.mainStreamManager = this.members[number]
+
+         
+         
 
 
         });
@@ -221,9 +223,9 @@ export default {
 
          this.session.signal({
             data: JSON.stringify({
-               "gameStatus": this.gameStatus, // 게임 상태
+               "gameStatus": 0, // 게임 상태 (게임시작)
                "category" :this.roominfo.gameId, // 게임 종류
-               "round":this.round, //라운드
+               "round": 0, //라운드
                "conferenceId": this.$route.params.roomid, //방 id
                "JWT":this.$store.state.accessToken //토큰?
             }),
@@ -245,7 +247,8 @@ export default {
          if(this.game_answer === this.game_ing.keyword) {
             console.log('라운드헷갈림')
             console.log(this.round)
-            
+            // 라운드가 5면 게임종료임을 알린다
+            // gamestatus=2
             if (this.round === 5) {
                this.gameStatus = 2
 
@@ -262,15 +265,30 @@ export default {
                      })
                      .catch(err => {
                         console.log(err)
+                     }),
+                     // 게임 끝 
+                     this.session.signal({
+                     data: JSON.stringify({
+                        "gameStatus": 2, // 게임 상태(게임종료)
+                        "category" :this.roominfo.gameId, // 게임 종류
+                        "round":this.round, //라운드
+                        "conferenceId": this.$route.params.roomid, //방 id
+                        "JWT":this.$store.state.accessToken //토큰?
+                     }),
+                     type: 'game'
                      })
+                     .then(() => {
+                        console.log('게임끝')
+                     })
+                     .catch(err => {
+                        console.log(err)
+                     })     
             }
-            // if (this.round)
-
-            
-            this.session.signal({
-            // test 용 하드 코딩 
+            //마지막 라운드가 아니라면 게임을 계속 진행한다. 
+            else{
+               this.session.signal({
             data: JSON.stringify({
-               "gameStatus": this.gameStatus, // 게임 상태
+               "gameStatus": 1, // 게임 상태 (진행중)
                "category" :this.roominfo.gameId, // 게임 종류
                "round":this.round, //라운드
                "conferenceId": this.$route.params.roomid, //방 id
@@ -287,12 +305,15 @@ export default {
                console.log(error);
             })
             }
+
+            }
+            
       },
   
    
       changecategory(category) {
          this.roominfo.gameId=category;
-               console.log('되나??')
+         console.log('되나??')
 
          if (category === 1) {
             this.roominfo.gameName = '1'
