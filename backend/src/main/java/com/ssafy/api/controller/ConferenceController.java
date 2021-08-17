@@ -94,6 +94,16 @@ public class ConferenceController {
         return ResponseEntity.status(200).body(res);
     }
 
+    @GetMapping("/{conferenceId}/check")
+    public ResponseEntity<? extends BaseResponseBody> checkConferencePassword(@PathVariable Long conferenceId,
+                                                                      ConferencePasswordGetReq conferencePasswordGetReq) {
+        if(conferenceService.getPasswordById(conferenceId) != null &&
+                !conferenceService.getPasswordById(conferenceId).equals("") &&
+                !conferencePasswordGetReq.getPassword().equals(conferenceService.getPasswordById(conferenceId))) {
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "false"));
+        }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "true"));
+    }
 
     @GetMapping("/{conferenceId}")
     @ApiOperation(value = "게임 방 접속", notes = "인원 수에 여유가 있다면 게임 방에 접속")
@@ -104,8 +114,7 @@ public class ConferenceController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> enterConference(@PathVariable Long conferenceId,
-                                                                      @ApiIgnore Authentication authentication,
-                                                                      ConferencePasswordGetReq conferencePasswordGetReq) {
+                                                                      @ApiIgnore Authentication authentication) {
         /**
          * conferenceId로 conference 테이블에서 검색
          * 방이 존재하지 않거나 is_active가 false 일 경우 404 에러발생
@@ -118,12 +127,6 @@ public class ConferenceController {
         Optional<Conference> conference = conferenceService.getConferenceById(conferenceId);
         if(!conference.isPresent() || !conference.get().isActive())  // 방이 존재하지 않거나 is_active가 false일 경우
             return ResponseEntity.status(200).body(BaseResponseBody.of(404, "false"));
-
-        if(conferenceService.getPasswordById(conferenceId) != null &&
-                !conferenceService.getPasswordById(conferenceId).equals("") &&
-                !conferencePasswordGetReq.getPassword().equals(conferenceService.getPasswordById(conferenceId))) {
-            return ResponseEntity.status(200).body(BaseResponseBody.of(403, "false"));
-        }
 
         List<UserConference> userConferenceList = userConferenceService.getUserConferenceByConferenceId(conferenceId);
         if(userConferenceList.size() >= conference.get().getMaxUser())  // 방의 인원이 초과된 경우

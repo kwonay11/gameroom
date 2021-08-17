@@ -28,6 +28,7 @@ public class Conference extends BaseEntity implements Serializable {
 
     @CreatedDate
     private LocalDateTime callStartTime; //방 생성시간
+
     @LastModifiedDate
     private LocalDateTime callEndTime; //방 종료시간
 
