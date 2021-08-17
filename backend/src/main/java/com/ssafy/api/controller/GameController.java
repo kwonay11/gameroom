@@ -34,7 +34,7 @@ import java.util.*;
 @Api(value = "게임 API", tags = {"Game"})
 
 @RestController
-@RequestMapping("/api/games")
+@RequestMapping("/api-boot/games")
 public class GameController {
 
     @Autowired

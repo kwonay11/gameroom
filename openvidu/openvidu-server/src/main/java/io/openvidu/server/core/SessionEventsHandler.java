@@ -398,7 +398,7 @@ public class SessionEventsHandler {
 			String JWT = "Bearer " + data.get("JWT").getAsString();
 
 			System.out.println(JWT);
-			String deleteUrl = "http://localhost:8080/api/conferences/"+conferenceid;
+			String deleteUrl = "http://localhost:8080/api-boot/conferences/"+conferenceid;
 
 			// API서버로 /room/finish/{roomId} 요청 보냄
 			// endTime 저장됨!

@@ -31,7 +31,7 @@ import io.swagger.annotations.ApiParam;
 
 
 @RestController
-@RequestMapping("/api/conferences")
+@RequestMapping("/api-boot/conferences")
 public class ConferenceController {
     @Autowired
     ConferenceService conferenceService;
