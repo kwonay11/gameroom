@@ -45,6 +45,9 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Autowired
     GameCategoryRepository gameCategoryRepository;
 
+    @Autowired
+    UserGameRepository userGameRepository;
+
     @Override
     public Optional<Conference> getConferenceById(Long id) {
         return conferenceRepository.findById(id);
@@ -57,6 +60,13 @@ public class ConferenceServiceImpl implements ConferenceService {
     public ConferenceHistory exitConference(User user, Long conferenceId){
         // 방 정보(user_conference) 삭제 (userId, RoomId를 통한 삭제)
         Optional<UserConference> conference = userConferenceRepository.findByUserId(user.getId());
+
+        // usergamerepository에 등록되어 있으면 먼저 삭제
+        Optional<UserGame> userGame = userGameRepository.findByUserId(user.getId());
+        System.out.println(userGame);
+        if (userGame.isPresent()) {
+            userGameRepository.delete(userGame.get());
+        }
         // 방의 마지막사람은 컨퍼런스 종료시간+ isactive = false로 하고 방을 없애준다.
         long count = userConferenceRepository.countByConferenceId(conferenceId);
         if (count == 1L) {
