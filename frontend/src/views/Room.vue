@@ -58,8 +58,10 @@
                      <div v-else-if='roominfo.gameId === 1 ||  roominfo.gameId === 3'>
                         <user-video :stream-manager="mainStreamManager"/>
                      </div>
-                     <div v-else>
-                        순간포착, 글자맞추기
+                     <div v-else-if='roominfo.gameId === 5'>
+                     <!-- <div v-if="picture"> -->
+                        <img :src="picture_url" alt="00" />
+                     <!-- </div> -->
                      </div>
                   </div>
                </div>
@@ -177,6 +179,8 @@ export default {
          console.log(this.game_ing)
          this.round = this.game_ing.round
          this.questioner = this.game_ing.questioner
+         this.picture_url = this.game_ing.question
+         console.log(this.picture_url)
          // this.mainStreamManager = this.members[this.questioner]
          // console.log('출제자 정보 보기')
          // console.log(this.questioner)
@@ -340,8 +344,11 @@ export default {
          console.log(newVal, oldVal)
          console.log('출제자 정보 보기')
          console.log(this.questioner)
-         console.log(this.members[this.questioner])
-         this.mainStreamManager = this.members[this.questioner]
+         console.log(this.mainStreamManager)
+         console.log(this.members)
+         console.log(this.members[newVal])
+         this.mainStreamManager = this.members[newVal]
+         console.log(this.mainStreamManager)
          console.log('메인스트리머 확인')
          console.log(this.mainStreamManager.stream.streamId)
 
