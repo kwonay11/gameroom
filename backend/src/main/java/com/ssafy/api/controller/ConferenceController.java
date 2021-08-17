@@ -1,6 +1,6 @@
 package com.ssafy.api.controller;
-import com.ssafy.api.response.ConferenceInfoRes;
-import com.ssafy.api.response.ConferenceMapping;
+import com.ssafy.api.request.ConferencePasswordGetReq;
+import com.ssafy.api.response.*;
 import com.ssafy.api.service.ConferenceService;
 import com.ssafy.api.service.UserConferenceService;
 import com.ssafy.common.auth.SsafyUserDetails;
@@ -21,8 +21,6 @@ import springfox.documentation.annotations.ApiIgnore;
 import java.util.*;
 
 import com.ssafy.api.request.ConferenceRegisterPostReq;
-import com.ssafy.api.response.ConferenceRes;
-import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.db.entity.User;
 import io.swagger.annotations.ApiParam;
 
@@ -70,7 +68,7 @@ public class ConferenceController {
             if(conferenceMapping.getTitle().replace(" ", "").contains(keyword) || conferenceMapping.getOwner().getNickname().contains(keyword))  // 검색 키워드가 제목 혹은 방장 닉네임에 포함될 경우
                 list2.add(new Object[]{conferenceMapping, conferenceMapping.getMaxUser() - userConferenceService.countByConferenceId(conferenceMapping.getId())});
         }
-        Collections.sort(list2, (o1, o2) -> (long)o1[1] > (long)o2[1] ? 1 : -1);
+        Collections.sort(list2, Comparator.comparingLong(o -> (Long) o[1]));
         List<ConferenceInfoRes> res = new ArrayList<>();
         for(int i = 0; i < list2.size(); i++) {
             if((long)list2.get(i)[1] <= 0)
@@ -96,6 +94,16 @@ public class ConferenceController {
         return ResponseEntity.status(200).body(res);
     }
 
+    @GetMapping("/{conferenceId}/check")
+    public ResponseEntity<? extends BaseResponseBody> checkConferencePassword(@PathVariable Long conferenceId,
+                                                                      ConferencePasswordGetReq conferencePasswordGetReq) {
+        if(conferenceService.getPasswordById(conferenceId) != null &&
+                !conferenceService.getPasswordById(conferenceId).equals("") &&
+                !conferencePasswordGetReq.getPassword().equals(conferenceService.getPasswordById(conferenceId))) {
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401, "false"));
+        }
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "true"));
+    }
 
     @GetMapping("/{conferenceId}")
     @ApiOperation(value = "게임 방 접속", notes = "인원 수에 여유가 있다면 게임 방에 접속")
@@ -114,6 +122,8 @@ public class ConferenceController {
          * -> 현재 방 인원을 확인하기 위해 user_conference 테이블에서 conferenceId를 검색 후 갯수를 확인해야함
          * 위에 해당하지 않는다면 user_conference와 conference_history에 데이터를 넣어주고 200을 response 해줌
          */
+
+        System.out.println("enterconference");
         Optional<Conference> conference = conferenceService.getConferenceById(conferenceId);
         if(!conference.isPresent() || !conference.get().isActive())  // 방이 존재하지 않거나 is_active가 false일 경우
             return ResponseEntity.status(200).body(BaseResponseBody.of(404, "false"));
@@ -156,9 +166,30 @@ public class ConferenceController {
         conferenceService.exitConference(user, conferenceid);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "true"));
         }
-    
 
-    @PostMapping()
+    @GetMapping("/info/{conferenceId}")
+    @ApiOperation(value = "게임 방 정보", notes = "게임 방 정보를 response")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공"),
+            @ApiResponse(code = 500, message = "서버 오류")
+    })
+    public ResponseEntity<?> getGameRoomInfo(@PathVariable Long conferenceId) {
+        Optional<Conference> optionalConference = conferenceService.getConferenceById(conferenceId);
+        if(!optionalConference.isPresent() || !optionalConference.get().isActive())  // 방이 존재하지 않거나 is_active가 false일 경우
+            return ResponseEntity.status(200).body(BaseResponseBody.of(404, "false"));
+        Conference conference = optionalConference.get();
+        GameRoomInfoRes res = GameRoomInfoRes.builder()
+                                .title(conference.getTitle())
+                                .gameId(conference.getGameCategory().getId())
+                                .gameName(conference.getGameCategory().getName())
+                                .gameSummary(conference.getGameCategory().getSummary())
+                                .ownerNicknames(conference.getOwner().getNickname())
+                                .maxUser(conference.getMaxUser())
+                                .build();
+        return ResponseEntity.status(200).body(res);
+    }
+
+    @PostMapping() 
     @ApiOperation(value = "방 정보생성", notes = "컨퍼런스 방 정보 생성 한다. ")
     @ApiResponses({
             @ApiResponse(code = 201, message = "성공", response = UserLoginPostRes.class),
@@ -172,6 +203,8 @@ public class ConferenceController {
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
         String userId = userDetails.getUsername();
 
+
+        System.out.println("register");
         if(registerPostReq.getMaxUser() < 2 ||  // 최대 인원 수가 2 이하거나
                 registerPostReq.getTitle() == null ||  // 방제가 null 이거나
                 registerPostReq.getTitle().equals(""))  // 공백일 경우 방을 만들지 않고 401 response

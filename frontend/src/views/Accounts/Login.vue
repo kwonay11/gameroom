@@ -30,7 +30,7 @@
 <script>
 
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-import axios from 'axios'
+// import axios from 'axios'
 import swal from 'sweetalert';
 
 export default {
@@ -46,17 +46,17 @@ export default {
      },
      methods: {
       login: function () {
-        axios.post(`${SERVER_URL}/users/login`, this.credentials)
+        this.$axios.post(`${SERVER_URL}/users/login`, this.credentials)
         .then((res) => {
           localStorage.setItem('jwt', res.data.token)
           this.credentials.accessToken = res.data.accessToken
           this.$emit('login')
           this.$store.dispatch('login', this.credentials)
           this.$router.push({ name: 'MainPage' })
-          swal(`로그인에 성공하였습니다.`);
+          swal("로그인 성공","방구석 게임방을 즐기세요","success");
         })
         .catch(() => {
-          swal(`로그인에 실패하였습니다.`);
+          swal("로그인 실패","정확히 입력해주세요","error");
         })
       }
 
@@ -70,6 +70,7 @@ export default {
 
 
 .login_box {
+  outline: none !important;
   width: 35%;
   height:58vh;
   border-radius: 15px;

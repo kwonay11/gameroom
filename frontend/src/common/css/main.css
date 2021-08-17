@@ -1,38 +1,37 @@
 .btn {
-    margin-left: 5vw;
     width: 397px;
     height: 85px;
-    left: 98px;
-    top: 316px;
-    display: grid;
-    grid-template-columns: repeat(5, auto);
+    /* left: 98px;
+    top: 316px; */
+    /* display: grid; */
 }
 
 .button {
-    width: 80px;
-    height: 30px;
+    width: 3.3vw;
+    height:3vh;
     cursor: pointer;
     position: relative;
-    display: grid;
+    /* display: grid; */
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 .btn_text {
+    font-family: 'IM_Hyemin-Bold';
     /* 버튼 그냥 봤을 때 */
-    margin: auto;
+    /* margin: auto; */
     font-weight: 600;
     position: absolute;
     background-color: rgba(50, 113, 196, 0.76);
     top: 72%;
-    left: 10.3vw;
+    left: 70%;
     font-size: 1em;
     text-decoration: none;
 }
 
 .btn span {
-    margin: auto;
-    font-weight: 600;
-    display: block;
+    /* margin: auto; */
+    /* font-weight: 600; */
+    /* display: block; */
     font-size: 1em;
     text-decoration: none;
 }
@@ -94,6 +93,8 @@
     text-align: left;
     margin: 0 8vw -0.6vw;
     font-size: 20px;
-    font-weight: bold;
     color: white;
+    background: linear-gradient(to bottom,#B993D6 ,#8CA6DB);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }

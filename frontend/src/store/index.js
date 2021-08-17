@@ -1,11 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from "axios";
+// import { OpenVidu } from 'openvidu-browser';
 import createPersistedState from 'vuex-persistedstate';
 
-Vue.use(Vuex)
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+    // axios.defaults.headers.post['Content-Type'] = 'application/json';
+    // const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
+    // const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+
+// axios.defaults.headers.common["Authorization"] = `Bearer ${$store.state.accessToken}`;
+
+
+Vue.use(Vuex)
 
 
 export default new Vuex.Store({
@@ -21,14 +29,27 @@ export default new Vuex.Store({
         // 경험치, 닉네임, 승률
         userData: [],
         nowpage: '',
-        // conference 방 번호
-        conferenceid: null,
         gamecategory: null,
 
+        // conference 방 번호
+        conferenceid: null,
+        canJoin: null,
+
+        // //방 정보
+        // room_title:'',
+        // room_password:'',
+        // room_maxUser: '',
+        // room_gamecategory: '',
+
+        // openviudu 
+        OV: undefined,
+        session: undefined,
+        mainStreamManager: undefined,
+        publisher: undefined,
+        subscribers: [],
 
     },
     mutations: {
-
         SET_USER_DATA(state, data) {
             state.user = data;
         },
@@ -46,9 +67,6 @@ export default new Vuex.Store({
         FETCH_USER: function(state, res) {
             state.userData = res.data
         },
-        NOWPAGE: function(state, nowpage) {
-            state.nowpage = nowpage
-        },
         NEW_NICKNAME: function(state, new_nickname) {
             state.userData.nickname = new_nickname
         },
@@ -57,10 +75,30 @@ export default new Vuex.Store({
         },
         CONFERENCE_ID: function(state, conferenceid) {
             state.conferenceid = conferenceid
+            console.log('store')
+            console.log(state.conferenceid)
         },
         GAMECATEGORY: function(state, gamecategory_id) {
             state.gamecategory = gamecategory_id
-        }
+        },
+        // ROOMINFO : function(state, roominfo) {
+        //     state.room_title = roominfo.title
+        //     state.room_password = roominfo.password
+        //     state.room_maxUser = roominfo.maxUser
+        //     state.room_gamecategory = roominfo.gamecategory
+
+        // }
+        // OPENVIDU: function(state, data) {
+        //     console.log('72 ' + data.OV)
+        //     state.OV = data.OV,
+        //         state.session = data.session,
+        //         state.mainStreamManager = data.mainStreamManager,
+        //         state.publisher = data.publisher,
+        //         state.subscribers = data.subscribers
+        // }
+
+
+
     },
 
     actions: {
@@ -83,9 +121,6 @@ export default new Vuex.Store({
                     commit('FETCH_USER', res)
                 })
         },
-        nowpage: function({ commit }, nowpage) {
-            commit('NOWPAGE', nowpage)
-        },
         newnickname: function({ commit }, content) {
             axios.defaults.headers.common[
                 "Authorization"
@@ -107,28 +142,67 @@ export default new Vuex.Store({
                     commit('NEW_PASSWORD', content.changePassword)
                 })
         },
-        joinSession: function({ commit }, contents) {
-            return new Promise((resolve, reject) => {
-                axios.defaults.headers.common[
-                    "Authorization"
-                ] = `Bearer ${this.state.accessToken}`;
+        // joinSession: function({ commit }, contents) {
+        //     return new Promise((resolve, reject) => {
+        //         axios.defaults.headers.common[
+        //             "Authorization"
+        //         ] = `Bearer ${this.state.accessToken}`;
 
-                axios.post(`${SERVER_URL}/conferences`, contents)
-                    .then((res) => {
-                        // console.log('sdsdsdsd')
-                        // console.log(commit);
-                        console.log(res.data.roomId)
-                        commit('CONFERENCE_ID', res.data.roomId)
-                        resolve();
-                    })
-                    .catch(() => {
-                        reject();
-                    })
-            })
+        //         axios.post(`${SERVER_URL}/conferences`, contents)
+        //             .then((res) => {
+        //                 // console.log(res.data.roomId)
+        //                 commit('CONFERENCE_ID', res.data.roomId)
+        //                 resolve();
+        //             })
+        //             .catch(() => {
+        //                 reject();
+        //             })
+        //     })
+        // },
+        // roomInfo: function({ commit }, contents){
+         
+        //     console.log(contents)
+        //     commit('ROOMINFO',contents)
+
+        // },
+
+        joinSession: function({ commit }, contents) {
+            console.log('store_joinsession')
+            console.log(contents)
+            commit('CONFERENCE_ID', contents)
         },
+
         gamecategory: function({ commit }, gamecategory_id) {
             commit('GAMECATEGORY', gamecategory_id)
         },
+
+        createConference: function({ commit }, conferenceid) {
+            commit('CONFERENCE_ID', String(conferenceid))
+        },
+
+        checkNumConferences: function({ state, dispatch }, ) {
+            console.log('방에 인원수 체크하는곳')
+                // --- Connect to the session with a valid user token ---
+            axios.get(`${SERVER_URL}/conferences/${state.conferenceId}`)
+                .then((res) => {
+                    console.log(res.status)
+                    if (res.status == 200) {
+                        dispatch('joinSession', { isFull: true });
+                    } else {
+                        console.log(res)
+                    }
+
+
+                })
+                .catch(() => {
+                    this.$router.push({ name: 'MainPage' })
+
+                });
+        },
+        // openvidu: function({ commit }, data) {
+
+        //     commit('OPENVIDU', data)
+        // }
 
     },
     getters: {
@@ -136,5 +210,7 @@ export default new Vuex.Store({
             return state.id;
         }
     },
-    modules: {}
+    modules: {
+
+    }
 })

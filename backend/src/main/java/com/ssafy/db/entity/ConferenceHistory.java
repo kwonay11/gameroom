@@ -31,4 +31,6 @@ public class ConferenceHistory extends BaseEntity{
     @CreatedDate
     private LocalDateTime insertedTime; //히스토리 생성시간
 
+
+
 }

@@ -7,6 +7,7 @@ import Signup from '@/views/Accounts/Signup.vue'
 import Mypage from '@/views/Accounts/Mypage.vue'
 import Creatroom from '@/views/Creatroom.vue'
 import CreateRoomModal from '@/components/CreateRoomModal'
+import RoomPasswordModal from '@/views/RoomPasswordModal'
 import Room from '@/views/Room'
 
 
@@ -54,8 +55,12 @@ const routes = [{
         name: 'CreateRoomModal',
         component: CreateRoomModal,
     },
-
-
+    {
+        path: '/gameroom/:roomid/room_password',
+        name: 'RoomPasswordModal',
+        component: RoomPasswordModal,
+       
+    },
 ]
 
 const router = new VueRouter({

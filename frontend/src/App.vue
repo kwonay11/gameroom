@@ -3,6 +3,7 @@
     <div v-if="this.$route.name === 'Signup'">
       <div id="signup">
         <navbar />
+        <MainLogo />
         <router-view/>
       </div>
     </div>
@@ -16,6 +17,7 @@
     <div v-else>
       <div id="app">
         <navbar />
+        <MainLogo />
         <router-view/>
       </div>
     </div>
@@ -23,12 +25,14 @@
 </template>
 <script>
 
-import navbar from '@/components/nav'
+import navbar from '@/components/MainPage/nav'
+import MainLogo from '@/components//MainPage/MainLogo'
 
 export default {
   name: 'App',
   components: {
     navbar,
+    MainLogo,
     },
 
 };
@@ -36,13 +40,25 @@ export default {
 </script>
 
 <style lang="scss">
-
+@font-face {
+    font-family: '양진체';
+    src: url('https://cdn.jsdelivr.net/gh/supernovice-lab/font@0.9/yangjin.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'IM_Hyemin-Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/IM_Hyemin-Bold.woff2') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 #total {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: '양진체','IM_Hyemin-Bold';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #000000;
   text-align: center;
+  text-decoration: none;
 }
 
 #app {
@@ -61,36 +77,5 @@ export default {
   height: 100vh;
   background-size:100% 100%;
 }
-// @import url('https://fonts.googleapis.com/css2?family=Gamja+Flower&display=swap');
-
-// p{
-//   font-family: 'Gamja Flower', cursive;
-// }
-nav ul {
-  text-align: right;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.2) 25%, rgba(255, 255, 255, 0.2) 75%, rgba(255, 255, 255, 0) 100%);
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.1), inset 0 0 1px rgba(255, 255, 255, 0.6);
-}
-
-nav ul li {
-  display: inline-block;
-}
-
-nav ul li #a {
-  padding: 18px;
-  font-family: "Open Sans";
-  text-transform:uppercase;
-  color: rgba(0, 35, 122, 0.5);
-  font-size: 18px;
-  text-decoration: none;
-  display: block;
-}
-
-nav ul li #a:hover {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), inset 0 0 1px rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(0, 35, 122, 0.7);
-}
-
 
 </style>
