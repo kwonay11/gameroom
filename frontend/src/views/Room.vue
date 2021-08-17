@@ -93,6 +93,17 @@
             <Chatting :session="session"/>
          </div>
       </div>
+
+      <app-my-modal :visible.sync="visible_result">
+         <table class="bluetop">
+         <tr><th>닉네임</th><th>전적</th></tr>
+         <tr v-for="value in game_result" v-bind:key="value.id">
+            <td>{{ value.nickname }}</td>
+            <td> 맞춘 횟수 : {{ value.answer }} </td>
+         </tr>
+         </table>
+      </app-my-modal>
+
       <!-- test -->
       <!-- <button @click="gametest" style="color:white"> 게임테스트버튼</button> -->
    </div>
@@ -109,6 +120,7 @@ import Start from '@/components/GameRoom/Start';
 import CatchMind from '@/components/Game/CatchMind/CatchMind';
 import Song from '@/components/Game/Song/Song';
 import Header from '@/components/GameRoom/Header';
+import myModal from '@/components/myModal'
 import axios from 'axios'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 // import _ from "lodash"
@@ -127,6 +139,7 @@ export default {
       CatchMind,
       Song,
       Header,
+      appMyModal: myModal,
    },
 
     data() {
@@ -143,6 +156,9 @@ export default {
             picture_keyword: undefined,
             questioner: undefined,
             mainStreamManager_nickname: undefined,
+
+            visible_result: false,
+            game_result: undefined
         }
     },
    created() {
@@ -197,6 +213,10 @@ export default {
          console.log(this.game_ing)
          this.round = this.game_ing.round
 
+         console.log('게임끝나고 데이터')
+         this.game_result = this.game_ing.data
+         console.log(this.game_result)
+
 
          // 몸으로 말하기때 필요
          // 출제자 인덱스
@@ -234,6 +254,8 @@ export default {
          this.gameStatus = 2
          this.picture = true
          this.mainStreamManager_nickname = undefined
+         this.visible_result = !this.visible_result
+
 
       })
 

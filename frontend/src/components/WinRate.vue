@@ -20,7 +20,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 table {
   table-layout: auto;
   position: relative;
