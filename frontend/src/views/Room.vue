@@ -136,22 +136,15 @@ export default {
             song_visible: false,
             start: false,
             ready: false,
+            roominfo: {}, //gameId: 1, gameName: "1", gameSummary: "1-1", maxUser: 4, ownerNicknames: "ASDFADF"
             game_ing: undefined, // {"questioner":"ddd","round":1,"keyword":"key5"}
             game_answer: '',
-
-            roominfo: {}, //gameId: 1, gameName: "1", gameSummary: "1-1", maxUser: 4, ownerNicknames: "ASDFADF"
-
             gameStatus: 0,
             round: 0,
-            
             questioner: undefined,
-
             picture: false,
-            picture_url: undefined,
             mainStreamManager_nickname: undefined,
-
             picture_keyword: undefined,
-            image: undefined,
             
         }
     },

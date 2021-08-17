@@ -92,6 +92,7 @@ export default {
       console.log(this.$route.params)
       axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
     .then((res) => {
+      console.log('이거어디')
         console.log(res.status)
         if (res.status == 200) {
             this.canJoin = true;
