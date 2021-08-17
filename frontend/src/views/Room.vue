@@ -95,7 +95,7 @@
       </div>
 
       <app-my-modal :visible.sync="visible_result">
-         <table class="bluetop">
+         <table class="blue_top">
          <tr><th>닉네임</th><th>전적</th></tr>
          <tr v-for="value in game_result" v-bind:key="value.id">
             <td>{{ value.nickname }}</td>
@@ -558,6 +558,32 @@ video {
    color: #777777;
    font-weight: bold;
    border-radius: 5px;
+}
+
+
+table {
+  table-layout: auto;
+  position: relative;
+  width: 80%;
+  margin: 5% auto 0;
+}
+
+.blue_top {
+  border-collapse: collapse;
+  border-top: 3px solid #168;
+} 
+
+.blue_top tr th {
+  height: 50px;
+  border: 1px solid #ddd;
+  text-align: center;
+  background-color: white;
+
+}
+.blue_top tr td {
+  height: 60px;
+  border: 1px solid #ddd;
+  color: white
 }
 
 </style>
