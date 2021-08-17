@@ -31,7 +31,7 @@
                   <div v-if="!start && !ready">
                      <div class="main_box_2">
                         <!-- 방장만 스타트 버튼 보이기 -->
-                        <div v-if='this.myUserNick === this.roominfo.ownerNicknames'>
+                        <div v-if='myUserNick === roominfo.ownerNicknames'>
                            <div @click="game_start">
                               <Start />
                            </div>
@@ -58,21 +58,29 @@
                      <div v-else-if='roominfo.gameId === 1 ||  roominfo.gameId === 3'>
                         <user-video :stream-manager="mainStreamManager"/>
                      </div>
-                     <div v-else>
-                        순간포착, 글자맞추기
+                     <!-- 6. 글자맞추기 -->
+                     <div v-else-if='roominfo.gameId === 6'>
+                        <div class="capture">
+                           {{ game_ing.question }}
+                        </div>
+                     </div>
+                     <!-- 5. 순간포착 -->
+                     <div v-else-if='roominfo.gameId === 5'>
+                        <div v-if="picture" class="picture">
+                           <img :src="picture_url" alt="00" />
+                        </div>
                      </div>
                   </div>
                </div>
 
                <!-- 답 입력창 -->
-               <div>
-                  <!-- 출제자 일때 -> 답 입력창 안보이고, 캐치마인드는 색 변경, 클리어버튼 -->
-                  <div>
-
-                  </div>
+               <div v-if="  myUserNick !== mainStreamManager_nickname">
                   <div class="answer">
                      <input v-model="game_answer" class="input_answer" placeholder="답을 입력해주세요." type="text" @keyup.enter="check_answer"/>
                   </div>
+               </div>
+               <div v-else>
+                  <p>키워드 : {{ game_ing.keyword }} </p>
                </div>
             </div>
          </div>
@@ -97,6 +105,7 @@ import Ready from '@/components/GameRoom/Ready';
 import Start from '@/components/GameRoom/Start';
 import CatchMind from '@/components/Game/CatchMind/CatchMind';
 import Song from '@/components/Game/Song/Song';
+// import Capture from '@/components/Game/Capture/Capture';
 import Header from '@/components/GameRoom/Header';
 import { video } from '@/mixins/video'
 import axios from 'axios'
@@ -135,13 +144,15 @@ export default {
             round: 0,
             
             questioner: undefined,
+
+            picture: false,
+            picture_url: undefined,
+            mainStreamManager_nickname: undefined,
             
         }
     },
    created() {
-
-
-
+      console.log('출제자 이름')
 
       // 게임 정보 가져와서 게임 화면 맨 위에 띄우려고
       const room_id = this.$route.params.roomid;
@@ -153,8 +164,10 @@ export default {
       this.session.on('signal:start-btn', () => {
          // 스타트 버튼이 눌렸다는 신호가 오면 사람들한데도 알려줌
          this.start = true
+
          setTimeout(() => {
             this.ready = true;
+            this.picture = true
             }, 3600);
 
          this.gameStatus = 1
@@ -162,6 +175,12 @@ export default {
       })
 
       this.session.on('signal:game', (event) => {
+         // 순간포착 어케함
+         this.picture = true;
+         setTimeout(() => {
+            this.picture = false;
+            }, 300);
+            
          // 게임 변경 됐을 때
          console.log(event);
          const status = JSON.parse(event.data.data);
@@ -177,11 +196,24 @@ export default {
          console.log(this.game_ing)
          this.round = this.game_ing.round
          this.questioner = this.game_ing.questioner
-         // this.mainStreamManager = this.members[this.questioner]
-         // console.log('출제자 정보 보기')
-         // console.log(this.questioner)
-         // console.log(this.members[this.questioner])
-         // console.log(this.questioner)
+         // this.questioner = 0
+
+
+
+         
+         
+         this.picture_url = "https://t1.daumcdn.net/news/202108/17/moneytoday/20210817120027736ccuo.jpg"
+
+
+         const main_nickname = JSON.parse(this.members[this.questioner].session.connection.data)
+         console.log('출제자닉네임')
+         console.log(main_nickname.participantPublicId)
+         this.mainStreamManager_nickname = main_nickname.participantPublicId
+         this.mainStreamManager = this.members[this.questioner]
+         console.log('메인스트리머 확인')
+         console.log(this.mainStreamManager.stream.streamId)
+      
+   
 
 
         });
@@ -189,8 +221,10 @@ export default {
             console.log('게임끝')
             console.log(event)
             this.ready = false
-                  this.start = false
-                  this.gameStatus = 2
+            this.start = false
+            this.gameStatus = 2
+            this.picture = true
+            this.mainStreamManager_nickname = undefined
 
          })
 
@@ -281,9 +315,11 @@ export default {
                      })
                      .then(() => {
                         console.log('게임끝')
+                        this.game_answer = ''
                      })
                      .catch(err => {
                         console.log(err)
+                        // this.game_answer = ''
                      })     
             }
             //마지막 라운드가 아니라면 게임을 계속 진행한다. 
@@ -305,10 +341,12 @@ export default {
             })
             .catch(error => {
                console.log(error);
+               // this.game_answer = ''
             })
             }
 
             }
+            this.game_answer = ''
             
       },
   
@@ -334,19 +372,6 @@ export default {
       }
 
     
-   },
-   watch: {
-      questioner(newVal, oldVal) {
-         console.log(newVal, oldVal)
-         console.log('출제자 정보 보기')
-         console.log(this.questioner)
-         console.log(this.members[this.questioner])
-         this.mainStreamManager = this.members[this.questioner]
-         console.log('메인스트리머 확인')
-         console.log(this.mainStreamManager.stream.streamId)
-
-      }
-
    },
 
    mixins: [video]
@@ -390,6 +415,26 @@ export default {
    justify-content: center;
    align-items: center;
 
+}
+.capture {
+   position: relative;
+   width: 33vw;
+   height: 48vh;
+   /* width: 150%; */
+   background: white;
+   border: 3px solid white;
+   border-radius:20px;
+   font-size: 9vw;
+   /* margin: 0 auto 2.5vh; */
+   display:flex;
+   justify-content: center;
+   align-items: center;
+
+}
+.picture{
+   position: relative;
+   width: 33vw;
+   height: 48vh;
 }
 
 .input_answer {
