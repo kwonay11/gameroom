@@ -1,10 +1,11 @@
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
+import swal from 'sweetalert';
 // import UserVideo from '@/components/UserVideo';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-// const OPENVIDU_SERVER_URL = "https://127.0.0.1:5443"; 로컬용
+// const OPENVIDU_SERVER_URL = "https://127.0.0.1:5443";  //로컬용
 const OPENVIDU_SERVER_URL = "https://i5c104.p.ssafy.io"; // aws용 
 // const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
@@ -37,6 +38,9 @@ export const video = {
     },
     created: function() {
         console.log('1111111')
+
+
+
         axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
         // --- Connect to the session with a valid user token ---
         axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
@@ -53,7 +57,8 @@ export const video = {
             .catch((err) => {
                 console.log('입장에러')
                 console.log(err)
-                    // this.$router.push({ name: 'MainPage' })
+                this.$router.push({ name: 'MainPage' })
+                swal('방에 인원이 꽉찼습니다.')
                 this.canJoin = false;
             });
 
