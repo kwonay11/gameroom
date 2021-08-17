@@ -20,11 +20,11 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 table {
   table-layout: auto;
   position: relative;
-  left: 60%;
+  left: 40%;
   transform: translate(-50%, 0%);
   width: 50%;
   margin-top: 5%;

@@ -93,6 +93,17 @@
             <Chatting :session="session"/>
          </div>
       </div>
+
+      <app-my-modal :visible.sync="visible_result">
+         <table class="blue_top">
+         <tr><th>닉네임</th><th>전적</th></tr>
+         <tr v-for="value in game_result" v-bind:key="value.id">
+            <td>{{ value.nickname }}</td>
+            <td> 맞춘 횟수 : {{ value.answer }} </td>
+         </tr>
+         </table>
+      </app-my-modal>
+
       <!-- test -->
       <!-- <button @click="gametest" style="color:white"> 게임테스트버튼</button> -->
    </div>
@@ -109,6 +120,7 @@ import Start from '@/components/GameRoom/Start';
 import CatchMind from '@/components/Game/CatchMind/CatchMind';
 import Song from '@/components/Game/Song/Song';
 import Header from '@/components/GameRoom/Header';
+import myModal from '@/components/myModal'
 import axios from 'axios'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 // import _ from "lodash"
@@ -127,6 +139,7 @@ export default {
       CatchMind,
       Song,
       Header,
+      appMyModal: myModal,
    },
 
     data() {
@@ -141,8 +154,12 @@ export default {
             round: 0,
             picture: false,
             picture_keyword: undefined,
+
             questioner: undefined,
             mainStreamManager_nickname: undefined,
+
+            visible_result: false,
+            game_result: undefined
         }
     },
    created() {
@@ -197,6 +214,10 @@ export default {
          console.log(this.game_ing)
          this.round = this.game_ing.round
 
+         console.log('게임끝나고 데이터')
+         this.game_result = this.game_ing.data
+         console.log(this.game_result)
+
 
          // 몸으로 말하기때 필요
          // 출제자 인덱스
@@ -234,6 +255,8 @@ export default {
          this.gameStatus = 2
          this.picture = true
          this.mainStreamManager_nickname = undefined
+         this.visible_result = !this.visible_result
+
 
       })
 
@@ -338,7 +361,8 @@ export default {
                      "category" :this.roominfo.gameId, // 게임 종류
                      "round":this.round, //라운드
                      "conferenceId": this.$route.params.roomid, //방 id
-                     "JWT":this.$store.state.accessToken //토큰?
+                     "JWT":this.$store.state.accessToken, //토큰?
+                     "mainstream_idx": this.questioner
                   }),
                   type: 'game'
                })
@@ -536,6 +560,32 @@ video {
    color: #777777;
    font-weight: bold;
    border-radius: 5px;
+}
+
+
+table {
+  table-layout: auto;
+  position: relative;
+  width: 80%;
+  margin: 5% auto 0;
+}
+
+.blue_top {
+  border-collapse: collapse;
+  border-top: 3px solid #168;
+} 
+
+.blue_top tr th {
+  height: 50px;
+  border: 1px solid #ddd;
+  text-align: center;
+  background-color: white;
+
+}
+.blue_top tr td {
+  height: 60px;
+  border: 1px solid #ddd;
+  color: white
 }
 
 </style>
