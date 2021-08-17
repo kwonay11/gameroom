@@ -20,13 +20,12 @@
             <!-- 크게 보이는 화면 -->
          <div id="main-video" class="col-md-8">
             <!-- 노래방일때 -->
-            <div v-if="roominfo.gameId === 4">
+            <!-- <div v-if="roominfo.gameId === 4">
                <Song :session="session"/>
-            </div>
-            <div v-else class="player">
-
+            </div> -->
+            <div class="player">
                <!-- 시작, 레디, 화면 -->
-              <div class="main_box">
+               <div class="main_box">
                   <!-- 시작하기 버튼 -->
                   <div v-if="!start && !ready">
                      <div class="main_box_2">
@@ -76,14 +75,12 @@
                      </div>
                   </div>
                </div>
+            </div >
+         <!-- 답 입력창 -->
+            <div class="answer">
+               <input v-model="game_answer" class="input_answer" placeholder="답을 입력해주세요." type="text" @keyup.enter="check_answer"/>
+            </div> 
 
-               <!-- 답 입력창 -->
-                  <div class="answer">
-                     <input v-model="game_answer" class="input_answer" placeholder="답을 입력해주세요." type="text" @keyup.enter="check_answer"/>
-                  </div> 
-
-
-            </div>
          </div>
 
 
