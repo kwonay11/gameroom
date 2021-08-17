@@ -29,7 +29,7 @@ export const video = {
             myUserNick: '',
             canJoin: null,
 
-
+            refreshcheck: true,
             members: [],
 
         }
@@ -55,6 +55,8 @@ export const video = {
                     // this.$router.push({ name: 'MainPage' })
                 this.canJoin = false;
             });
+    },
+    mounted: function() {
 
         // 방 ID 인거 같고
         this.mySessionId = this.$route.params.roomid
@@ -92,6 +94,7 @@ export const video = {
             if (index >= 0) {
                 this.subscribers.splice(index, 1);
             }
+            
         });
 
         // On every asynchronous exception...
@@ -140,11 +143,10 @@ export const video = {
                     });
             });
 
-        window.addEventListener('beforeunload', this.leaveSession)
+        window.addEventListener('unload', this.leaveSession)
 
     },
     methods: {
-
         leaveSession() {
             // --- Leave the session by calling 'disconnect' method over the Session object ---
             if (this.session) this.session.disconnect();
@@ -225,6 +227,27 @@ export const video = {
                     .catch(error => reject(error.response));
             });
         },
+        unLoadEvent(event){
+            this.session.signal({
+          
+                data: JSON.stringify({
+                   "roomId" : this.$route.params.roomid,
+                   "JWT": this.$store.state.accessToken
+                }),
+                type: 'leave'
+                })
+                .then(() => {
+                 console.log('leave success');
+                 this.$router.push({ name: "MainPage" });
+                   
+                   })
+                   .catch(error => {
+                       console.log(error);
+                   })
+            
+            event.preventDefault();
+            event.returnValue = '';
+        }
     },
 
     computed: mapState(['conferenceid', 'id']),
