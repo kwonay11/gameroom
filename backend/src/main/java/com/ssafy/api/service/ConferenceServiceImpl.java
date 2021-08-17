@@ -87,11 +87,11 @@ public class ConferenceServiceImpl implements ConferenceService {
                 .build();
         Conference result = conferenceRepository.save(conference);
 
-//        UserConference userConference = UserConference.builder()
-//                .conference(result)
-//                .user(user)
-//                .build();
-//        userConferenceRepository.save(userConference);
+        UserConference userConference = UserConference.builder()
+                .conference(result)
+                .user(user)
+                .build();
+        userConferenceRepository.save(userConference);
 
         ConferenceHistory conferenceHistory =ConferenceHistory.builder()
                 .conference(result)
@@ -102,6 +102,17 @@ public class ConferenceServiceImpl implements ConferenceService {
 
         return result.getId();
     }
+
+    @Override
+    public Conference saveConference(Conference conference) {
+        return conferenceRepository.save(conference);
+    }
+
+    @Override
+    public String getPasswordById(Long id) {
+        return conferenceRepository.findById(id).get().getPassword();
+    }
+
 }
 
 

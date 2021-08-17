@@ -1,55 +1,56 @@
 <template>
   <div>
-      <div class="search_back pt-4 px-4">
-        <v-autocomplete 
-          filled
-          solo
-        ></v-autocomplete>
+    <SearchBar @input-search="onInputSearch"/>
+      <div v-if="searchGames.length" class='card'>
+        <GameList :searchGames='searchGames' :inputKeyword='inputKeyword'/>
+      </div>
+      <div v-else-if="searchGames_length === 0" >
+        <div class="search_result">{{ inputKeyword }}의 검색 결과가 없습니다. </div>
       </div>
   </div>
 </template>
 
 <script>
 
-
+import SearchBar from "@/components/Search/SearchBar"
+import GameList from "@/components/Search/GameList"
 
 export default {
-     name: "Search",
-     data: function () {
-       return{
-         nowpage: 'search',
-       }
-     },
+  name: 'Search',
+  components: {
+    SearchBar,
+    GameList,
+  },
+  data: function() {
+    return {
+        inputKeyword: '',
+        searchGames: [],
+        searchGames_length: -1,
+    }
+  },
 
-    created(){
-        const nowpage = this.nowpage
-        this.$store.dispatch('nowpage', nowpage)
-    },
+  methods: {
+    onInputSearch: function(data) {
+      this.searchGames = data.games
+      this.searchGames_length = this.searchGames.length
+      this.inputKeyword = data.keyword
+      }}
 
-}
+    }
+
 </script>
 
-<style>
-
-
-.search_back {
-  width: 80%;
-  height: 90px;
-  background: rgba(19,17,150,0.4000000059604645);
-  position: relative;
-  margin: auto;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content:space-around;
-  padding-top: 10px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-
+<style scoped>
+.card{
+  height: 35vh;
+  margin-left: 10%;
+  margin-right: 10%;
+  background-color: #3a394248;
 }
-.input {
-  width: 95%;
-  height: 85px;
-  background: rgba(253,244,244,1);
-  border-radius: 15px;
+
+.search_result {
+  margin: 0.8% 0 0 0;
+  font-size: 25px;
+  color:white;
 }
 </style>

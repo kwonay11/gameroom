@@ -2,7 +2,9 @@
   <div>
     <form class="room_box">
       
-      <img class="card__image" src="@/assets/방 만들기.png" alt="roomcreate"/>
+      <div class="title">
+            방 만들기
+          </div>
       
       <div class="row_box">
         <div class="left">
@@ -57,6 +59,7 @@
                 </div>
           </div>
       </div>
+
       <button v-if="contents.title && contents.maxUser" @click="joinSession">
         <span class='btn-animate' > START</span>
       </button>
@@ -67,9 +70,9 @@
 
 
 <script>
-import axios from 'axios'
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
 // import swal from 'sweetalert';
+import axios from "axios";
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name: 'CreateRoomModal',
@@ -86,6 +89,24 @@ export default {
        }
     },
     methods: {
+      // joinSession: function() {
+      //   this.contents.gamecategory = this.$store.state.gamecategory
+        
+      //     this.$store
+      //       .dispatch("joinSession", this.contents)
+      //       .then(() => {
+      //         // this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid }});
+      //         swal(`즐거운 게임하세요!`);
+      //       })
+      //     .catch(() => {
+      //        swal(`잘못된 정보입니다.`);
+      //     })
+
+      // },
+      room_info: function(){
+        this.$store.dispatch('roomInfo',this.contents)
+      },
+
       joinSession: function() {
         event.preventDefault();
         this.contents.gamecategory = this.$store.state.gamecategory
@@ -100,6 +121,8 @@ export default {
                         console.log('sdsdsdsd')
                         // console.log(commit);
                         console.log(res.data.roomId)
+                        // this.$store.dispatch('roomInfo',this.contents)
+                        this.$store.dispatch('joinSession',res.data.roomId)
                         this.$router.push({ name: "Room" , params: {roomid: res.data.roomId }});
                         
                         resolve();
@@ -108,16 +131,7 @@ export default {
                         reject(error);
                     })
             })
-        
-          // this.$store
-          //   .dispatch("joinSession", this.contents)
-          //   .then(() => {
-          //     swal(`즐거운 게임하세요!`);
-              // this.$router.push({ name: "Room" , params: {roomid: this.$store.state.conferenceid }});
-          //   })
-          // .catch(() => {
-          //    swal(`잘못된 정보입니다.`);
-          // })
+
 
       },
 
@@ -146,7 +160,14 @@ export default {
 
 
 <style scoped >
-
+.title{
+  text-shadow: 5px 5px 70px rgba(190, 209, 212, 0.582);
+  font-size: 70px;
+  background: linear-gradient(to bottom,#a769d6 ,#6f92d8);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   
+}
 .room_box {
   width: 38%;
   height:58vh;
@@ -216,6 +237,7 @@ export default {
 }
 
 .btn-animate {
+  text-decoration: none;
   color: #fff;
   font-size: 14px;
   font-weight: 600;

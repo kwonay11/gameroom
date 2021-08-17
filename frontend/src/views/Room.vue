@@ -1,353 +1,449 @@
 <template>
 
-   <div  v-if="session">
+   <div v-if="session">
+      <Header :roominfo="roominfo" />
+   <!-- <div  > -->
+      <!-- 참가자가 나오는 부분 -->
       <div class='participation'>
          <div id="video-container" class="col-lg-12">
          <!-- <div id="video-container" class=""> -->
-            <!-- 메인 스트리머 -->
+            <!-- 나 -->
             <user-video :stream-manager="publisher" @click.native="updateMainVideoStreamManager(publisher)"/>
-            <!-- 참가자들 -->
+            <!-- 나 빼고 나머지 참가자들 -->
             <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click.native="updateMainVideoStreamManager(sub)"/>
          </div>
       </div>
+
+
+      <!-- 메인 화면 -->
       <div class='row p-4'>
+            <!-- 크게 보이는 화면 -->
          <div id="main-video" class="col-md-8">
-            <div class="player">
-               <user-video :stream-manager="mainStreamManager"/>
-               <div class="answer">
-                  <input class="input_answer" placeholder="답을 입력해주세요." type="text" />
+            <!-- 노래방일때 -->
+            <div v-if="roominfo.gameId === 4" >
+               <Song />
+            </div>
+            <div v-else class="player">
+
+               <!-- 시작, 레디, 화면 -->
+              <div class="main_box">
+                  <!-- 시작하기 버튼 -->
+                  <div v-if="!start && !ready">
+                     <div class="main_box_2">
+                        <!-- 방장만 스타트 버튼 보이기 -->
+                        <div v-if='this.myUserNick === this.roominfo.ownerNicknames'>
+                           <div @click="game_start">
+                              <Start />
+                           </div>
+                        </div>
+                        <!-- 방장 아닌 사람은 준비중 -->
+                        <div v-else>
+                           <p>준비중</p>
+                        </div>
+                     </div>
+                  </div>
+                  
+                  <!-- 321 -->
+                  <div v-else-if="!ready && start ">
+                     <Ready />
+                  </div>
+                  
+                  <!-- 메인화면 -->
+                  <div v-else>
+                     <!-- 캐치마인드 -->
+                     <div v-if='roominfo.gameId === 2'>
+                        <CatchMind :session="session"/>
+                     </div>
+                     <!-- 1 : 몸으로 말해요, 3 : 고요속의 외침 -->
+                     <div v-else-if='roominfo.gameId === 1 ||  roominfo.gameId === 3'>
+                        <user-video :stream-manager="mainStreamManager"/>
+                     </div>
+                     <div v-else-if='roominfo.gameId === 5'>
+                     <!-- <div v-if="picture"> -->
+                        <img :src="picture_url" alt="00" />
+                     <!-- </div> -->
+                     </div>
+                  </div>
+               </div>
+
+               <!-- 답 입력창 -->
+               <div>
+                  <!-- 출제자 일때 -> 답 입력창 안보이고, 캐치마인드는 색 변경, 클리어버튼 -->
+                  <div>
+
+                  </div>
+                  <div class="answer">
+                     <input v-model="game_answer" class="input_answer" placeholder="답을 입력해주세요." type="text" @keyup.enter="check_answer"/>
+                  </div>
                </div>
             </div>
          </div>
+
+         <!--  버튼 -->
          <div class="col-md-4">
-            <div class='player'>
-               <div class="link">
-               <img style="width:8%" src="@/assets/link.png" alt="link">
-               </div>
-               <span class="buttons">
-               <img class="m-4" style="width:13%" src="@/assets/microphone (3).png" alt="mike">
-               </span>
-               <span class="buttons">
-               <img class="m-4" style="width:13%" src="@/assets/video-player.png" alt="video">
-               </span>
-               <span class="buttons">
-               <img class="m-4" style="width:13%" src="@/assets/delete.png" alt="delete" @click="leaveSession">
-               </span>
-               <span class="buttons">
-               <img class="m-4" style="width:13%" src="@/assets/question.png" alt="tutorial">
-               </span>
-            </div>
-            <div class='player'>
-               채팅
-            </div>
+            <Button :publisher="publisher" :roominfo="roominfo" :session="session"/>
+            <Chatting :session="session"/>
          </div>
       </div>
+      <!-- test -->
+      <!-- <button @click="gametest" style="color:white"> 게임테스트버튼</button> -->
    </div>
 
 </template>
 
 <script>
-import axios from 'axios';
-import { OpenVidu } from 'openvidu-browser'; 
 import UserVideo from '@/components/UserVideo';
-// import {mapState, mapActions} from 'vuex';
+import Chatting from '@/components/GameRoom/Chatting';
+import Button from '@/components/GameRoom/Button';
+import Ready from '@/components/GameRoom/Ready';
+import Start from '@/components/GameRoom/Start';
+import CatchMind from '@/components/Game/CatchMind/CatchMind';
+import Song from '@/components/Game/Song/Song';
+import Header from '@/components/GameRoom/Header';
+import { video } from '@/mixins/video'
+import axios from 'axios'
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":443";
-const OPENVIDU_SERVER_SECRET = "MY_SECRET";
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
+// const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
+// const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+// const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
-   name: 'App',
+   name: 'Room',
 
    components: {
       UserVideo,
+      Chatting,
+      Button,
+      Ready, 
+      Start,
+      CatchMind,
+      Song,
+      Header,
    },
 
-   data () {
-      return {
-         
-         OV: undefined,
-         session: undefined,
-         mainStreamManager: undefined,
-         publisher: undefined,
-         subscribers: [],
-         
-         
+    data() {
+        return {
+            song_visible: false,
+            start: false,
+            ready: false,
+            game_ing: undefined, // {"questioner":"ddd","round":1,"keyword":"key5"}
+            game_answer: '',
 
-         mySessionId: null,
-         myUserName: '',
-         canJoin: null,
-      }
-   },
-   created: function () {
-      this.mySessionId = this.$route.params.roomid
-      this.myUserName = this.$store.state.id
-      // console.log(this.mySessionId)
-      // console.log(this.myUserName)
-      this.OV = new OpenVidu();
-         // --- Init a session ---
-         this.session = this.OV.initSession();
+            roominfo: {}, //gameId: 1, gameName: "1", gameSummary: "1-1", maxUser: 4, ownerNicknames: "ASDFADF"
 
-         // --- Specify the actions when events take place in the session ---
-
-         // On every new Stream received...
-         this.session.on('streamCreated', ({ stream }) => {
-            const subscriber = this.session.subscribe(stream);
-            this.subscribers.push(subscriber);
-         });
-
-         // On every Stream destroyed...
-         this.session.on('streamDestroyed', ({ stream }) => {
-            const index = this.subscribers.indexOf(stream.streamManager, 0);
-            if (index >= 0) {
-               this.subscribers.splice(index, 1);
-            }
-         });
-
-         // On every asynchronous exception...
-         this.session.on('exception', ({ exception }) => {
-            console.warn(exception);
-         });
-         this.session.on('signal:my-chat', (event) => {
-				console.log(event.data);
-				console.log(event);
-			})
-			this.session.on('signal:game',(event) =>{
-				console.log('game')
-				console.log(event)
-			})
-         this.session.on('signal:leave',(event) =>{
-				console.log('leave')
-				console.log(event)
-			})
+            gameStatus: 0,
+            round: 0,
+            
+            questioner: undefined,
+            
+        }
+    },
+   created() {
 
 
-         axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
-         // --- Connect to the session with a valid user token ---
-         console.log('room확인')
-         axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
-         .then((res) => {
-            console.log(res.status)
-            if(res.status == 200) {
-               this.canJoin = true;
-            }
-            else {
-               this.canJoin = false;
-            }
-            if(!this.canJoin)
-          return;
-        })
-        .catch(() => {
-               this.$router.push({ name: 'MainPage' })
-          this.canJoin = false;
-        });
-      
-         // 'getToken' method is simulating what your server-side should do.
-         // 'token' parameter should be retrieved and returned by your own backend
-         this.getToken(this.mySessionId).then(token => {
-            this.session.connect(token, { clientData: this.myUserName })
-               .then(() => {
 
-                  // --- Get your own camera stream with the desired properties ---
 
-                  let publisher = this.OV.initPublisher(undefined, {
-                     audioSource: undefined, // The source of audio. If undefined default microphone
-                     videoSource: undefined, // The source of video. If undefined default webcam
-                     publishAudio: true,     // Whether you want to start publishing with your audio unmuted or not
-                     publishVideo: true,     // Whether you want to start publishing with your video enabled or not
-                     resolution: '640x480',  // The resolution of your video
-                     frameRate: 30,         // The frame rate of your video
-                     insertMode: 'APPEND',   // How the video is inserted in the target element 'video-container'
-                     mirror: false          // Whether to mirror your local video or not
-                  });
+      // 게임 정보 가져와서 게임 화면 맨 위에 띄우려고
+      const room_id = this.$route.params.roomid;
+      this.$axios.get(`${SERVER_URL}/conferences/info/${room_id}`)
+      .then((res) => {
+        this.roominfo = res.data
+      })
 
-                  this.mainStreamManager = publisher;
-                  this.publisher = publisher;
+      this.session.on('signal:start-btn', () => {
+         // 스타트 버튼이 눌렸다는 신호가 오면 사람들한데도 알려줌
+         this.start = true
+         setTimeout(() => {
+            this.ready = true;
+            }, 3600);
 
-                  // --- Publish your stream ---
-                  
-                  this.session.publish(this.publisher);
-               })
-               .catch(error => {
-                  console.log('There was an error connecting to the session:', error.code, error.message);
-               });
-         });
-         const opnevidu ={
-            "OV" :this.OV,
-            "session":this.session,
-            "mainStreamManager": this.mainStreamManager,
-            "publisher":this.publisher,
-            "subscribers": this.subscribers
+         this.gameStatus = 1
+
+      })
+
+      this.session.on('signal:game', (event) => {
+         // 게임 변경 됐을 때
+         console.log(event);
+         const status = JSON.parse(event.data.data);
+         if (status.gameStatus == 3){
+            this.changecategory(status.category);
          }
-         this.$store.dispatch('openvidu',opnevidu);
+         console.log('status')
+         console.log(status)
 
-         window.addEventListener('beforeunload', this.leaveSession)
-      },
-      methods: {
+         // 게임중일때
+         this.game_ing = status
+         console.log('게임 키워드 데이터들')
+         console.log(this.game_ing)
+         this.round = this.game_ing.round
+         this.questioner = this.game_ing.questioner
+         this.picture_url = this.game_ing.question
+         console.log(this.picture_url)
+         // this.mainStreamManager = this.members[this.questioner]
+         // console.log('출제자 정보 보기')
+         // console.log(this.questioner)
+         // console.log(this.members[this.questioner])
+         // console.log(this.questioner)
 
+
+        });
+         this.session.on('signal:game_finish', (event) => {
+            console.log('게임끝')
+            console.log(event)
+            this.ready = false
+                  this.start = false
+                  this.gameStatus = 2
+
+         })
+
+      //   });
+
+            console.log('내 닉네임')
       
+      console.log(this.myUserNick)
 
-      leaveSession () {
-         // --- Leave the session by calling 'disconnect' method over the Session object ---
+
+
+  },
+  methods: {
+      song(){
+         this.song_visible = !this.song_visible;
+      },
+
+      game_start() {
+         // ----------------스타트 버튼 누르고-------------------
          this.session.signal({
-          
-         data: JSON.stringify({
-            "roomId" : this.mySessionId,
-            "JWT": this.$store.state.accessToken
-         }),
-         type: 'leave'
+            data: JSON.stringify(this.ready),
+            type: 'start-btn'
          })
          .then(() => {
-				console.log('leave success');
-            this.$router.push({ name: "MainPage" });
+            console.log('스타트버튼')
+         })
+         .catch(err => {
+            console.log(err)
+         })
+
+         // ----------------몸으로 말하기 시작할 때 오픈비두로 시그널 보내기-------------------
+
+         this.session.signal({
+            data: JSON.stringify({
+               "gameStatus": 0, // 게임 상태 (게임시작)
+               "category" :this.roominfo.gameId, // 게임 종류
+               "round": 0, //라운드
+               "conferenceId": this.$route.params.roomid, //방 id
+               "JWT":this.$store.state.accessToken //토큰?
+            }),
+            type: 'game'
+         })
+         .then(() => {
+            console.log('몸으로 말해요');
             
-			})
-			.catch(error => {
-				console.log(error);
-			})
-         if (this.session) this.session.disconnect();
+         })
+         .catch(error => {
+            console.log(error);
+         })
+      },
 
-         this.session = undefined;
-         this.mainStreamManager = undefined;
-         this.publisher = undefined;
-         this.subscribers = [];
-         this.OV = undefined;
-
+      check_answer() {
          
+         console.log('게임 status 바뀌는거 확인')
+         console.log(this.gameStatus)
+         if(this.game_answer === this.game_ing.keyword) {
+            console.log('라운드헷갈림')
+            console.log(this.round)
+            // 라운드가 5면 게임종료임을 알린다
+            // gamestatus=2
+            if (this.round === 5) {
+               this.gameStatus = 2
 
-         window.removeEventListener('beforeunload', this.leaveSession);
+                  this.ready = false,
+                  this.start = false,
+            
+
+                     this.session.signal({
+                     data: JSON.stringify(this.ready, this.start),
+                     type: 'game_finish'
+                     })
+                     .then(() => {
+                        console.log('게임끝')
+                     })
+                     .catch(err => {
+                        console.log(err)
+                     }),
+                     // 게임 끝 
+                     this.session.signal({
+                     data: JSON.stringify({
+                        "gameStatus": 2, // 게임 상태(게임종료)
+                        "category" :this.roominfo.gameId, // 게임 종류
+                        "round":this.round, //라운드
+                        "conferenceId": this.$route.params.roomid, //방 id
+                        "JWT":this.$store.state.accessToken //토큰?
+                     }),
+                     type: 'game'
+                     })
+                     .then(() => {
+                        console.log('게임끝')
+                     })
+                     .catch(err => {
+                        console.log(err)
+                     })     
+            }
+            //마지막 라운드가 아니라면 게임을 계속 진행한다. 
+            else{
+               this.session.signal({
+            data: JSON.stringify({
+               "gameStatus": 1, // 게임 상태 (진행중)
+               "category" :this.roominfo.gameId, // 게임 종류
+               "round":this.round, //라운드
+               "conferenceId": this.$route.params.roomid, //방 id
+               "JWT":this.$store.state.accessToken //토큰?
+            }),
+            type: 'game'
+            })
+            .then(() => {
+               console.log('몸으로 말해요')
+               this.game_answer = ''
+               
+            })
+            .catch(error => {
+               console.log(error);
+            })
+            }
+
+            }
+            
       },
+  
+   
+      changecategory(category) {
+         this.roominfo.gameId=category;
+         console.log('되나??')
 
-      updateMainVideoStreamManager (stream) {
-         if (this.mainStreamManager === stream) return;
-         this.mainStreamManager = stream;
-      },
+         if (category === 1) {
+            this.roominfo.gameName = '1'
+         }else if (category === 2) {
+            this.roominfo.gameName = '2'
+         }else if (category === 3) {
+            this.roominfo.gameName = '3'
+         }else if (category === 4) {
+            this.roominfo.gameName = '4'
+         }else if (category === 5) {
+            this.roominfo.gameName = '5'
+         }else if (category === 6) {
+            this.roominfo.gameName = "6"
+         }
 
-      /**
-       * --------------------------
-       * SERVER-SIDE RESPONSIBILITY
-       * --------------------------
-       * These methods retrieve the mandatory user token from OpenVidu Server.
-       * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
-       * the API REST, openvidu-java-client or openvidu-node-client):
-       *   1) Initialize a Session in OpenVidu Server   (POST /openvidu/api/sessions)
-       *   2) Create a Connection in OpenVidu Server (POST /openvidu/api/sessions/<SESSION_ID>/connection)
-       *   3) The Connection.token must be consumed in Session.connect() method
-       */
+      }
 
-      getToken (mySessionId) {
-         return this.createSession(mySessionId).then(sessionId => this.createToken(sessionId));
-      },
+    
+   },
+   watch: {
+      questioner(newVal, oldVal) {
+         console.log(newVal, oldVal)
+         console.log('출제자 정보 보기')
+         console.log(this.questioner)
+         console.log(this.mainStreamManager)
+         console.log(this.members)
+         console.log(this.members[newVal])
+         this.mainStreamManager = this.members[newVal]
+         console.log(this.mainStreamManager)
+         console.log('메인스트리머 확인')
+         console.log(this.mainStreamManager.stream.streamId)
 
-      // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessions
-      createSession (sessionId) {
-         return new Promise((resolve, reject) => {
-            axios
-               .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, JSON.stringify({
-                  customSessionId: sessionId,
-               }), {
-                  auth: {
-                     username: 'OPENVIDUAPP',
-                     password: OPENVIDU_SERVER_SECRET,
-                  },
-               })
-               .then(response => response.data)
-               .then(data => resolve(data.id))
-               .catch(error => {
-                  if (error.response.status === 409) {
-                     resolve(sessionId);
-                  } else {
-                     console.warn(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`);
-                     if (window.confirm(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`)) {
-                        location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
-                     }
-                     reject(error.response);
-                  }
-               });
-         });
-      },
+      }
 
-      // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-openviduapisessionsltsession_idgtconnection
-      createToken (sessionId) {
-         return new Promise((resolve, reject) => {
-            axios
-               .post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`, {}, {
-                  auth: {
-                     username: 'OPENVIDUAPP',
-                     password: OPENVIDU_SERVER_SECRET,
-                  },
-               })
-               .then(response => response.data)
-               .then(data => resolve(data.token))
-               .catch(error => reject(error.response));
-         });
-      },
-   }
+   },
+
+   mixins: [video]
+
 }
 
 </script>
 
-<style>
+<style >
+.player {
+   /* 젤 크게 나오는 메인스트리머 화면 */
+   /* border: 0.5px solid white; */
+   padding-top:3vh;
+   border-radius:20px;
+   align-items: center;
+   
+}
+.main_box {
+   width: 33vw;
+   height: 48vh;
+   /* background: rgba(192, 192, 199, 0.47); */
+   /* background: blue;
+   border: 3px solid white; */
+   border-radius:20px;
+   margin: 0 auto 2.5vh;
+   display:flex;
+   /* justify-content: center; */
+   align-items: center;
+
+}
+.main_box_2 {
+   position: relative;
+   width: 33vw;
+   height: 48vh;
+   /* width: 150%; */
+   background: rgba(192, 192, 199, 0.47);
+   border: 3px solid white;
+   border-radius:20px;
+   /* margin: 0 auto 2.5vh; */
+   display:flex;
+   justify-content: center;
+   align-items: center;
+
+}
 
 .input_answer {
-  color: #000000;
-  height: 86px;
-  display: block;
-  font-size: 1.2rem;
-  letter-spacing: 0.15rem;
-  padding: 20px;
-  width: 100%;
-  margin-bottom:10px;
+   outline: none !important;
+   color:white;
+   display: block;
+   font-size: 1rem;
+   letter-spacing: 0.15rem;
+   padding: 1.5vh 2vh;
+   width: 100%;
+ 
 }
 .answer{
 display: inline-block;
-width: 30vw;
-height: 80px;
+width: 20vw;
+height: 60px;
 /* margin-left: 10vw; */
 position: relative;
 background: rgba(20, 17, 151, 0.47);
-border: 1px solid #FFFFFF;
+border: 3px solid #FFFFFF;
 box-sizing: border-box;
-/* border-radius: 20px; */
-}
-
-.link {
-   right:-40%;
-   cursor: pointer;
-   position: relative;
-   
+border-radius: 20px;
 
 }
-.buttons{
-  cursor: pointer;
-  position: relative;
-}
+
+
 .participation {
   margin: 0 2.2vw;
-  padding: 2.5vh;
+  padding: 2vh;
   /* width: 95vw; */
    /* height: 22vh; */
    /* text-align: justify; */
-  border: 3px solid #ffa500;
+  /* border: 3px solid #ffa500; */
    display: flex;
    flex-direction: row;
    /* align-items: center;
    justify-content: space-around;   */
 }
 
-.player {
-   border: 3px solid #ffa500;
-   /* display: flex; */
-   align-items: center;
-}
 
 #video-container video {
    /* position: relative; */
    float: left;
    width: 16%;
    margin-left:0.6%;
-   border:4px solid;
-   border-color:rgb(255, 230, 0);
+   border:3px solid;
+   border-color:rgb(255, 255, 255);
    /* cursor: pointer; */
    /* margin:  2%;  */
    /* margin-left: 5%; */
@@ -363,26 +459,31 @@ box-sizing: border-box;
    float: left;
    width: 28%;
    position: relative;
-   margin-left:-28%;
+   margin-left:-28.5%;
    /* display: flex; */
    /* justify-content: space-around; */
 }
 
 #video-container p {
+   font-family:'IM_Hyemin-Bold';
    display: inline-block;
    background: #f8f8f8;
    padding-left: 5px;
    padding-right: 5px;
-   color: #777777;
+   color: #3c90c9;
    font-weight: bold;
-   border-bottom-right-radius: 4px;
+   border-radius: 8px;
 }
 
 video {
-   margin-top:2.5vh;
+   
+   padding-top:1.8vh;
    /* 맨 아래에 나오는 카메라화면 */
-   width: 45%;
+   /* width: ; */
+      width: 90%;
+   /* height: 48vh; */
    height: auto;
+   position: relative;
 
 }
 
@@ -395,8 +496,12 @@ video {
    font-size: 22px;
    color: #777777;
    font-weight: bold;
-   border-bottom-right-radius: 4px;
+   border-radius: 5px;
 }
+
+
+/* start 버튼*/
+
 
 
 </style>
