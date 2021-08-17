@@ -14,10 +14,24 @@ export default {
   name: 'SongList',
   props: {
     videos: Array,
+    session: Object,
   },
   methods: {
     onSelectVideo: function (video) {
-      this.$emit('select-video', video)
+      //this.$emit('select-video', video)
+      this.session.signal({
+        data: JSON.stringify(video.id.videoId),
+        type: 'song'
+      })
+      .then(() => {
+        console.log('노래방 시그널 전송')
+        // console.log(video.id.videoId)
+      })
+      .catch(err => {
+          console.log(err)
+          console.log('전송 에러')
+      })
+  
     }
   },
   components: {

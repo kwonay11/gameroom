@@ -431,11 +431,20 @@ public class SessionEventsHandler {
 				e.printStackTrace();
 			}
 
-
-
 		}
 		if (message.has("type") && message.get("type").getAsString().equals("signal:game")) {
 			gameService.controlGame(participant, message, participants, rpcNotificationService);
+		}
+
+		if (message.has("type") && message.get("type").getAsString().equals("signal:song")) {
+			// data 파싱
+			String dataString = message.get("data").getAsString();
+			dataString = dataString.substring(1, dataString.length() - 2);
+			System.out.println("data test : " + dataString);
+			for (Participant p : participants) {
+				rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
+						ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, dataString);
+			}
 		}
 
 		String from = null;

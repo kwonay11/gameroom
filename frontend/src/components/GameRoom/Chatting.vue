@@ -53,23 +53,22 @@ export default {
       },
    },
    created: function () {
-      console.log('세션')
-      console.log(this.session)
-
         this.myUserNick = this.$store.state.userData.nickname
+        console.log('닉넴')
+        console.log(this.myUserNick)
 
       //  방에 들어와 있는 모든 사람이 받는거
         this.session.on('signal:my-chat', (event) => {
-            // console.log('여기')
-            // console.log(event)
-            //     // this.chatting_user = event.from.data["clientData"]
-            // console.log('내가 입력한 내용')
-            // console.log(event.data); // Message
+            console.log('여기')
+            console.log(event)
+                // this.chatting_user = event.from.data["clientData"]
+            console.log('내가 입력한 내용')
+            console.log(event.data); // Message
             const content = event.data.slice(1, -1) // Message
-            // console.log('입력한 사람')
-            // console.log(event.from.data); // Message
-            const chatting_user = event.from.data.slice(24, -2)
-            // console.log(chatting_user)
+            console.log('입력한 사람')
+            console.log(event.from.data); // Message
+            const chatting_user = event.from.data.slice(15, -2)
+            console.log(chatting_user)
 
 
 
@@ -83,18 +82,13 @@ export default {
    },
        methods: {
         sendMessage() {
-
             // post 같은 느낌 = signal
-            console.log('채팅')
-                  console.log(this.chattings)
-
             this.session.signal({
                     data: JSON.stringify(this.chattings),
                     type: 'my-chat'
                 })
                 .then(() => {
                     this.chattings = '';
-                    
                     console.log('Message success');
                 })
                 .catch(error => {
@@ -250,4 +244,3 @@ export default {
 
 
 </style>
-

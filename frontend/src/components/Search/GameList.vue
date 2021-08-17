@@ -28,7 +28,7 @@
                       <div class="button button--brightness">입장</div>
                     </router-link>
                     </div>
-                  <div v-else @click="entersession">
+                  <div v-else >
                     <router-link class="btn_text" :to="`/gameroom/${item.id}`">
                     <div class="button button--brightness">입장</div>
                   </router-link>

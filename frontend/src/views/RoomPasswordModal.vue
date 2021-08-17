@@ -3,6 +3,7 @@
     <form class="room_box">
      <div class="title">
             방 비밀번호
+            {{ $route.params.id }}
           </div>
       <div class="row_box">
         <div class="left">
@@ -22,9 +23,14 @@
         <!-- <router-link :to="`/gameroom/${$route.params.id}`" class='btn-animate'>
         입장
         </router-link> -->
-        <button @click="password_enter" class='btn-animate'>
+        <!-- <button @click="password_enter" class='btn-animate'>
           입장
-        </button>
+        </button> -->
+
+        <div class="one btn-animate" @click="password_enter">
+          입장
+          
+        </div>
       </div>
 
 
@@ -36,42 +42,40 @@
 
 
 <script>
-// import swal from 'sweetalert';
+import swal from 'sweetalert';
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-// import axios from 'axios'
 
 export default {
   name: 'RoomPasswordModal',
   data: function() {
     return {
         room_password:'',
-      
        }
-    },
-    methods:{
-      password_enter() {
-        this.$axios.defaults.headers.common[
-                "Authorization"
-            ] = `Bearer ${this.$store.state.accessToken}`;
 
-          console.log('77777777777777')
-          console.log(this.$route.params)
-          console.log(this.room_password)
-          console.log(`/conferences/${this.$route.params.id}?password=${this.room_password}`)
-          this.$axios.get(`${SERVER_URL}/conferences/${this.$route.params.id}?password=${this.room_password}`)
-              .then((res) => {
-                console.log('성공')
-                console.log(res)
-                this.$router.push({ name: "Room" , params: {roomid: this.$route.params.id }});
+  },
+  methods:{
+    password_enter() {
+      this.$axios.defaults.headers.common[
+              "Authorization"
+          ] = `Bearer ${this.$store.state.accessToken}`;
+
+        console.log(`/conferences/${this.$route.params.roomid}?password=${this.room_password}`)
+
+        this.$axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}/check?password=${this.room_password}`)
+            .then((res) => {
+              console.log('성공')
+              console.log(res)
+              this.$router.push({ name: "Room" , params: {roomid: this.$route.params.roomid }});
 
 
-              })
-              .catch((err) => {
-                console.log('비밀번호입장에러')
-                console.log(err)
-              })
-      }
+            })
+            .catch((err) => {
+              console.log('비밀번호입장에러')
+              console.log(err)
+              swal('비밀번호가 다릅니다.')
+            })
     }
+  }
 
 
   }
@@ -80,6 +84,10 @@ export default {
 
 
 <style scoped >
+.one{
+  cursor: pointer;
+
+}
 .title{
   text-shadow: 5px 5px 70px rgba(190, 209, 212, 0.582);
   font-size: 65px;
