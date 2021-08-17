@@ -189,15 +189,21 @@ public class GameController {
 
         if(gameStatusGetReq.getCategory() == 1 || gameStatusGetReq.getCategory() == 3) {  // 몸으로 말해요 || 고요속의 외침
 //            int questioner = -1;
-//            if(gameStatusGetReq.getStatus() == 0) {
-//                // 출제자 랜덤 선택
-//                Random rand = new Random();
-//                questioner = rand.nextInt(userConferenceList.size());
-//            }
-            Random rand = new Random();
-            int questioner = rand.nextInt(userConferenceList.size());
-            GameStatusRes res = GameStatusRes.builder().keyword(keyword).questioner(questioner).round(gameStatusGetReq.getRound() + 1).build();
-            return ResponseEntity.status(200).body(res);
+            if(gameStatusGetReq.getStatus() == 0) {
+                // 출제자 랜덤 선택
+                Random rand = new Random();
+                int questioner = rand.nextInt(userConferenceList.size());
+                questioner = rand.nextInt(userConferenceList.size());
+                GameStatusRes res = GameStatusRes.builder().keyword(keyword).questioner(questioner).round(gameStatusGetReq.getRound() + 1).build();
+                return ResponseEntity.status(200).body(res);
+            }
+            else {
+                // 출제자 받은그대로 보내기
+                GameStatusRes res = GameStatusRes.builder().keyword(keyword).questioner(gameStatusGetReq.getMainstream_idx()).round(gameStatusGetReq.getRound() + 1).build();
+                return ResponseEntity.status(200).body(res);
+            }
+
+
         } else if (gameStatusGetReq.getCategory() == 5 || gameStatusGetReq.getCategory() == 6) {  // 순간 포착 || 글자맞추기
             String question = null;
             if (gameStatusGetReq.getCategory() == 5) {
