@@ -2,7 +2,33 @@
   <div class='button'>
       <div class="link">
         <!-- 방장만 보이게 하기 -->
-        <img  src="@/assets/settings.png" alt="setting">
+        <img  src="@/assets/settings.png" alt="setting" @click='setting'>
+        
+        <app-my-modal :visible.sync="visible_setting">
+          <div class="title">
+            게임 변경
+          </div>
+          <div>
+            <div class="row_box row">
+          <div class="left">
+            <img class="room_img1 p-2" src="@/assets/game.png" alt="games">
+          </div>
+          <div class="right">
+            <select  v-model="games" class="card__input " >
+              <option disabled value="">게임 선택</option>
+              <option >몸으로 말해요</option>
+              <option >캐치마인드</option>
+              <option >고요속의 외침</option>
+              <option >노래방</option>
+              <option >순간포착</option>
+              <option >글자 맞추기</option>
+            </select>
+        </div>
+      </div>
+      <br>
+            <button class="btn-animate" @click="changeGame()">start</button>
+          </div>
+          </app-my-modal>
 
         <img  src="@/assets/link.png" alt="link" @click='link'>
       </div>
@@ -35,9 +61,9 @@
           </div>
         </span>
 
-        <span class="buttons">
-          <img  src="@/assets/delete.png" alt="delete">
-        </span>
+            <span class="buttons" @click="leaveSession">
+              <img  src="@/assets/delete.png" alt="delete">
+            </span>
 
             <!-- 게임 설명 -->
             <span class="buttons">
@@ -58,14 +84,19 @@
 import myModal from '@/components/myModal'
 import swal from 'sweetalert';
 
+
 export default {
   name: 'Button',
 
   data() {
     return {
-       visible_url: false,
-       visible_tutorial: false,
-       url: null,
+      visible_url: false,
+      visible_setting: false,
+      visible_tutorial: false,
+      url: null,
+      games:'',
+      gamecategory:'',
+   
     }
   },
   components: {
@@ -75,10 +106,16 @@ export default {
   props: {
     publisher: Object,
     roominfo: Object,
+    session: Object,
   },
-  
-  created() {
 
+  
+  created: function () {
+
+  //   this.session.on('signal:leave',(event) =>{
+  //       console.log('leave')
+  //       console.log(event)
+  //   })
   },
 
   methods: {
@@ -109,13 +146,95 @@ export default {
     },
     tutorial() {
       this.visible_tutorial = !this.visible_tutorial
-    }
+    },
+    setting() {
+      this.visible_setting = !this.visible_setting
+    },
+    changeGame(){
+      console.log('룸 정보')
+      console.log(this.games)
+        // console.log(this.roominfo)
+         
+        if (this.games === '몸으로 말해요'){
+          this.gamecategory = 1
+        }else if (this.games === '캐치마인드'){
+          this.gamecategory = 2
+        }else if (this.games === '고요속의 외침'){
+          this.gamecategory = 3
+        }else if (this.games === '노래방'){
+          this.gamecategory = 4
+        }else if (this.games === '순간포착'){
+          this.gamecategory = 5
+        }else {
+          this.gamecategory = 6
+        }
+
+
+
+        this.session.signal({
+          data: JSON.stringify({
+               "gameStatus": 3,
+               "category" :this.gamecategory,
+               "conferenceId": this.$route.params.roomid,
+         
+            }),
+            type: 'game'
+          })
+          .then(() => {
+            console.log('게임변경 성공then이다')
+            this.visible_setting = !this.visible_setting
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      
+      
+    },
+    leaveSession () {
+         // --- Leave the session by calling 'disconnect' method over the Session object ---
+         this.session.signal({
+          
+         data: JSON.stringify({
+            "roomId" : this.$route.params.roomid,
+            "JWT": this.$store.state.accessToken
+         }),
+         type: 'leave'
+         })
+         .then(() => {
+          console.log('leave success');
+          this.$router.push({ name: "MainPage" });
+            
+			})
+			.catch(error => {
+				console.log(error);
+			})
+         if (this.session) this.session.disconnect();
+
+         this.session = undefined;
+         this.mainStreamManager = undefined;
+         this.publisher = undefined;
+         this.subscribers = [];
+         this.OV = undefined;
+
+         
+
+         window.removeEventListener('beforeunload', this.leaveSession);
+      },
+
   }
 
   
 }
 </script>
 <style scoped>
+.title{
+  text-shadow: 5px 5px 70px rgba(190, 209, 212, 0.582);
+  font-size: 65px;
+  background: linear-gradient(to bottom,#a769d6 ,#6f92d8);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   
+}
 .button{
   display:flex;
   flex-direction: column;

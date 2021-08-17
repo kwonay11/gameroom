@@ -12,12 +12,19 @@
           <input v-model="room_password" class="card__input" placeholder="방 비밀번호" type="password" />
       <p v-if="!room_password" style="color:white; margin-top:10px">방 비밀번호를 입력해주세요.</p>
       <!-- 비번일치하지 않을 때 처리해주기 -->
-        </div>
+      <div v-else>
+        <!-- <p v-if="room_password != real_password" style="color:white; margin-top:10px">방 비밀번호가 일치하지 않습니다.</p> -->
+          </div>
       </div>
-      <div v-if="room_password">
-        <router-link  :to="`/gameroom/${$route.params.id}`" class='btn-animate'>
+      </div>
+      <!-- <div v-if="room_password === real_password"> -->
+      <div >
+        <!-- <router-link :to="`/gameroom/${$route.params.id}`" class='btn-animate'>
         입장
-        </router-link>
+        </router-link> -->
+        <button @click="password_enter" class='btn-animate'>
+          입장
+        </button>
       </div>
 
 
@@ -29,18 +36,41 @@
 
 
 <script>
+// import swal from 'sweetalert';
+const SERVER_URL = process.env.VUE_APP_SERVER_URL
+// import axios from 'axios'
 
 export default {
   name: 'RoomPasswordModal',
   data: function() {
     return {
-        enabled: false,
         room_password:'',
       
        }
     },
-    created(){
-    //  this.room_password = this.$store.state.
+    methods:{
+      password_enter() {
+        this.$axios.defaults.headers.common[
+                "Authorization"
+            ] = `Bearer ${this.$store.state.accessToken}`;
+
+          console.log('77777777777777')
+          console.log(this.$route.params)
+          console.log(this.room_password)
+          console.log(`/conferences/${this.$route.params.id}?password=${this.room_password}`)
+          this.$axios.get(`${SERVER_URL}/conferences/${this.$route.params.id}?password=${this.room_password}`)
+              .then((res) => {
+                console.log('성공')
+                console.log(res)
+                this.$router.push({ name: "Room" , params: {roomid: this.$route.params.id }});
+
+
+              })
+              .catch((err) => {
+                console.log('비밀번호입장에러')
+                console.log(err)
+              })
+      }
     }
 
 

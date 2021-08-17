@@ -8,6 +8,7 @@ export default {
 
 	props: {
 		streamManager: Object,
+		
 	},
 
 	mounted () {

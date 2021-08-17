@@ -1,4 +1,5 @@
 package com.ssafy.api.controller;
+import com.ssafy.api.request.ConferencePasswordGetReq;
 import com.ssafy.api.response.*;
 import com.ssafy.api.service.ConferenceService;
 import com.ssafy.api.service.UserConferenceService;
@@ -67,7 +68,7 @@ public class ConferenceController {
             if(conferenceMapping.getTitle().replace(" ", "").contains(keyword) || conferenceMapping.getOwner().getNickname().contains(keyword))  // 검색 키워드가 제목 혹은 방장 닉네임에 포함될 경우
                 list2.add(new Object[]{conferenceMapping, conferenceMapping.getMaxUser() - userConferenceService.countByConferenceId(conferenceMapping.getId())});
         }
-        Collections.sort(list2, (o1, o2) -> (long)o1[1] > (long)o2[1] ? 1 : -1);
+        Collections.sort(list2, Comparator.comparingLong(o -> (Long) o[1]));
         List<ConferenceInfoRes> res = new ArrayList<>();
         for(int i = 0; i < list2.size(); i++) {
             if((long)list2.get(i)[1] <= 0)
@@ -103,7 +104,8 @@ public class ConferenceController {
             @ApiResponse(code = 500, message = "서버 오류")
     })
     public ResponseEntity<? extends BaseResponseBody> enterConference(@PathVariable Long conferenceId,
-                                                                      @ApiIgnore Authentication authentication) {
+                                                                      @ApiIgnore Authentication authentication,
+                                                                      ConferencePasswordGetReq conferencePasswordGetReq) {
         /**
          * conferenceId로 conference 테이블에서 검색
          * 방이 존재하지 않거나 is_active가 false 일 경우 404 에러발생
@@ -111,9 +113,17 @@ public class ConferenceController {
          * -> 현재 방 인원을 확인하기 위해 user_conference 테이블에서 conferenceId를 검색 후 갯수를 확인해야함
          * 위에 해당하지 않는다면 user_conference와 conference_history에 데이터를 넣어주고 200을 response 해줌
          */
+
+        System.out.println("enterconference");
         Optional<Conference> conference = conferenceService.getConferenceById(conferenceId);
         if(!conference.isPresent() || !conference.get().isActive())  // 방이 존재하지 않거나 is_active가 false일 경우
             return ResponseEntity.status(200).body(BaseResponseBody.of(404, "false"));
+
+        if(conferenceService.getPasswordById(conferenceId) != null &&
+                !conferenceService.getPasswordById(conferenceId).equals("") &&
+                !conferencePasswordGetReq.getPassword().equals(conferenceService.getPasswordById(conferenceId))) {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(403, "false"));
+        }
 
         List<UserConference> userConferenceList = userConferenceService.getUserConferenceByConferenceId(conferenceId);
         if(userConferenceList.size() >= conference.get().getMaxUser())  // 방의 인원이 초과된 경우
@@ -190,6 +200,8 @@ public class ConferenceController {
         SsafyUserDetails userDetails = (SsafyUserDetails)authentication.getDetails();
         String userId = userDetails.getUsername();
 
+
+        System.out.println("register");
         if(registerPostReq.getMaxUser() < 2 ||  // 최대 인원 수가 2 이하거나
                 registerPostReq.getTitle() == null ||  // 방제가 null 이거나
                 registerPostReq.getTitle().equals(""))  // 공백일 경우 방을 만들지 않고 401 response

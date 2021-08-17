@@ -1,9 +1,11 @@
 <template>
   <div >
-    <div class="btn1">
-      <router-link class="btn_text1" :to="`/gameroom/${fast_start.id}`">
-        <div class="button1 button--brightness1">빠른시작</div>
-      </router-link>
+    <div class="btn1" >
+      <div @click="entersession">
+        <router-link class="btn_text1" :to="`/gameroom/${fast_start}`">
+          <div class="button1 button--brightness1">빠른시작</div>
+        </router-link>
+      </div>
       <router-link class="btn_text1" :to="{ name: 'Creatroom' }" >
         <div class="button1 button--brightness1" v-if="loggedIn">방만들기</div>
       </router-link>
@@ -26,7 +28,9 @@ export default {
     name: "button",
     data: function() {
       return {
-        fast_start: [],
+        fast_start:{
+          'id':0
+        },
       }
     },
     computed: {
@@ -36,9 +40,34 @@ export default {
     created(){
     this.$axios.get(`${SERVER_URL}/conferences`)
     .then((res) => {
-      this.fast_start = res.data[0]
+      console.log('대기방리스트불러오기')
+      console.log(res.data[0])
+      this.fast_start = res.data[0].id
     })
   },
+
+  methods: {
+    entersession(){
+      console.log('파람스')
+      console.log(this.$route.params)
+      this.$axios.get(`${SERVER_URL}/conferences/${this.this.$route.params.id}`)
+    .then((res) => {
+      console.log('이거어디')
+        console.log(res.status)
+        if (res.status == 200) {
+            this.canJoin = true;
+        } else {
+            this.canJoin = false;
+        }
+        if (!this.canJoin)
+            return;
+    })
+    .catch(() => {
+        this.$router.push({ name: 'MainPage' })
+        this.canJoin = false;
+    });
+    } 
+  }
 
 
 

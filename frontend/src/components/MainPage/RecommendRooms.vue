@@ -7,7 +7,7 @@
 
       <template v-slot:default="{ item }">
         <div>
-          <div class="image-container">
+          <div class="image-container" v-if="item">
 
             <img :src="image_url[item.gameId-1]" />
 
@@ -28,11 +28,11 @@
                       <div class="button button--brightness">입장</div>
                     </router-link>
                     </div>
-                  <div v-else>
+                  <div v-else @click="entersession">
                     <router-link class="btn_text" :to="`/gameroom/${item.id}`">
-                    <div class="button button--brightness">입장</div>
-                  </router-link>
-              </div>
+                      <div class="button button--brightness">입장</div>
+                    </router-link>
+                  </div>
               </div>
 
              <div v-if="!loggedIn" class="btn" id="enter">
@@ -55,7 +55,7 @@
 import { authComputed } from "@/store/helpers"
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import VueHorizontalList from "vue-horizontal-list";
-// import axios from 'axios'
+import axios from 'axios'
 import _ from "lodash"
 
 export default {
@@ -108,6 +108,25 @@ created(){
       }
 
     })
+  },
+    methods: {
+    entersession(){
+      axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
+      .then((res) => {
+          console.log(res.status)
+          if (res.status == 200) {
+              this.canJoin = true;
+          } else {
+              this.canJoin = false;
+          }
+          if (!this.canJoin)
+              return;
+      })
+      .catch(() => {
+          this.$router.push({ name: 'MainPage' })
+          this.canJoin = false;
+      });
+    } 
   },
 }
 </script>
