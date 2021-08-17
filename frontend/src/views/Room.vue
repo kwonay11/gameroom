@@ -62,7 +62,6 @@
                      <div v-else-if='roominfo.gameId === 6'>
                         <div class="capture">
                            {{ game_ing.question }}
-                        
                         </div>
                      </div>
                      <!-- 5. 순간포착 -->
@@ -76,16 +75,15 @@
                </div>
 
                <!-- 답 입력창 -->
-               <div v-if="  myUserNick !== mainStreamManager_nickname">
+
                   <div class="answer">
                      <input v-model="game_answer" class="input_answer" placeholder="답을 입력해주세요." type="text" @keyup.enter="check_answer"/>
-                  </div>
-               </div>
-               <div v-else>
-                  <p>키워드 : {{ game_ing.keyword }} </p>
-               </div>
+                  </div> 
+
+
             </div>
          </div>
+
 
          <!--  버튼 -->
          <div class="col-md-4">
@@ -176,16 +174,22 @@ export default {
             this.picture = true
             }, 3600);
 
+            
+         setTimeout(() => {
+            this.ready = true;
+            this.picture = false
+            }, 3900);
+
          this.gameStatus = 1
 
       })
 
       this.session.on('signal:game', (event) => {
          // 순간포착 어케함
-         // this.picture = true;
-         // setTimeout(() => {
-         //    this.picture = false;
-         //    }, 300);
+         this.picture = true;
+         setTimeout(() => {
+            this.picture = false;
+            }, 250);
             
          // 게임 변경 됐을 때
          console.log(event);
@@ -375,7 +379,8 @@ export default {
             this.roominfo.gameName = "6"
          }
 
-      }
+      },
+      
 
     
    },
@@ -542,10 +547,5 @@ video {
    font-weight: bold;
    border-radius: 5px;
 }
-
-
-/* start 버튼*/
-
-
 
 </style>

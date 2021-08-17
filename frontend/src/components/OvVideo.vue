@@ -12,9 +12,6 @@ export default {
 	},
 
 	mounted () {
-		console.log('mounted 스트리머')
-		console.log(this.streamManager)
-		console.log(this.$el)
 		this.streamManager.addVideoElement(this.$el);
 	},
 };
