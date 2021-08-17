@@ -106,7 +106,7 @@ public class GameService {
 
         System.out.println("데이터 체크 ");
         System.out.println(category + " " + round + " " + conferenceId);
-        String apiUrl = "http://localhost:8080/api/games/play";
+        String apiUrl = "http://localhost:8080/api-boot/games/play";
 
 //        switch (category) {
 //            case BODYTALK | CILENCETALK: //  몸으로 말해요 or 고요속의 외침
@@ -155,7 +155,7 @@ public class GameService {
         String round = data.get("round").getAsString();
         int conferenceId = data.get("conferenceId").getAsInt();
         String JWT = "Bearer " + data.get("JWT").getAsString();
-        String apiUrl = "http://localhost:8080/api/games/play";
+        String apiUrl = "http://localhost:8080/api-boot/games/play";
 //        switch (category) {
 //            case BODYTALK | CILENCETALK : //  몸으로 말해요 고요속의 외침
         UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
@@ -201,7 +201,7 @@ public class GameService {
         int round = data.get("round").getAsInt();
         String JWT = "Bearer " + data.get("JWT").getAsString();
 
-        String apiUrl = "http://localhost:8080/api/games/play";
+        String apiUrl = "http://localhost:8080/api-boot/games/play";
 //        switch (category) {
 //            case BODYTALK  | CILENCETALK: //  몸으로 말해요 or 고요속의 외침
         UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
@@ -251,7 +251,7 @@ public class GameService {
         int conferenceId = data.get("conferenceId").getAsInt();
         String cat = data.get("category").getAsString();
 
-        String apiUrl = "http://localhost:8080/api/games/play";
+        String apiUrl = "http://localhost:8080/api-boot/games/play";
 
         UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .queryParam("status",3)
