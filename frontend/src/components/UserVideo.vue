@@ -22,6 +22,8 @@ export default {
 	computed: {
 		clientData () {
 			const { clientData } = this.getConnectionData();
+			console.log('클라이언트데이터')
+			console.log(clientData)
 			return clientData;
 		},
 	},

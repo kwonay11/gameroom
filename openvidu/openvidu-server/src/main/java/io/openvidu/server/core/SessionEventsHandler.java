@@ -437,25 +437,13 @@ public class SessionEventsHandler {
 		}
 
 		if (message.has("type") && message.get("type").getAsString().equals("signal:song")) {
-//			JsonObject params = new JsonObject();
-//
-//			// 요청 보낸 사람 ID 저장
-//			if (participant != null) {
-//				params.addProperty(ProtocolElements.PARTICIPANTSENDMESSAGE_FROM_PARAM,
-//						participant.getParticipantPublicId());
-//			}
-//
-//			// 타입 저장
-//			if (message.has("type")) {
-//				params.addProperty(ProtocolElements.PARTICIPANTSENDMESSAGE_TYPE_PARAM, message.get("type").getAsString());
-//			}
 			// data 파싱
 			String dataString = message.get("data").getAsString();
-			JsonObject data = (JsonObject) JsonParser.parseString(dataString);
-			System.out.println("data test : " + data);
+			dataString = dataString.substring(1, dataString.length() - 2);
+			System.out.println("data test : " + dataString);
 			for (Participant p : participants) {
 				rpcNotificationService.sendNotification(p.getParticipantPrivateId(),
-						ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, data);
+						ProtocolElements.PARTICIPANTSENDMESSAGE_METHOD, dataString);
 			}
 		}
 

@@ -24,7 +24,7 @@
 
             <div v-if="loggedIn" class="btn">
                   <div v-if="item.privateRoom">
-                    <router-link class="btn_text" :to="{ name: 'RoomPasswordModal',params:{id:item.id} }">
+                    <router-link class="btn_text" :to="`/gameroom/${item.id}/room_password`">
                       <div class="button button--brightness">입장</div>
                     </router-link>
                     </div>

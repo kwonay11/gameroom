@@ -14,8 +14,11 @@ export default {
     name:'Search',
     methods: {
         onInputKeyword: function(event){
-          console.log(event)
+          console.log(event.target.value);
           this.$emit('input-search', event.target.value)
+          event.target.value = ''
+
+        
         },
     }
 }

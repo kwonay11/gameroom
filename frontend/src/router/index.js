@@ -56,9 +56,10 @@ const routes = [{
         component: CreateRoomModal,
     },
     {
-        path: '/room_password',
+        path: '/gameroom/:roomid/room_password',
         name: 'RoomPasswordModal',
         component: RoomPasswordModal,
+       
     },
 ]
 

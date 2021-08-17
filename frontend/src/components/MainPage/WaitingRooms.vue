@@ -23,11 +23,11 @@
 
             <div v-if="loggedIn" class="btn" >
                   <div v-if="item.privateRoom">
-                    <router-link class="btn_text" :to="{ name: 'RoomPasswordModal',params:{id:item.id} }">
+                    <router-link class="btn_text" :to="`/gameroom/${item.id}/room_password`">
                       <div class="button button--brightness">입장</div>
                     </router-link>
                     </div>
-                  <div v-else @click="entersession">
+                  <div v-else>
                     <router-link class="btn_text" :to="`/gameroom/${item.id}`">
                     <div class="button button--brightness">입장</div>
                   </router-link>
@@ -55,7 +55,7 @@
 import { authComputed } from "@/store/helpers"
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import VueHorizontalList from "vue-horizontal-list";
-import axios from 'axios'
+// import axios from 'axios'
 import _ from "lodash"
 
 export default {
@@ -87,26 +87,27 @@ export default {
     };
   },
   methods: {
-    entersession(){
-      console.log('파람스')
-      console.log(this.$route.params)
-      axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
-    .then((res) => {
-        console.log(res.status)
-        if (res.status == 200) {
-            this.canJoin = true;
-        } else {
-            this.canJoin = false;
-        }
-        if (!this.canJoin)
-            return;
-    })
-    .catch(() => {
-        this.$router.push({ name: 'MainPage' })
-        this.canJoin = false;
-    });
-    } 
+    // entersession(){
+    //   console.log('파람스')
+    //   console.log(this.$route.params)
+    //   axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
+    // .then((res) => {
+    //     console.log(res.status)
+    //     if (res.status == 200) {
+    //         this.canJoin = true;
+    //     } else {
+    //         this.canJoin = false;
+    //     }
+    //     if (!this.canJoin)
+    //         return;
+    // })
+    // .catch(() => {
+    //     this.$router.push({ name: 'MainPage' })
+    //     this.canJoin = false;
+    // });
+    // } 
   },
+
    computed: {
     ...authComputed,
   },

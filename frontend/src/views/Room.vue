@@ -19,8 +19,8 @@
       <div class='row p-4'>
          <div id="main-video" class="col-md-8">
             <!-- 크게 보이는 화면 -->
-            <div v-if="roominfo.gameId === 4" >
-               <Song />
+            <div v-if="roominfo.gameId === 4">
+               <Song :session="session" :videoId="videoId"/>
             </div>
             <div v-else class="player">
 
@@ -46,6 +46,9 @@
                   <div v-else>
                      <div v-if='roominfo.gameId === 2'>
                         <CatchMind :session="session"/>
+                     </div>
+                     <div v-if='roominfo.gameId === 4'>
+                        <Song :session="session"/>
                      </div>
                      <div v-else>
                         <user-video :stream-manager="mainStreamManager"/>
@@ -121,8 +124,6 @@ export default {
             gameStatus:0,
             gameround:0,
             gameconferenceid:this.$route.params.roomid,
-
-
         }
     },
    created() {
@@ -172,6 +173,12 @@ export default {
             // console.log(typeof(event.data.data));
         });
 
+      this.session.on('signal:song', (event) => {
+        const id = event.data.slice(1, -1)  
+        console.log('session에서 받은 id : ' + id)
+        this.videoId = id;
+        Song.SongDetail.videoId = id;
+      });
   },
   methods: {
       song(){
