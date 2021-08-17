@@ -126,11 +126,11 @@ public class ConferenceController {
         System.out.println("enterconference");
         Optional<Conference> conference = conferenceService.getConferenceById(conferenceId);
         if(!conference.isPresent() || !conference.get().isActive())  // 방이 존재하지 않거나 is_active가 false일 경우
-            return ResponseEntity.status(200).body(BaseResponseBody.of(404, "false"));
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "false"));
 
         List<UserConference> userConferenceList = userConferenceService.getUserConferenceByConferenceId(conferenceId);
         if(userConferenceList.size() >= conference.get().getMaxUser())  // 방의 인원이 초과된 경우
-            return ResponseEntity.status(200).body(BaseResponseBody.of(403, "false"));
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "false"));
 
         // user_conference에 user 추가
         UserConference userConference = new UserConference();
