@@ -154,6 +154,7 @@ export default {
             round: 0,
             picture: false,
             picture_keyword: undefined,
+
             questioner: undefined,
             mainStreamManager_nickname: undefined,
 
@@ -360,7 +361,8 @@ export default {
                      "category" :this.roominfo.gameId, // 게임 종류
                      "round":this.round, //라운드
                      "conferenceId": this.$route.params.roomid, //방 id
-                     "JWT":this.$store.state.accessToken //토큰?
+                     "JWT":this.$store.state.accessToken, //토큰?
+                     "mainstream_idx": this.questioner
                   }),
                   type: 'game'
                })
