@@ -64,6 +64,7 @@ public class ConferenceServiceImpl implements ConferenceService {
             one.setActive(false);
             conferenceRepository.save(one);
         }
+
         userConferenceRepository.delete(conference.get());
         //컨퍼런스 테이블에 남겨두기 , create(0), join(1), exit(2)
         ConferenceHistory conferenceHistory = ConferenceHistory.builder()
