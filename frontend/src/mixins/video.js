@@ -5,8 +5,8 @@ import swal from 'sweetalert';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-// const OPENVIDU_SERVER_URL = "https://127.0.0.1:5443"; 로컬용
-const OPENVIDU_SERVER_URL = "https://i5c104.p.ssafy.io"; // aws용 
+const OPENVIDU_SERVER_URL = "https://127.0.0.1:5443";  //로컬용
+// const OPENVIDU_SERVER_URL = "https://i5c104.p.ssafy.io"; // aws용 
 // const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
