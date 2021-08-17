@@ -6,10 +6,10 @@
       <Search @input-search="onInputSearch" v-model="show"/>
       <div class="d-flex">
         <!-- 비디오는 선택된 비디오 -->
-        <SongDetail :videoId="videoId" :session="session" />
+        <SongDetail :session="session" />
         <!-- 검색어가 있어야 리스트 뜸 -->
         <div v-if="show"> 
-        <SongList :videos="videos" @select-video="onVideoSelect" :session="session" />
+        <SongList :videos="videos" :session="session" />
         </div>
       </div>
       
@@ -35,10 +35,7 @@ export default {
     }
   },
     props: {
-      mainStreamManager: Object,
-      publisher: Object,
       session: Object,
-      videoId: String,
     },
   mounted: function() {
     this.sesson(this.session)
@@ -87,10 +84,6 @@ export default {
       .catch((err) => {
         console.log(err)
       })
-
-
-     
-
     },
     onVideoSelect: function (video) {
       this.selectedVideo = video

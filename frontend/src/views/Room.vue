@@ -20,7 +20,7 @@
          <div id="main-video" class="col-md-8">
             <!-- 크게 보이는 화면 -->
             <div v-if="roominfo.gameId === 4">
-               <Song :session="session" :videoId="videoId"/>
+               <Song :session="session"/>
             </div>
             <div v-else class="player">
 
@@ -173,12 +173,11 @@ export default {
             // console.log(typeof(event.data.data));
         });
 
-      this.session.on('signal:song', (event) => {
-        const id = event.data.slice(1, -1)  
-        console.log('session에서 받은 id : ' + id)
-        this.videoId = id;
-        Song.SongDetail.videoId = id;
-      });
+      // this.session.on('signal:song', (event) => {
+      //   const id = event.data.slice(1, -1)  
+      //   console.log('session에서 받은 id : ' + id)
+      //   this.videoId = id;
+      // });
   },
   methods: {
       song(){

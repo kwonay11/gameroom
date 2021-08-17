@@ -34,7 +34,22 @@ export const video = {
     },
     created: function() {
         console.log('1111111')
-
+        
+        axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
+        .then((res) => {
+            console.log(res.status)
+            if (res.status == 200) {
+                this.canJoin = true;
+            } else {
+                this.canJoin = false;
+            }
+            if (!this.canJoin)
+                return;
+        })
+        .catch(() => {
+            this.$router.push({ name: 'MainPage' })
+            this.canJoin = false;
+        });
 
         // 방 ID 인거 같고
         this.mySessionId = this.$route.params.roomid
@@ -69,21 +84,7 @@ export const video = {
         axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
         // --- Connect to the session with a valid user token ---
         console.log('room확인')
-        axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
-            .then((res) => {
-                console.log(res.status)
-                if (res.status == 200) {
-                    this.canJoin = true;
-                } else {
-                    this.canJoin = false;
-                }
-                if (!this.canJoin)
-                    return;
-            })
-            .catch(() => {
-                this.$router.push({ name: 'MainPage' })
-                this.canJoin = false;
-            });
+
 
         // 'getToken' method is simulating what your server-side should do.
         // 'token' parameter should be retrieved and returned by your own backend
