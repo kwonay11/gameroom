@@ -62,12 +62,14 @@
                      <div v-else-if='roominfo.gameId === 6'>
                         <div class="capture">
                            {{ game_ing.question }}
+                        
                         </div>
                      </div>
                      <!-- 5. 순간포착 -->
                      <div v-else-if='roominfo.gameId === 5'>
-                        <div v-if="picture" class="picture">
-                           <img :src="picture_url" alt="00" />
+                        <div v-if="picture" class="picture">                           
+                           <img :src="require(`@/assets/images/${picture_keyword}.jpg`)" alt="key" style="width:100%">
+                           <!-- <img src="@/assets/images/설현.jpg" alt="key" style="width:100%"> -->
                         </div>
                      </div>
                   </div>
@@ -110,6 +112,7 @@ import Header from '@/components/GameRoom/Header';
 import { video } from '@/mixins/video'
 import axios from 'axios'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
+// import _ from "lodash"
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
@@ -148,6 +151,9 @@ export default {
             picture: false,
             picture_url: undefined,
             mainStreamManager_nickname: undefined,
+
+            picture_keyword: undefined,
+            image: undefined,
             
         }
     },
@@ -176,10 +182,10 @@ export default {
 
       this.session.on('signal:game', (event) => {
          // 순간포착 어케함
-         this.picture = true;
-         setTimeout(() => {
-            this.picture = false;
-            }, 300);
+         // this.picture = true;
+         // setTimeout(() => {
+         //    this.picture = false;
+         //    }, 300);
             
          // 게임 변경 됐을 때
          console.log(event);
@@ -198,12 +204,10 @@ export default {
          this.questioner = this.game_ing.questioner
          // this.questioner = 0
 
-
-
+         // this.picture_idx = this.game_ing.question
+         this.picture_keyword = this.game_ing.keyword
          
          
-         this.picture_url = "https://t1.daumcdn.net/news/202108/17/moneytoday/20210817120027736ccuo.jpg"
-
 
          const main_nickname = JSON.parse(this.members[this.questioner].session.connection.data)
          console.log('출제자닉네임')
@@ -212,6 +216,8 @@ export default {
          this.mainStreamManager = this.members[this.questioner]
          console.log('메인스트리머 확인')
          console.log(this.mainStreamManager.stream.streamId)
+
+         this.mainStreamManager.publishAudio(false)
       
    
 
