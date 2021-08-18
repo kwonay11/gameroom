@@ -60,7 +60,7 @@
           </div>
       </div>
 
-      <button v-if="contents.title && contents.maxUser" @click="joinSession">
+      <button  class="mt-3" v-if="contents.title && contents.maxUser" @click="joinSession">
         <span class='btn-animate' > START</span>
       </button>
 

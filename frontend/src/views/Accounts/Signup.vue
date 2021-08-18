@@ -95,7 +95,7 @@ export default {
 }
 </script>
 
-<style >
+<style>
 .button--brightness2 {
   color: rgb(217, 211, 230);
   background-color: transparent;
@@ -207,7 +207,7 @@ export default {
 }
 .left_image {
   width: 2vw;
-  padding-top: 0.2vh;
+  padding-top: 0.7vh;
 }
 .right {
   width: 22vw;

@@ -50,11 +50,11 @@
                   <!-- 메인화면 -->
                   <div v-else>
                      <!-- 2. 캐치마인드 -->
-                     <div v-if='roominfo.gameId === 2'>
+                     <!-- <div v-if='roominfo.gameId === 2'>
                         <CatchMind :session="session"/>
-                     </div>
+                     </div> -->
                      <!-- 4. 노래방 -->
-                     <div v-else-if='roominfo.gameId === 4'>
+                     <div v-if='roominfo.gameId === 4'>
                         <Song :session="session"/>
                      </div>
                      <!-- 6. 글자맞추기 -->
@@ -92,6 +92,9 @@
       </div>
 
       <app-my-modal :visible.sync="visible_result">
+         <div calss="title">
+            게임 결과
+         </div>
          <table class="blue_top">
          <tr><th>닉네임</th><th>전적</th></tr>
          <tr v-for="value in game_result" v-bind:key="value.id">
@@ -114,7 +117,7 @@ import Chatting from '@/components/GameRoom/Chatting';
 import Button from '@/components/GameRoom/Button';
 import Ready from '@/components/GameRoom/Ready';
 import Start from '@/components/GameRoom/Start';
-import CatchMind from '@/components/Game/CatchMind/CatchMind';
+// import CatchMind from '@/components/Game/CatchMind/CatchMind';
 import Song from '@/components/Game/Song/Song';
 import Header from '@/components/GameRoom/Header';
 import myModal from '@/components/myModal'
@@ -133,7 +136,7 @@ export default {
       Button,
       Ready, 
       Start,
-      CatchMind,
+      // CatchMind,
       Song,
       Header,
       appMyModal: myModal,
@@ -403,6 +406,14 @@ export default {
 </script>
 
 <style >
+.title{
+  text-shadow: 5px 5px 70px rgba(190, 209, 212, 0.582);
+  font-size: 65px;
+  background: linear-gradient(to bottom,#a769d6 ,#6f92d8);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   
+}
 .player {
    /* 젤 크게 나오는 메인스트리머 화면 */
    /* border: 0.5px solid white; */
