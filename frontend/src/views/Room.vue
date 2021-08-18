@@ -379,7 +379,7 @@ export default {
                      "round":this.round, //라운드
                      "conferenceId": this.$route.params.roomid, //방 id
                      "JWT":this.$store.state.accessToken, //토큰?
-                     "mainstream_idx": this.questioner
+                     // "mainstream_idx": this.questioner
                   }),
                   type: 'game'
                })
