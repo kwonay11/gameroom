@@ -15,5 +15,5 @@ public class GameStatusGetReq {
     Long category;
     Integer round;
     Long conference;
-    int mainstream_idx;
+    //int mainstream_idx;
 }
