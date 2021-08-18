@@ -7,6 +7,8 @@ import com.ssafy.db.repository.UserGameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service("userGameService")
 public class UserGameServiceImpl implements UserGameService{
     @Autowired
@@ -26,7 +28,7 @@ public class UserGameServiceImpl implements UserGameService{
     }
 
     @Override
-    public UserGame getUserGameByUser(User user) {
+    public Optional<UserGame> getUserGameByUser(User user) {
         return userGameRepository.findByUser(user);
     }
 }

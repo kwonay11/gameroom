@@ -6,11 +6,11 @@ import com.ssafy.db.entity.UserConference;
 
 import java.util.Optional;
 
-public class exitConferenceThread extends Thread {
+public class ExitConferenceThread extends Thread {
     User user;
     Long conferenceId;
     ConferenceServiceImpl conferenceService;
-    public exitConferenceThread(User user, Long conferenceId, ConferenceServiceImpl conferenceService) {
+    public ExitConferenceThread(User user, Long conferenceId, ConferenceServiceImpl conferenceService) {
         this.user = user;
         this.conferenceId = conferenceId;
         this.conferenceService = conferenceService;

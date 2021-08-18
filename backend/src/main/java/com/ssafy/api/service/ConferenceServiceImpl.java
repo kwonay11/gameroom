@@ -9,14 +9,9 @@ import com.ssafy.db.entity.Conference;
 import com.ssafy.db.repository.ConferenceRepository;
 import com.ssafy.api.request.ConferenceRegisterPostReq;
 import com.ssafy.db.entity.*;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Service;
-import javax.persistence.EntityListeners;
-import java.time.LocalDateTime;
-import java.util.Date;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -65,17 +60,21 @@ public class ConferenceServiceImpl implements ConferenceService {
             long count = userConferenceRepository.countByConferenceId(conferenceId);
             if (count == 1L) {
                 userConferenceRepository.delete(conference.get());
-                Thread t = new exitConferenceThread(user, conferenceId, this);
+                Thread t = new ExitConferenceThread(user, conferenceId, this);
                 t.start();
             }
-            System.out.println("확인2");
+            Optional<UserGame> userGame = userGameRepository.findByUserId(user.getId());
+            System.out.println(userGame);
+            // userGame 삭제
+            if (userGame.isPresent()) { userGameRepository.delete(userGame.get()); }
 
-            //컨퍼런스 테이블에 남겨두기 , create(0), join(1), exit(2)
+            //컨퍼런스 history 테이블에 남겨두기 , create(0), join(1), exit(2)
             ConferenceHistory conferenceHistory = ConferenceHistory.builder()
                     .conference(conference.get().getConference())
                     .action(2)
                     .user(user)
                     .build();
+
         return conferenceHistoryRepository.save(conferenceHistory);
     }
 

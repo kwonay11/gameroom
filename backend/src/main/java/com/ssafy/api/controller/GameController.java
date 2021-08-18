@@ -102,7 +102,7 @@ public class GameController {
             List<UserConference> userConferenceList = userConferenceService.getUserConferenceByConferenceId(gameStatusGetReq.getConference());
 
             // db에 플레이어 별 game_history 저장
-            Game game = userGameService.getUserGameByUser(userDetails.getUser()).getGame();
+            Game game = userGameService.getUserGameByUser(userDetails.getUser()).get().getGame();
             for (UserConference userConference : userConferenceList) {
                 User user = userConference.getUser();
                 if (user.getId() == userDetails.getUser().getId())
@@ -119,7 +119,7 @@ public class GameController {
             List<UserConference> userConferenceList = userConferenceService.getUserConferenceByConferenceId(gameStatusGetReq.getConference());
 
             // db에 플레이어 별 game_history 저장, user_game 삭제
-            Game game = userGameService.getUserGameByUser(userDetails.getUser()).getGame();
+            Game game = userGameService.getUserGameByUser(userDetails.getUser()).get().getGame();
             for (UserConference userConference : userConferenceList) {
                 User user = userConference.getUser();
                 if (user.getId() == userDetails.getUser().getId())
