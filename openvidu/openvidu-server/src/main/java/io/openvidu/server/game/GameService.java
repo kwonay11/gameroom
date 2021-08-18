@@ -155,6 +155,7 @@ public class GameService {
         String round = data.get("round").getAsString();
         int conferenceId = data.get("conferenceId").getAsInt();
         String JWT = "Bearer " + data.get("JWT").getAsString();
+        int mainstream_idx = data.get("mainstream_idx").getAsInt();
         String apiUrl = "http://localhost:8080/api-boot/games/play";
 //        switch (category) {
 //            case BODYTALK | CILENCETALK : //  몸으로 말해요 고요속의 외침
@@ -162,6 +163,7 @@ public class GameService {
                 .queryParam("status",1)
                 .queryParam("category",category)
                 .queryParam("conference",conferenceId)
+                .queryParam("mainstream_idx",mainstream_idx)
                 .queryParam("round",round);
         HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
 
