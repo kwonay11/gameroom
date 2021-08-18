@@ -9,8 +9,8 @@
         </div>
       </div>
       <div class="id_pw">
-        <div class="pw_left"><img class="left_image" src="@/assets/password.png" alt="pw"/></div>
-        <div class="pw_right">
+        <div class="id_left"><img class="left_image" src="@/assets/password.png" alt="pw"/></div>
+        <div class="id_right">
           <input id="password" class="card__input" v-model="credentials.password" placeholder="Password"  type="password" />
         </div>
       </div>
@@ -53,7 +53,8 @@ export default {
           this.$emit('login')
           this.$store.dispatch('login', this.credentials)
           this.$router.push({ name: 'MainPage' })
-          swal("로그인 성공","방구석 게임방을 즐기세요","success");
+         
+          swal("로그인 성공","방구석 게임방 입장을 환영합니다.","success");
         })
         .catch(() => {
           swal("로그인 실패","정확히 입력해주세요","error");
@@ -121,22 +122,7 @@ export default {
   border-bottom-right-radius: 20px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
-.pw_left {
-  width: 4vw;
-  height: 55px;
-  background: rgba(49,46,46,0.5);
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
-.pw_right {
-  width: 22vw;
-  height: 55px;
-  background: rgba(219,219,219,0.6000000238418579);
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
+
 .login_button {
  width: 26vw;
  height: 55px;
@@ -155,6 +141,7 @@ padding-top: 8px;
 .left_image {
   max-width: 50%;
   padding-top: 8px;
+  padding-top: 1.4vh;
 }
 
 .card_image {
