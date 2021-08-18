@@ -383,17 +383,17 @@ export default {
          console.log('되나??')
 
          if (category === 1) {
-            this.roominfo.gameName = '1'
+            this.roominfo.gameName = '몸으로 말해요'
          }else if (category === 2) {
-            this.roominfo.gameName = '2'
+            this.roominfo.gameName = '캐치 마인드'
          }else if (category === 3) {
-            this.roominfo.gameName = '3'
+            this.roominfo.gameName = '고요속의 외침'
          }else if (category === 4) {
-            this.roominfo.gameName = '4'
+            this.roominfo.gameName = '노래방'
          }else if (category === 5) {
-            this.roominfo.gameName = '5'
+            this.roominfo.gameName = '순간 포착'
          }else if (category === 6) {
-            this.roominfo.gameName = "6"
+            this.roominfo.gameName = "글자 맞추기"
          }
       },    
    },

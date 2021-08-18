@@ -24,7 +24,7 @@
 
                 <div v-if="loggedIn" class="btn">
                   <div v-if="item.privateRoom">
-                    <router-link class="btn_text" :to="{ name: 'RoomPasswordModal',params:{id:item.id} }">
+                    <router-link class="btn_text" :to="`/gameroom/${item.id}/room_password`">
                       <div class="button button--brightness">입장</div>
                     </router-link>
                     </div>
@@ -54,8 +54,8 @@
 import { authComputed } from "@/store/helpers"
 import VueHorizontalList from "vue-horizontal-list";
 import _ from "lodash"
-import axios from 'axios'
-const SERVER_URL = process.env.VUE_APP_SERVER_URL
+// import axios from 'axios'
+// const SERVER_URL = process.env.VUE_APP_SERVER_URL
 
 export default {
   name:'GameList',
@@ -97,23 +97,23 @@ export default {
       },
 
   methods: {
-  entersession(){
-    axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
-    .then((res) => {
-        console.log(res.status)
-        if (res.status == 200) {
-            this.canJoin = true;
-        } else {
-            this.canJoin = false;
-        }
-        if (!this.canJoin)
-            return;
-    })
-    .catch(() => {
-        this.$router.push({ name: 'MainPage' })
-        this.canJoin = false;
-    });
-  } 
+  // entersession(){
+  //   axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
+  //   .then((res) => {
+  //       console.log(res.status)
+  //       if (res.status == 200) {
+  //           this.canJoin = true;
+  //       } else {
+  //           this.canJoin = false;
+  //       }
+  //       if (!this.canJoin)
+  //           return;
+  //   })
+  //   .catch(() => {
+  //       this.$router.push({ name: 'MainPage' })
+  //       this.canJoin = false;
+  //   });
+  // } 
 },
 }
 </script>
