@@ -223,6 +223,10 @@ export default {
          console.log('게임 키워드 데이터들')
          console.log(this.game_ing)
          this.round = this.game_ing.round
+         
+         // 순간포착
+         this.picture_keyword = this.game_ing.keyword
+         console.log(this.picture_keyword)
 
          console.log('게임끝나고 데이터')
          this.game_result = this.game_ing.data
@@ -243,8 +247,8 @@ export default {
 
 
 
-         // 순간포착
-         this.picture_keyword = this.game_ing.keyword
+         
+         
          
          
 
@@ -379,7 +383,7 @@ export default {
                      "round":this.round, //라운드
                      "conferenceId": this.$route.params.roomid, //방 id
                      "JWT":this.$store.state.accessToken, //토큰?
-                     // "mainstream_idx": this.questioner
+                     "mainstream_idx": this.questioner
                   }),
                   type: 'game'
                })
