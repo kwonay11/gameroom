@@ -110,18 +110,18 @@ public class GameService {
 
 //        switch (category) {
 //            case BODYTALK | CILENCETALK: //  몸으로 말해요 or 고요속의 외침
-        UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
-                .queryParam("status",0)
-                .queryParam("category",category)
-                .queryParam("round",round)
-                .queryParam("conference",conferenceId);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                .queryParam("status", 0)
+                .queryParam("category", category)
+                .queryParam("round", round)
+                .queryParam("conference", conferenceId);
         HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
 
 
         RestTemplate restTpl = new RestTemplate(httpRequestFactory);
         HttpHeaders headers = new HttpHeaders(); // 담아줄 header
         HttpEntity entity = new HttpEntity<>(headers); // http entity에 header 담아줌
-        ResponseEntity<String> response  = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> response = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
 
 
         System.out.println("return 확인");
@@ -149,30 +149,35 @@ public class GameService {
     private void startGame(Participant participant, JsonObject message, Set<Participant> participants,
                            JsonObject params, JsonObject data, RpcNotificationService rnfs) {
         log.info("startGame is called by {}", participant.getParticipantPublicId());
-
+        String apiUrl = "http://localhost:8080/api-boot/games/play";
         int category = data.get("category").getAsInt();
         String cat = data.get("category").getAsString();
         String round = data.get("round").getAsString();
         int conferenceId = data.get("conferenceId").getAsInt();
         String JWT = "Bearer " + data.get("JWT").getAsString();
-        int mainstream_idx = data.get("mainstream_idx").getAsInt();
-        String apiUrl = "http://localhost:8080/api-boot/games/play";
-//        switch (category) {
-//            case BODYTALK | CILENCETALK : //  몸으로 말해요 고요속의 외침
-        UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
-                .queryParam("status",1)
-                .queryParam("category",category)
-                .queryParam("conference",conferenceId)
-                .queryParam("mainstream_idx",mainstream_idx)
-                .queryParam("round",round);
+        UriComponentsBuilder builder = null;
+        if (category == 1 || category == 2) {
+//            int mainstream_idx = data.get("mainstream_idx").getAsInt();
+            builder = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                    .queryParam("status", 1)
+                    .queryParam("category", category)
+                    .queryParam("conference", conferenceId)
+//                    .queryParam("mainstream_idx", mainstream_idx)
+                    .queryParam("round", round);
+        } else {
+            builder = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                    .queryParam("status", 1)
+                    .queryParam("category", category)
+                    .queryParam("conference", conferenceId)
+                    .queryParam("round", round);
+        }
         HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
-
 
         RestTemplate restTpl = new RestTemplate(httpRequestFactory);
         HttpHeaders headers = new HttpHeaders(); // 담아줄 header
         headers.add("Authorization", JWT);
         HttpEntity entity = new HttpEntity<>(headers); // http entity에 header 담아줌
-        ResponseEntity<String> response  = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> response = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
 
         System.out.println("return 확인");
         System.out.println(response);
@@ -206,11 +211,11 @@ public class GameService {
         String apiUrl = "http://localhost:8080/api-boot/games/play";
 //        switch (category) {
 //            case BODYTALK  | CILENCETALK: //  몸으로 말해요 or 고요속의 외침
-        UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
-                .queryParam("status",2)
-                .queryParam("category",category)
-                .queryParam("conference",conferenceId)
-                .queryParam("round",round);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                .queryParam("status", 2)
+                .queryParam("category", category)
+                .queryParam("conference", conferenceId)
+                .queryParam("round", round);
         HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
 
 
@@ -219,10 +224,7 @@ public class GameService {
         headers.add("Authorization", JWT);
         HttpEntity entity = new HttpEntity<>(headers); // http entity에 header 담아줌
         System.out.println("확인");
-        ResponseEntity<String> response  = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
-
-
-
+        ResponseEntity<String> response = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
 
 
         System.out.println("return 확인");
@@ -255,17 +257,17 @@ public class GameService {
 
         String apiUrl = "http://localhost:8080/api-boot/games/play";
 
-        UriComponentsBuilder builder  = UriComponentsBuilder.fromHttpUrl(apiUrl)
-                .queryParam("status",3)
-                .queryParam("conference",conferenceId)
-                .queryParam("category",category);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(apiUrl)
+                .queryParam("status", 3)
+                .queryParam("conference", conferenceId)
+                .queryParam("category", category);
         HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
 
 
         RestTemplate restTpl = new RestTemplate(httpRequestFactory);
         HttpHeaders headers = new HttpHeaders(); // 담아줄 header
         HttpEntity entity = new HttpEntity<>(headers); // http entity에 header 담아줌
-        ResponseEntity<String> response  = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> response = restTpl.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class);
 
         try {
             JSONParser jsonParsers = new JSONParser();
@@ -278,7 +280,6 @@ public class GameService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
 
 
         for (Participant p : participants) {
