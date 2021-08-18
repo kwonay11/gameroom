@@ -38,8 +38,7 @@ export const video = {
     },
     created: function() {
         console.log('1111111')
-
-
+        window.addEventListener('beforeunload', this.beforeWindowUnload)
 
         axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
         // --- Connect to the session with a valid user token ---
@@ -231,6 +230,24 @@ export const video = {
                     .catch(error => reject(error.response));
             });
         },
+        beforeWindowUnload(){
+            this.session.signal({
+            
+                data: JSON.stringify({
+                    "roomId" : this.$route.params.roomid,
+                    "JWT": this.$store.state.accessToken
+                }),
+                type: 'leave'
+                })
+                .then(() => {
+                    console.log('leave success');
+                    this.$router.push({ name: "MainPage" });
+                    
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
     },
 
     computed: mapState(['conferenceid', 'id']),
