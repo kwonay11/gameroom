@@ -9,14 +9,9 @@ import com.ssafy.db.entity.Conference;
 import com.ssafy.db.repository.ConferenceRepository;
 import com.ssafy.api.request.ConferenceRegisterPostReq;
 import com.ssafy.db.entity.*;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Service;
-import javax.persistence.EntityListeners;
-import java.time.LocalDateTime;
-import java.util.Date;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -45,6 +40,9 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Autowired
     GameCategoryRepository gameCategoryRepository;
 
+    @Autowired
+    UserGameRepository userGameRepository;
+
     @Override
     public Optional<Conference> getConferenceById(Long id) {
         return conferenceRepository.findById(id);
@@ -55,22 +53,29 @@ public class ConferenceServiceImpl implements ConferenceService {
 
     @Override
     public ConferenceHistory exitConference(User user, Long conferenceId){
-        // 방 정보(user_conference) 삭제 (userId, RoomId를 통한 삭제)
-        Optional<UserConference> conference = userConferenceRepository.findByUserId(user.getId());
-        // 방의 마지막사람은 컨퍼런스 종료시간+ isactive = false로 하고 방을 없애준다.
-        long count = userConferenceRepository.countByConferenceId(conferenceId);
-        if (count == 1L) {
-            Conference one = conferenceRepository.getOne(conferenceId);
-            one.setActive(false);
-            conferenceRepository.save(one);
-        }
-        userConferenceRepository.delete(conference.get());
+            // 방 정보(user_conference) 삭제 (userId, RoomId를 통한 삭제)
+            Optional<UserConference> conference = userConferenceRepository.findByUserId(user.getId());
+
+            // 방의 마지막사람은 컨퍼런스 종료시간+ isactive = false로 하고 방을 없애준다.
+            long count = userConferenceRepository.countByConferenceId(conferenceId);
+            if (count == 1L) {
+                userConferenceRepository.delete(conference.get());
+                Thread t = new ExitConferenceThread(user, conferenceId, this);
+                t.start();
+            }
+            Optional<UserGame> userGame = userGameRepository.findByUserId(user.getId());
+            System.out.println(userGame);
+            // userGame 삭제
+            if (userGame.isPresent()) { userGameRepository.delete(userGame.get()); }
+
+
         //컨퍼런스 테이블에 남겨두기 , create(0), join(1), exit(2)
-        ConferenceHistory conferenceHistory = ConferenceHistory.builder()
-                                                .conference(conference.get().getConference())
-                                                .action(2)
-                                                .user(user)
-                                                .build();
+            ConferenceHistory conferenceHistory = ConferenceHistory.builder()
+                    .conference(conference.get().getConference())
+                    .action(2)
+                    .user(user)
+                    .build();
+
         return conferenceHistoryRepository.save(conferenceHistory);
     }
 
@@ -86,12 +91,6 @@ public class ConferenceServiceImpl implements ConferenceService {
                 .maxUser(dto.getMaxUser())
                 .build();
         Conference result = conferenceRepository.save(conference);
-
-//        UserConference userConference = UserConference.builder()
-//                .conference(result)
-//                .user(user)
-//                .build();
-//        userConferenceRepository.save(userConference);
 
         ConferenceHistory conferenceHistory =ConferenceHistory.builder()
                 .conference(result)

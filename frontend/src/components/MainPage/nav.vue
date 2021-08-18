@@ -48,6 +48,7 @@ export default {
     logout() {
       this.$store.dispatch('logout')
       this.$router.push({ name: "MainPage" });
+      
       swal("로그아웃 되었습니다.","또 오세요!","success");
     }
   }

@@ -5,12 +5,12 @@
       <div>
       <img style="width:8%" src="@/assets/불4조.png" alt="불사조">
       <img style="width:5%" src="@/assets/불.png" alt="불"><br></div>
-    
-      문의사항<br>
+      <br>
+      <h4 style="color:rgb(50, 40, 130)">문의사항<br></h4>
       권예빈 kwonay11@naver.com<br>
-      김보민 <br>
-      김윤빈 <br>
-      정동원 <br>
+      김보민 qhals0134@gmail.com<br>
+      김윤빈 bin6246@naver.com<br>
+      정동원 dongwon.cheong@gmail.com<br>
       © 2021  All rights reserved
 
 

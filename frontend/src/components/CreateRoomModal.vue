@@ -60,7 +60,7 @@
           </div>
       </div>
 
-      <button v-if="contents.title && contents.maxUser" @click="joinSession">
+      <button  class="mt-3" v-if="contents.title && contents.maxUser" @click="joinSession">
         <span class='btn-animate' > START</span>
       </button>
 
@@ -185,7 +185,7 @@ export default {
 }
 
 .row_box {
-  width: 482px;
+  width: 26vw;
   height: 60px;
   display: flex;
   flex-direction: row;
@@ -210,7 +210,7 @@ export default {
   height: 60px;
 }
 .pw_box {
-  width: 482px;
+  width: 26vw;
   height: 30px;
   /* background: rgba(219,219,219,0.6000000238418579); */
   display: flex;
