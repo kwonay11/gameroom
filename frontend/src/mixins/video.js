@@ -50,7 +50,7 @@ export const video = {
         this.OV = new OpenVidu();
         // --- Init a session ---
         this.session = this.OV.initSession();
-        this.mySessionId = this.$route.params.conferenceid;
+        
         console.log('세션!!!!!!!!')
         console.log(this.$route.params)
         console.log(this.mySessionId)
