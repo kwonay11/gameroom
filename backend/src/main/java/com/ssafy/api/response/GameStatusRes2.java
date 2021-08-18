@@ -11,4 +11,5 @@ public class GameStatusRes2 {
     String keyword;
     String question;
     int round;
+    Long gameStatus;
 }

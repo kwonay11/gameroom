@@ -17,22 +17,28 @@
 
       <!-- 메인 화면 -->
       <div class='row p-4'>
-         <div id="main-video" class="col-md-8">
             <!-- 크게 보이는 화면 -->
+         <div id="main-video" class="col-md-8">
+            <!-- 노래방일때 -->
             <div v-if="roominfo.gameId === 4">
                <Song :session="session"/>
             </div>
             <div v-else class="player">
-
-               <!-- 얘가 노래방 -->
 
                <!-- 시작, 레디, 화면 -->
               <div class="main_box">
                   <!-- 시작하기 버튼 -->
                   <div v-if="!start && !ready">
                      <div class="main_box_2">
-                        <div @click="game_start">
-                           <Start />
+                        <!-- 방장만 스타트 버튼 보이기 -->
+                        <div v-if='myUserNick === roominfo.ownerNicknames'>
+                           <div @click="game_start">
+                              <Start />
+                           </div>
+                        </div>
+                        <!-- 방장 아닌 사람은 준비중 -->
+                        <div v-else>
+                           <p>준비중</p>
                         </div>
                      </div>
                   </div>
@@ -44,30 +50,42 @@
                   
                   <!-- 메인화면 -->
                   <div v-else>
+                     <!-- 2. 캐치마인드 -->
                      <div v-if='roominfo.gameId === 2'>
                         <CatchMind :session="session"/>
                      </div>
-                     <div v-if='roominfo.gameId === 4'>
+                     <!-- 4. 노래방 -->
+                     <div v-else-if='roominfo.gameId === 4'>
                         <Song :session="session"/>
                      </div>
-                     <div v-else>
+                     <!-- 6. 글자맞추기 -->
+                     <div v-else-if='roominfo.gameId === 6'>
+                        <div class="capture">
+                           {{ game_ing.question }}
+                        </div>
+                     </div>
+                     <!-- 5. 순간포착 -->
+                     <div v-else-if='roominfo.gameId === 5'>
+                        <div v-if="picture" class="picture">                           
+                           <img :src="require(`@/assets/images/${picture_keyword}.jpg`)" alt="key" style="width:100%">
+                        </div>
+                     </div>
+                     <!-- 1 : 몸으로 말해요, 3 : 고요속의 외침 -->
+                     <div v-else-if='roominfo.gameId === 1 ||  roominfo.gameId === 3'>
                         <user-video :stream-manager="mainStreamManager"/>
                      </div>
                   </div>
                </div>
 
                <!-- 답 입력창 -->
-               <div>
-                  <!-- 출제자 일때 -> 답 입력창 안보이고, 캐치마인드는 색 변경, 클리어버튼 -->
-                  <div>
-
-                  </div>
                   <div class="answer">
-                     <input class="input_answer" placeholder="답을 입력해주세요." type="text" />
-                  </div>
-               </div>
+                     <input v-model="game_answer" class="input_answer" placeholder="답을 입력해주세요." type="text" @keyup.enter="check_answer"/>
+                  </div> 
+
+
             </div>
          </div>
+
 
          <!--  버튼 -->
          <div class="col-md-4">
@@ -75,13 +93,25 @@
             <Chatting :session="session"/>
          </div>
       </div>
+
+      <app-my-modal :visible.sync="visible_result">
+         <table class="blue_top">
+         <tr><th>닉네임</th><th>전적</th></tr>
+         <tr v-for="value in game_result" v-bind:key="value.id">
+            <td>{{ value.nickname }}</td>
+            <td> 맞춘 횟수 : {{ value.answer }} </td>
+         </tr>
+         </table>
+      </app-my-modal>
+
       <!-- test -->
-      <button @click="gametest" style="color:white"> 게임테스트버튼</button>
+      <!-- <button @click="gametest" style="color:white"> 게임테스트버튼</button> -->
    </div>
 
 </template>
 
 <script>
+import { video } from '@/mixins/video'
 import UserVideo from '@/components/UserVideo';
 import Chatting from '@/components/GameRoom/Chatting';
 import Button from '@/components/GameRoom/Button';
@@ -90,15 +120,13 @@ import Start from '@/components/GameRoom/Start';
 import CatchMind from '@/components/Game/CatchMind/CatchMind';
 import Song from '@/components/Game/Song/Song';
 import Header from '@/components/GameRoom/Header';
-import { video } from '@/mixins/video'
+import myModal from '@/components/myModal'
 import axios from 'axios'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
-import { mapState } from 'vuex'
+// import _ from "lodash"
+
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-// const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
-// const OPENVIDU_SERVER_SECRET = "MY_SECRET";
-// const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
    name: 'Room',
 
@@ -111,6 +139,7 @@ export default {
       CatchMind,
       Song,
       Header,
+      appMyModal: myModal,
    },
 
     data() {
@@ -118,72 +147,133 @@ export default {
             song_visible: false,
             start: false,
             ready: false,
-            aa: false,
+            roominfo: {}, //gameId: 1, gameName: "1", gameSummary: "1-1", maxUser: 4, ownerNicknames: "ASDFADF"
+            game_ing: undefined, // {"questioner":"ddd","round":1,"keyword":"key5"}
+            game_answer: '',
+            gameStatus: 0,
+            round: 0,
+            picture: false,
+            picture_keyword: undefined,
 
-            gamecategory: 1,
-            gameStatus:0,
-            gameround:0,
-            gameconferenceid:this.$route.params.roomid,
+            questioner: undefined,
+            mainStreamManager_nickname: undefined,
+
+            visible_result: false,
+            game_result: undefined
         }
     },
    created() {
-      
-      console.log('4555554')
+
+      // 게임 정보 가져와서 게임 화면 맨 위에 띄우려고
       const room_id = this.$route.params.roomid;
       this.$axios.get(`${SERVER_URL}/conferences/info/${room_id}`)
       .then((res) => {
-        console.log(res)
         this.roominfo = res.data
-        console.log('여기ㅐ')
-        console.log(this.roominfo)
       })
 
-      this.session.on('signal:start-btn', (event) => {
-         console.log('room임!!')
-         console.log(event)
 
+      // 스타트 버튼이 눌렸다는 신호가 오면 사람들한데도 알려줌
+      this.session.on('signal:start-btn', () => {
          this.start = true
+
          setTimeout(() => {
             this.ready = true;
+            this.picture = true
             }, 3600);
 
-         this.mainStreamManager = this.publisher;
+            
+         setTimeout(() => {
+            this.ready = true;
+            this.picture = false
+            }, 3900);
+
+         this.gameStatus = 1
+
+      })
+
+      // 게임 중 일때
+      this.session.on('signal:game', (event) => {
+         // 순간포착 어케함
+         this.picture = true;
+         setTimeout(() => {
+            this.picture = false;
+            }, 400);
+            
+         // 게임 변경 됐을 때
+         console.log(event);
+         const status = JSON.parse(event.data.data);
+         if (status.gameStatus == 3){
+            this.changecategory(status.category);
+         }
+         console.log('status')
+         console.log(status)
+
+         // 게임중일때
+         this.game_ing = status
+         console.log('게임 키워드 데이터들')
+         console.log(this.game_ing)
+         this.round = this.game_ing.round
+
+         console.log('게임끝나고 데이터')
+         this.game_result = this.game_ing.data
+         console.log(this.game_result)
+
+
+         // 몸으로 말하기때 필요
+         // 출제자 인덱스
+         this.questioner = this.game_ing.questioner
+         this.mainStreamManager = this.members[this.questioner]
+         console.log('ㅁㅇㅁㅇㅁㅇ')
+         console.log(this.mainStreamManager)
+
+
+
+         // 순간포착
+         this.picture_keyword = this.game_ing.keyword
+         
+         
+
+         // const main_nickname = JSON.parse(this.members[this.questioner].session.connection.data)
+         // console.log('출제자닉네임')
+         // console.log(main_nickname.participantPublicId)
+         // this.mainStreamManager_nickname = main_nickname.participantPublicId
+         // this.mainStreamManager = this.members[this.questioner]
+         // console.log('메인스트리머 확인')
+         // console.log(this.mainStreamManager.stream.streamId)
+
+         // this.mainStreamManager.publishAudio(false)
+      
+
+        });
+
+      //   게임 끝났다고 참가자들한테 알리기
+      this.session.on('signal:game_finish', (event) => {
+         console.log('게임끝')
+         console.log(event)
+         this.ready = false
+         this.start = false
+         this.gameStatus = 2
+         this.picture = true
+         this.mainStreamManager_nickname = undefined
+         this.visible_result = !this.visible_result
 
 
       })
 
+      //   });
 
-              // openvidu에서 new signal로 뿌려지는곳은 signal로 response함 
-        this.session.on('signal:game', (event) => {
-           console.log(event)
-           console.log('제이슨 파스~~~~~')
-            console.log(event.data.data);
-            console.log(event.data);
-            const status = JSON.parse(event.data);
-            if (status.gameStatus ==3){
-               this.changecategory(status.category);
-               
-               
-            }
-            console.log(status.gameStatus);
-            console.log(status.category);
-            console.log(status.round);
-            console.log(status.conferenceId);
-            // console.log(typeof(status));
-            // console.log(typeof(event.data.data));
-        });
+            console.log('내 닉네임')
+      
+      console.log(this.myUserNick)
 
-      // this.session.on('signal:song', (event) => {
-      //   const id = event.data.slice(1, -1)  
-      //   console.log('session에서 받은 id : ' + id)
-      //   this.videoId = id;
-      // });
   },
   methods: {
       song(){
          this.song_visible = !this.song_visible;
       },
+
       game_start() {
+         // ----------------스타트 버튼 누르고-------------------
          this.session.signal({
             data: JSON.stringify(this.ready),
             type: 'start-btn'
@@ -194,54 +284,123 @@ export default {
          .catch(err => {
             console.log(err)
          })
-      },
-      
-      gametest() {
+
+         // ----------------게임 시작할 때 참가자들 한테 시그널 보내기-------------------
          this.session.signal({
             data: JSON.stringify({
-               "gameStatus": this.gameStatus,
-               "category" :this.gameCategory,
-               "round":this.gameround,
-               "conferenceId": this.$route.params.roomid,
-               "JWT":this.$store.state.accessToken
+               "gameStatus": 0, // 게임 상태 (게임시작)
+               "category" :this.roominfo.gameId, // 게임 종류
+               "round": 0, //라운드
+               "conferenceId": this.$route.params.roomid, //방 id
+               "JWT":this.$store.state.accessToken //토큰?
             }),
             type: 'game'
          })
          .then(() => {
-            console.log('Message success');
+            
          })
          .catch(error => {
             console.log(error);
          })
       },
+
+      //  ----------------답 입력 맞추기---------------
+      check_answer() {
+         
+         console.log('게임 status 바뀌는거 확인')
+         console.log(this.gameStatus)
+         if(this.game_answer === this.game_ing.keyword) {
+            console.log('라운드헷갈림')
+            console.log(this.round)
+
+            // 라운드가 5면 게임종료임을 알린다
+            if (this.round === 5) {
+               this.gameStatus = 2
+               // 준비, 시작도 다 false로 바껴서 다시 start버튼 나오게 돌아감
+               this.ready = false,
+               this.start = false,
+            
+               // 참가자들한테 게임 끝났다고 알려주기
+               this.session.signal({
+               data: JSON.stringify(this.ready, this.start),
+               type: 'game_finish'
+               })
+               .then(() => {
+                  console.log('게임끝')
+               })
+               .catch(err => {
+                  console.log(err)
+               }),
+
+
+               // 라운드 5까지 갔을 때 게임 끝 오픈비두 서버한테 보내기
+               this.session.signal({
+               data: JSON.stringify({
+                  "gameStatus": 2, // 게임 상태(게임종료)
+                  "category" :this.roominfo.gameId, // 게임 종류
+                  "round":this.round, //라운드
+                  "conferenceId": this.$route.params.roomid, //방 id
+                  "JWT":this.$store.state.accessToken //토큰?
+               }),
+               type: 'game'
+               })
+               .then(() => {
+                  console.log('게임끝')
+                  this.game_answer = ''
+               })
+               .catch(err => {
+                  console.log(err)
+               })     
+            }
+
+            //마지막 라운드가 아니라면 게임을 계속 진행한다. 
+            else{
+               this.session.signal({
+                  data: JSON.stringify({
+                     "gameStatus": 1, // 게임 상태 (진행중)
+                     "category" :this.roominfo.gameId, // 게임 종류
+                     "round":this.round, //라운드
+                     "conferenceId": this.$route.params.roomid, //방 id
+                     "JWT":this.$store.state.accessToken, //토큰?
+                     "mainstream_idx": this.questioner
+                  }),
+                  type: 'game'
+               })
+               .then(() => {
+                  console.log('몸으로 말해요')
+                  this.game_answer = ''
+                  
+               })
+               .catch(error => {
+                  console.log(error);
+               })
+            }
+         }
+         this.game_answer = ''
+            
+      },
+  
+   
       changecategory(category) {
          this.roominfo.gameId=category;
-               console.log('되나??')
+         console.log('되나??')
 
          if (category === 1) {
-            this.roominfo.gameName = '몸으로 말해요'
+            this.roominfo.gameName = '1'
          }else if (category === 2) {
-            this.roominfo.gameName = '캐치 마인드'
+            this.roominfo.gameName = '2'
          }else if (category === 3) {
-            this.roominfo.gameName = '고요속의 외침'
+            this.roominfo.gameName = '3'
          }else if (category === 4) {
-            this.roominfo.gameName = '노래방'
+            this.roominfo.gameName = '4'
          }else if (category === 5) {
-            this.roominfo.gameName = '순간 포착'
+            this.roominfo.gameName = '5'
          }else if (category === 6) {
-            this.roominfo.gameName = "글자 맞추기"
+            this.roominfo.gameName = "6"
          }
-
-      }
-
-    
+      },    
    },
-
-   
-   computed: mapState(['conferenceid']),
-
    mixins: [video]
-
 }
 
 </script>
@@ -281,6 +440,26 @@ export default {
    justify-content: center;
    align-items: center;
 
+}
+.capture {
+   position: relative;
+   width: 33vw;
+   height: 48vh;
+   /* width: 150%; */
+   background: white;
+   border: 3px solid white;
+   border-radius:20px;
+   font-size: 9vw;
+   /* margin: 0 auto 2.5vh; */
+   display:flex;
+   justify-content: center;
+   align-items: center;
+
+}
+.picture{
+   position: relative;
+   width: 33vw;
+   height: 48vh;
 }
 
 .input_answer {
@@ -384,8 +563,29 @@ video {
 }
 
 
-/* start 버튼*/
+table {
+  table-layout: auto;
+  position: relative;
+  width: 80%;
+  margin: 5% auto 0;
+}
 
+.blue_top {
+  border-collapse: collapse;
+  border-top: 3px solid #168;
+} 
 
+.blue_top tr th {
+  height: 50px;
+  border: 1px solid #ddd;
+  text-align: center;
+  background-color: white;
+
+}
+.blue_top tr td {
+  height: 60px;
+  border: 1px solid #ddd;
+  color: white
+}
 
 </style>

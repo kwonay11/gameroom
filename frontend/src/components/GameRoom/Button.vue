@@ -152,12 +152,8 @@ export default {
     },
     changeGame(){
       console.log('룸 정보')
+      console.log(this.games)
         // console.log(this.roominfo)
-        this.session.on('signal',(event)=>{
-          console.log('제이슨 정보~~')
-          console.log(event.data)
-          
-        })
          
         if (this.games === '몸으로 말해요'){
           this.gamecategory = 1
@@ -172,6 +168,9 @@ export default {
         }else {
           this.gamecategory = 6
         }
+
+
+
         this.session.signal({
           data: JSON.stringify({
                "gameStatus": 3,

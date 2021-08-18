@@ -31,7 +31,7 @@ import springfox.documentation.annotations.ApiIgnore;
  */
 @Api(value = "유저 API", tags = {"User"})
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api-boot/users")
 public class UserController {
 
 
