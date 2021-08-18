@@ -7,7 +7,7 @@ import axios from 'axios'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
-Vue.use(axios)
+// Vue.use(axios)
 new Vue({
     vuetify,
     router,

@@ -34,7 +34,7 @@ import java.util.*;
 @Api(value = "게임 API", tags = {"Game"})
 
 @RestController
-@RequestMapping("/api/games")
+@RequestMapping("/api-boot/games")
 public class GameController {
 
     @Autowired
@@ -102,7 +102,7 @@ public class GameController {
             List<UserConference> userConferenceList = userConferenceService.getUserConferenceByConferenceId(gameStatusGetReq.getConference());
 
             // db에 플레이어 별 game_history 저장
-            Game game = userGameService.getUserGameByUser(userDetails.getUser()).getGame();
+            Game game = userGameService.getUserGameByUser(userDetails.getUser()).get().getGame();
             for (UserConference userConference : userConferenceList) {
                 User user = userConference.getUser();
                 if (user.getId() == userDetails.getUser().getId())
@@ -119,7 +119,7 @@ public class GameController {
             List<UserConference> userConferenceList = userConferenceService.getUserConferenceByConferenceId(gameStatusGetReq.getConference());
 
             // db에 플레이어 별 game_history 저장, user_game 삭제
-            Game game = userGameService.getUserGameByUser(userDetails.getUser()).getGame();
+            Game game = userGameService.getUserGameByUser(userDetails.getUser()).get().getGame();
             for (UserConference userConference : userConferenceList) {
                 User user = userConference.getUser();
                 if (user.getId() == userDetails.getUser().getId())
@@ -166,7 +166,7 @@ public class GameController {
             gameService.saveGame(game);
 
             JSONObject obj = new JSONObject();
-            obj.put("data",userAnswerList);
+            obj.put("data", userAnswerList);
 
 
             return ResponseEntity.status(200).body(obj);
@@ -187,37 +187,25 @@ public class GameController {
         // keyword 랜덤 선택
         String keyword = gameService.getKeywordRand(gameStatusGetReq.getCategory());
 
-        if(gameStatusGetReq.getCategory() == 1 || gameStatusGetReq.getCategory() == 3) {  // 몸으로 말해요 || 고요속의 외침
-            int questioner = -1;
-            if(gameStatusGetReq.getStatus() == 0) {
+        if (gameStatusGetReq.getCategory() == 1 || gameStatusGetReq.getCategory() == 2) {  // 몸으로 말해요 || 고요속의 외침
+//            int questioner = -1;
+            if (gameStatusGetReq.getStatus() == 0) {
                 // 출제자 랜덤 선택
                 Random rand = new Random();
-                questioner = rand.nextInt(userConferenceList.size());
+                int questioner = rand.nextInt(userConferenceList.size());
+                GameStatusRes res = GameStatusRes.builder().keyword(keyword).questioner(questioner).round(gameStatusGetReq.getRound() + 1).build();
+                return ResponseEntity.status(200).body(res);
+            } else {
+                // 출제자 받은그대로 보내기
+                GameStatusRes res = GameStatusRes.builder().keyword(keyword).questioner(gameStatusGetReq.getMainstream_idx()).round(gameStatusGetReq.getRound() + 1).build();
+                return ResponseEntity.status(200).body(res);
             }
-            GameStatusRes res = GameStatusRes.builder().keyword(keyword).questioner(questioner).round(gameStatusGetReq.getRound() + 1).build();
-            return ResponseEntity.status(200).body(res);
-        } else if (gameStatusGetReq.getCategory() == 5 || gameStatusGetReq.getCategory() == 6) {  // 순간 포착 || 글자맞추기
+
+
+        } else if (gameStatusGetReq.getCategory() == 4 || gameStatusGetReq.getCategory() == 5) {  // 순간 포착4 || 글자맞추기5
             String question = null;
+
             if (gameStatusGetReq.getCategory() == 5) {
-                try {
-                    HttpClient client = HttpClientBuilder.create().build();
-                    HttpGet request = new HttpGet("https://dapi.kakao.com/v2/search/image?sort=accuracy&page=1&size=1&query=" + keyword);
-                    request.addHeader("Authorization", "KakaoAK f9b5b3a2defd167e8e45aa748ee2f026");
-
-                    HttpResponse response = client.execute(request);
-
-                    if (response.getStatusLine().getStatusCode() == 200) {
-                        // response에서 image_url 추출
-                        question = (String) ((List<JSONObject>) ((JSONObject) new JSONParser().parse(new BasicResponseHandler().handleResponse(response))).get("documents")).get(0).get("image_url");
-                        imageHistoryService.saveImageHistory(ImageHistory.builder().game(game).keyword(keyword).image(question).build());
-                        System.out.println("question : " + question);
-                    } else {
-                        System.out.println("response is error : " + response.getStatusLine().getStatusCode());
-                    }
-                } catch (Exception e) {
-                    System.err.println(e.toString());
-                }
-            } else if (gameStatusGetReq.getCategory() == 6) {
                 question = keyword.substring(0, 2) + "**";
                 System.out.println("question : " + question);
             }

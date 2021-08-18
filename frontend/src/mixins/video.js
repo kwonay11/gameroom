@@ -1,10 +1,12 @@
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
+import swal from 'sweetalert';
 // import UserVideo from '@/components/UserVideo';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-const OPENVIDU_SERVER_URL = "https://127.0.0.1:5443";
+const OPENVIDU_SERVER_URL = "https://127.0.0.1:5443";  //로컬용
+// const OPENVIDU_SERVER_URL = "https://i5c104.p.ssafy.io"; // aws용 
 // const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
@@ -29,13 +31,15 @@ export const video = {
             myUserNick: '',
             canJoin: null,
 
-
+            refreshcheck: true,
             members: [],
 
         }
     },
     created: function() {
         console.log('1111111')
+        window.addEventListener('beforeunload', this.beforeWindowUnload)
+
         axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
         // --- Connect to the session with a valid user token ---
         axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
@@ -51,11 +55,18 @@ export const video = {
             })
             .catch((err) => {
                 console.log('입장에러')
-                console.log(err)
-                    // this.$router.push({ name: 'MainPage' })
+                if (err.response.status == 404){
+                    swal('방이 존재하지 않습니다.')
+                } else if (err.response.status == 403){
+                    swal('방에 인원이 꽉찼습니다.')
+                } else if (err.response.status ==405){
+                    swal('게임이 진행중입니다.')
+                }
+                
+                this.$router.push({ name: 'MainPage' })
                 this.canJoin = false;
             });
-
+    
         // 방 ID 인거 같고
         this.mySessionId = this.$route.params.roomid
         this.myUserName = this.$store.state.id
@@ -92,6 +103,7 @@ export const video = {
             if (index >= 0) {
                 this.subscribers.splice(index, 1);
             }
+            
         });
 
         // On every asynchronous exception...
@@ -140,11 +152,10 @@ export const video = {
                     });
             });
 
-        window.addEventListener('beforeunload', this.leaveSession)
+        window.addEventListener('unload', this.leaveSession)
 
     },
     methods: {
-
         leaveSession() {
             // --- Leave the session by calling 'disconnect' method over the Session object ---
             if (this.session) this.session.disconnect();
@@ -225,6 +236,24 @@ export const video = {
                     .catch(error => reject(error.response));
             });
         },
+        beforeWindowUnload(){
+            this.session.signal({
+            
+                data: JSON.stringify({
+                    "roomId" : this.$route.params.roomid,
+                    "JWT": this.$store.state.accessToken
+                }),
+                type: 'leave'
+                })
+                .then(() => {
+                    console.log('leave success');
+                    this.$router.push({ name: "MainPage" });
+                    
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
     },
 
     computed: mapState(['conferenceid', 'id']),
