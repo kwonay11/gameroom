@@ -47,8 +47,7 @@ public class GameController {
     UserGameService userGameService;
     @Autowired
     ConferenceService conferenceService;
-    @Autowired
-    ImageHistoryService imageHistoryService;
+   
 
     @GetMapping()
     @ApiOperation(value = "게임 이름과 설명 조회", notes = "게임 이름과 게임 설명을 response함")
