@@ -31,7 +31,7 @@ export const video = {
             myUserNick: '',
             canJoin: null,
 
-
+            refreshcheck: true,
             members: [],
 
         }
@@ -60,6 +60,8 @@ export const video = {
                 swal('방에 인원이 꽉찼습니다.')
                 this.canJoin = false;
             });
+    },
+    mounted: function() {
 
         // 방 ID 인거 같고
         this.mySessionId = this.$route.params.roomid
@@ -97,6 +99,7 @@ export const video = {
             if (index >= 0) {
                 this.subscribers.splice(index, 1);
             }
+            
         });
 
         // On every asynchronous exception...
@@ -145,11 +148,10 @@ export const video = {
                     });
             });
 
-        window.addEventListener('beforeunload', this.leaveSession)
+        window.addEventListener('unload', this.leaveSession)
 
     },
     methods: {
-
         leaveSession() {
             // --- Leave the session by calling 'disconnect' method over the Session object ---
             if (this.session) this.session.disconnect();

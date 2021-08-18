@@ -45,6 +45,9 @@ public class ConferenceServiceImpl implements ConferenceService {
     @Autowired
     GameCategoryRepository gameCategoryRepository;
 
+    @Autowired
+    UserGameRepository userGameRepository;
+
     @Override
     public Optional<Conference> getConferenceById(Long id) {
         return conferenceRepository.findById(id);
