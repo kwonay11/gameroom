@@ -112,7 +112,7 @@ export default {
 }
 
 .row_box {
-  width: 482px;
+  width: 26vw;
   height: 60px;
   display: flex;
   flex-direction: row;
