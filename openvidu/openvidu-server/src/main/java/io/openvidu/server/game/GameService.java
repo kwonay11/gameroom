@@ -157,12 +157,12 @@ public class GameService {
         String JWT = "Bearer " + data.get("JWT").getAsString();
         UriComponentsBuilder builder = null;
         if (category == 1 || category == 2) {
-//            int mainstream_idx = data.get("mainstream_idx").getAsInt();
+            int mainstream_idx = data.get("mainstream_idx").getAsInt();
             builder = UriComponentsBuilder.fromHttpUrl(apiUrl)
                     .queryParam("status", 1)
                     .queryParam("category", category)
                     .queryParam("conference", conferenceId)
-//                    .queryParam("mainstream_idx", mainstream_idx)
+                    .queryParam("mainstream_idx", mainstream_idx)
                     .queryParam("round", round);
         } else {
             builder = UriComponentsBuilder.fromHttpUrl(apiUrl)

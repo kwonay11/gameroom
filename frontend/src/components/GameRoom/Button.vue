@@ -107,7 +107,7 @@ export default {
     publisher: Object,
     roominfo: Object,
     session: Object,
-    myUserNick: Object,
+    myUserNick: String,
   },
 
   
