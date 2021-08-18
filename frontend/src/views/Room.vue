@@ -77,12 +77,18 @@
                </div>
             </div >
          <!-- 답 입력창 -->
+         <!-- 출제자 일때 -->
+         <div v-if="myUserNick === mainStreamManager_nickname">
+            {{ game_ing.keyword }}
+         </div>
+         <!-- 출제자가 아닐 때 -->
+         <div v-else>
             <div class="answer">
                <input v-model="game_answer" class="input_answer" placeholder="답을 입력해주세요." type="text" @keyup.enter="check_answer"/>
             </div> 
-
          </div>
 
+         </div>
 
          <!--  버튼 -->
          <div class="col-md-4">
@@ -225,6 +231,11 @@ export default {
          this.mainStreamManager = this.members[this.questioner]
          console.log('ㅁㅇㅁㅇㅁㅇ')
          console.log(this.mainStreamManager)
+         console.log('출제자닉네임')
+         const main_nick = JSON.parse(this.mainStreamManager.session.connection.data)
+         console.log(main_nick.clientData)
+         this.mainStreamManager_nickname = main_nick.clientData
+
 
 
 
