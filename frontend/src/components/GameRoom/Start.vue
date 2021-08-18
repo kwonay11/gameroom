@@ -1,6 +1,8 @@
 <template>
   <div >
-    <div class="gradient-border" id="box">START</div>
+    <div class="gradient-border" >
+      <div class="box">START</div>
+    </div>
   </div>
 
 </template>
@@ -11,49 +13,32 @@ export default {
 }
 </script>
 <style scoped>
-
-/* https://wsss.tistory.com/384 */
 @import url('https://fonts.googleapis.com/css?family=Raleway:200');
 
-html, body {
-  height: 100%;
-}
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  background: #1D1F20;
-}
-#box {
+.box {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 400px;
-  height: 200px;
-  color: white;
+  height:8vh;
+  color: black;
   font-family: 'Raleway';
   font-size: 2.5rem;
+  z-index: 10;
+  font-weight: bold;
 }
-.gradient-border {
-  --borderWidth: 3px;
-  background: #1D1F20;
-  position: relative;
-  border-radius: var(--borderWidth);
-}
-.gradient-border:after {
+.gradient-border{
+  padding-top:7vh;
   content: '';
-  position: absolute;
-  top: calc(-1 * var(--borderWidth));
-  left: calc(-1 * var(--borderWidth));
-  height: calc(100% + var(--borderWidth) * 2);
-  width: calc(100% + var(--borderWidth) * 2);
+  position: relative;
+  height:20vh;
+  width: 20vw;
   background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
-  border-radius: calc(2 * var(--borderWidth));
-  z-index: -1;
+  border-radius: 20px;
+  z-index: 3;
   -webkit-animation: animatedgradient 3s ease alternate infinite;
           animation: animatedgradient 3s ease alternate infinite;
   background-size: 300% 300%;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 

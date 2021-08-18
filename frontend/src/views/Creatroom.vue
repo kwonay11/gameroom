@@ -51,9 +51,9 @@ export default {
 
     created(){
       //500~600 6개 뽑음
-      const url_value=_.sampleSize(_.range(500,600),6)
+      const url_value=_.sampleSize(_.range(500,600),5)
 
-      for (var i=0; i<6; i++) {
+      for (var i=0; i<5; i++) {
         this.image_url.push(`url(https://unsplash.it/${url_value[i]}/${url_value[i]}/)`)
       }
       this.$axios.get(`${SERVER_URL}/games`)

@@ -1,23 +1,23 @@
 <template lang="">
   <div class='button'>
       <div class="link">
-        <!-- 방장만 보이게 하기 -->
-        <img  src="@/assets/settings.png" alt="setting" @click='setting'>
+          <img v-if="myUserNick === roominfo.ownerNicknames" src="@/assets/settings.png" alt="setting" @click='setting'>
+
         
         <app-my-modal :visible.sync="visible_setting">
           <div class="title">
             게임 변경
           </div>
           <div>
-            <div class="row_box row">
+            <div class="row_box_1 row">
           <div class="left">
-            <img class="room_img1 p-2" src="@/assets/game.png" alt="games">
+            <img class="room_img2 p-2" src="@/assets/game.png" alt="games">
           </div>
           <div class="right">
             <select  v-model="games" class="card__input " >
               <option disabled value="">게임 선택</option>
               <option >몸으로 말해요</option>
-              <option >캐치마인드</option>
+              <!-- <option >캐치마인드</option> -->
               <option >고요속의 외침</option>
               <option >노래방</option>
               <option >순간포착</option>
@@ -107,6 +107,7 @@ export default {
     publisher: Object,
     roominfo: Object,
     session: Object,
+    myUserNick: Object,
   },
 
   
@@ -157,16 +158,16 @@ export default {
          
         if (this.games === '몸으로 말해요'){
           this.gamecategory = 1
-        }else if (this.games === '캐치마인드'){
-          this.gamecategory = 2
+        // }else if (this.games === '캐치마인드'){
+        //   this.gamecategory = 2
         }else if (this.games === '고요속의 외침'){
-          this.gamecategory = 3
+          this.gamecategory = 2
         }else if (this.games === '노래방'){
-          this.gamecategory = 4
+          this.gamecategory = 3
         }else if (this.games === '순간포착'){
-          this.gamecategory = 5
+          this.gamecategory = 4
         }else {
-          this.gamecategory = 6
+          this.gamecategory = 5
         }
 
 
@@ -276,5 +277,37 @@ img {
   background: linear-gradient(to bottom,#B993D6 ,#8CA6DB);
    -webkit-background-clip: text;
    -webkit-text-fill-color: transparent;
+}
+
+.row_box_1 {
+  width: 23vw;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.left {
+  width: 3vw;
+  height: 50px;
+  background: rgba(49,46,46,0.5);
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.right {
+  width: 20vw;
+  height: 50px;
+  background: rgba(219,219,219,0.6000000238418579);
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.room_img2 {
+  width: 2.3vw;
+  height: 50px;
 }
 </style>

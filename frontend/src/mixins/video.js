@@ -31,16 +31,34 @@ export const video = {
             myUserNick: '',
             canJoin: null,
 
-
+            refreshcheck: true,
             members: [],
 
         }
     },
     created: function() {
         console.log('1111111')
+        window.addEventListener('beforeunload', this.beforeWindowUnload)
 
 
+        // 방 ID 인거 같고
+        this.mySessionId = this.$route.params.roomid
+        this.myUserName = this.$store.state.id
+        this.myUserNick = this.$store.state.userData.nickname
+            // console.log(this.mySessionId)
+            // console.log(this.myUserName)
+        this.OV = new OpenVidu();
+        // --- Init a session ---
+        this.session = this.OV.initSession();
+        this.mySessionId = this.$route.params.conferenceid;
+        console.log('세션!!!!!!!!')
+        console.log(this.$route.params)
+        console.log(this.mySessionId)
+        this.myUserName = this.$store.state.id
 
+        console.log('video.js에서 내 닉네임')
+        console.log(this.myUserNick)
+            // --- Specify the actions when events take place in the session ---
         axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
         // --- Connect to the session with a valid user token ---
         axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
@@ -56,12 +74,18 @@ export const video = {
             })
             .catch((err) => {
                 console.log('입장에러')
-                console.log(err)
+                if (err.response.status == 404){
+                    swal('방이 존재하지 않습니다.')
+                } else if (err.response.status == 403){
+                    swal('방에 인원이 꽉찼습니다.')
+                } else if (err.response.status == 405){
+                    swal('게임이 진행중입니다.')
+                }
+                
                 this.$router.push({ name: 'MainPage' })
-                swal('방에 인원이 꽉찼습니다.')
                 this.canJoin = false;
             });
-
+    
         // 방 ID 인거 같고
         this.mySessionId = this.$route.params.roomid
         this.myUserName = this.$store.state.id
@@ -90,6 +114,10 @@ export const video = {
             this.members.push(subscriber)
             console.log('멤버')
             console.log(this.members)
+
+            // this.members.sort(function(a, b) {
+            //     return a.stream.connection.connectionId < b.stream.connection.connectionId ? -1 : a.stream.connection.connectionId > b.stream.connection.connectionId ? 1 : 0
+            // })
         });
 
         // On every Stream destroyed...
@@ -98,6 +126,7 @@ export const video = {
             if (index >= 0) {
                 this.subscribers.splice(index, 1);
             }
+            
         });
 
         // On every asynchronous exception...
@@ -139,6 +168,10 @@ export const video = {
                         this.members.push(this.publisher)
                             // --- Publish your stream ---
 
+                        // this.members.sort(function(a, b) {
+                        //     return a.stream.connection.connectionId < b.stream.connection.connectionId ? -1 : a.stream.connection.connectionId > b.stream.connection.connectionId ? 1 : 0
+                        // })
+
                         this.session.publish(this.publisher);
                     })
                     .catch(error => {
@@ -146,11 +179,10 @@ export const video = {
                     });
             });
 
-        window.addEventListener('beforeunload', this.leaveSession)
+        window.addEventListener('unload', this.leaveSession)
 
     },
     methods: {
-
         leaveSession() {
             // --- Leave the session by calling 'disconnect' method over the Session object ---
             if (this.session) this.session.disconnect();
@@ -231,6 +263,24 @@ export const video = {
                     .catch(error => reject(error.response));
             });
         },
+        beforeWindowUnload(){
+            this.session.signal({
+            
+                data: JSON.stringify({
+                    "roomId" : this.$route.params.roomid,
+                    "JWT": this.$store.state.accessToken
+                }),
+                type: 'leave'
+                })
+                .then(() => {
+                    console.log('leave success');
+                    this.$router.push({ name: "MainPage" });
+                    
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        }
     },
 
     computed: mapState(['conferenceid', 'id']),

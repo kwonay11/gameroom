@@ -20,13 +20,12 @@
             <!-- 크게 보이는 화면 -->
          <div id="main-video" class="col-md-8">
             <!-- 노래방일때 -->
-            <div v-if="roominfo.gameId === 4">
+            <div v-if="roominfo.gameId === 3">
                <Song :session="session"/>
             </div>
             <div v-else class="player">
-
                <!-- 시작, 레디, 화면 -->
-              <div class="main_box">
+               <div class="main_box">
                   <!-- 시작하기 버튼 -->
                   <div v-if="!start && !ready">
                      <div class="main_box_2">
@@ -51,48 +50,66 @@
                   <!-- 메인화면 -->
                   <div v-else>
                      <!-- 2. 캐치마인드 -->
-                     <div v-if='roominfo.gameId === 2'>
+                     <!-- <div v-if='roominfo.gameId === 2'>
                         <CatchMind :session="session"/>
-                     </div>
+                     </div> -->
                      <!-- 4. 노래방 -->
-                     <div v-else-if='roominfo.gameId === 4'>
+                     <div v-if='roominfo.gameId === 3'>
                         <Song :session="session"/>
                      </div>
                      <!-- 6. 글자맞추기 -->
-                     <div v-else-if='roominfo.gameId === 6'>
+                     <div v-else-if='roominfo.gameId === 5'>
                         <div class="capture">
                            {{ game_ing.question }}
                         </div>
                      </div>
                      <!-- 5. 순간포착 -->
-                     <div v-else-if='roominfo.gameId === 5'>
+                     <div v-else-if='roominfo.gameId === 4'>
                         <div v-if="picture" class="picture">                           
                            <img :src="require(`@/assets/images/${picture_keyword}.jpg`)" alt="key" style="width:100%">
                         </div>
                      </div>
                      <!-- 1 : 몸으로 말해요, 3 : 고요속의 외침 -->
-                     <div v-else-if='roominfo.gameId === 1 ||  roominfo.gameId === 3'>
+                     <div v-else-if='roominfo.gameId === 1 ||  roominfo.gameId === 2'>
                         <user-video :stream-manager="mainStreamManager"/>
                      </div>
                   </div>
                </div>
-
                <!-- 답 입력창 -->
+               <!-- 출제자 일때 -->
+               <div v-if="myUserNick === mainStreamManager_nickname">
+                  {{ game_ing.keyword }}
+               </div>
+               <!-- 출제자가 아닐 때 -->
+               <div v-else>
                   <div class="answer">
                      <input v-model="game_answer" class="input_answer" placeholder="답을 입력해주세요." type="text" @keyup.enter="check_answer"/>
                   </div> 
+               </div>
+            </div >
 
-
-            </div>
          </div>
-
 
          <!--  버튼 -->
          <div class="col-md-4">
-            <Button :publisher="publisher" :roominfo="roominfo" :session="session"/>
+            <Button :publisher="publisher" :roominfo="roominfo" :session="session" :myUserNick="myUserNick"/>
             <Chatting :session="session"/>
          </div>
       </div>
+
+      <app-my-modal :visible.sync="visible_result">
+         <div class="title">
+            게임 결과
+         </div>
+         <table class="blue_top">
+         <tr><th>닉네임</th><th>전적</th></tr>
+         <tr v-for="value in game_result" v-bind:key="value.id">
+            <td>{{ value.nickname }}</td>
+            <td> 맞춘 횟수 : {{ value.answer }} </td>
+         </tr>
+         </table>
+      </app-my-modal>
+
       <!-- test -->
       <!-- <button @click="gametest" style="color:white"> 게임테스트버튼</button> -->
    </div>
@@ -106,9 +123,10 @@ import Chatting from '@/components/GameRoom/Chatting';
 import Button from '@/components/GameRoom/Button';
 import Ready from '@/components/GameRoom/Ready';
 import Start from '@/components/GameRoom/Start';
-import CatchMind from '@/components/Game/CatchMind/CatchMind';
+// import CatchMind from '@/components/Game/CatchMind/CatchMind';
 import Song from '@/components/Game/Song/Song';
 import Header from '@/components/GameRoom/Header';
+import myModal from '@/components/myModal'
 import axios from 'axios'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 // import _ from "lodash"
@@ -124,9 +142,10 @@ export default {
       Button,
       Ready, 
       Start,
-      CatchMind,
+      // CatchMind,
       Song,
       Header,
+      appMyModal: myModal,
    },
 
     data() {
@@ -141,11 +160,19 @@ export default {
             round: 0,
             picture: false,
             picture_keyword: undefined,
+
             questioner: undefined,
             mainStreamManager_nickname: undefined,
+
+            visible_result: false,
+            game_result: undefined
         }
     },
    created() {
+      
+      this.myUserNick = this.$store.state.userData.nickname
+      console.log('room.vue 닉네임')
+      console.log(this.myUserNick)
 
       // 게임 정보 가져와서 게임 화면 맨 위에 띄우려고
       const room_id = this.$route.params.roomid;
@@ -197,6 +224,10 @@ export default {
          console.log(this.game_ing)
          this.round = this.game_ing.round
 
+         console.log('게임끝나고 데이터')
+         this.game_result = this.game_ing.data
+         console.log(this.game_result)
+
 
          // 몸으로 말하기때 필요
          // 출제자 인덱스
@@ -204,6 +235,11 @@ export default {
          this.mainStreamManager = this.members[this.questioner]
          console.log('ㅁㅇㅁㅇㅁㅇ')
          console.log(this.mainStreamManager)
+         console.log('출제자닉네임')
+         const main_nick = JSON.parse(this.mainStreamManager.session.connection.data)
+         console.log(main_nick.clientData)
+         this.mainStreamManager_nickname = main_nick.clientData
+
 
 
 
@@ -234,6 +270,8 @@ export default {
          this.gameStatus = 2
          this.picture = true
          this.mainStreamManager_nickname = undefined
+         this.visible_result = !this.visible_result
+
 
       })
 
@@ -332,13 +370,16 @@ export default {
 
             //마지막 라운드가 아니라면 게임을 계속 진행한다. 
             else{
+               console.log('erewr')
+               console.log(this.questioner)
                this.session.signal({
                   data: JSON.stringify({
                      "gameStatus": 1, // 게임 상태 (진행중)
                      "category" :this.roominfo.gameId, // 게임 종류
                      "round":this.round, //라운드
                      "conferenceId": this.$route.params.roomid, //방 id
-                     "JWT":this.$store.state.accessToken //토큰?
+                     "JWT":this.$store.state.accessToken, //토큰?
+                     "mainstream_idx": this.questioner
                   }),
                   type: 'game'
                })
@@ -362,17 +403,15 @@ export default {
          console.log('되나??')
 
          if (category === 1) {
-            this.roominfo.gameName = '1'
+            this.roominfo.gameName = '몸으로 말해요'
          }else if (category === 2) {
-            this.roominfo.gameName = '2'
+            this.roominfo.gameName = '고요속의 외침'
          }else if (category === 3) {
-            this.roominfo.gameName = '3'
+            this.roominfo.gameName = '노래방'
          }else if (category === 4) {
-            this.roominfo.gameName = '4'
+            this.roominfo.gameName = '순간 포착'
          }else if (category === 5) {
-            this.roominfo.gameName = '5'
-         }else if (category === 6) {
-            this.roominfo.gameName = "6"
+            this.roominfo.gameName = "글자 맞추기"
          }
       },    
    },
@@ -382,6 +421,15 @@ export default {
 </script>
 
 <style >
+.title{
+  
+  text-shadow: 5px 5px 70px rgba(190, 209, 212, 0.582);
+  font-size: 65px;
+  background: linear-gradient(to bottom,#a769d6 ,#6f92d8);
+   -webkit-background-clip: text;
+   -webkit-text-fill-color: transparent;
+   
+}
 .player {
    /* 젤 크게 나오는 메인스트리머 화면 */
    /* border: 0.5px solid white; */
@@ -536,6 +584,32 @@ video {
    color: #777777;
    font-weight: bold;
    border-radius: 5px;
+}
+
+
+table {
+  table-layout: auto;
+  position: relative;
+  width: 80%;
+  margin: 5% auto 0;
+}
+
+.blue_top {
+  border-collapse: collapse;
+  border-top: 3px solid #168;
+} 
+
+.blue_top tr th {
+  height: 50px;
+  border: 1px solid #ddd;
+  text-align: center;
+  background-color: white;
+
+}
+.blue_top tr td {
+  height: 60px;
+  border: 1px solid #ddd;
+  color: white
 }
 
 </style>

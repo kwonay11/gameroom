@@ -7,7 +7,7 @@
           <div class="left"><img class="left_image" src="@/assets/user.png" alt="id"/></div>
           <div class="right">
             <input id="id" v-model="credentials.id" class="card__input" placeholder="ID" type="text" /></div>
-            <button class="button button--brightness" @click="check(id)">중복체크</button>
+            <button class="button button--brightness2 left_arrange_1" @click="check(id)">중복체크</button>
         </div>
 
         <div class="id_pw">
@@ -27,8 +27,8 @@
           <div class="left"><img class="left_image" src="@/assets/lock2.png" alt="pw_check"/></div>
           <div class="right">
             <input id="passwordCheck" v-model="credentials.passwordCheck" class="card__input" placeholder="Password Check"  type="password" /></div>
-            <div class="pw_ck" v-if="credentials.passwordCheck != credentials.password">불일치</div>
-            <div class="pw_ck" v-if="credentials.passwordCheck === credentials.password">일치</div>
+            <div class="pw_ck left_arrange_2" v-if="credentials.passwordCheck != credentials.password">불일치</div>
+            <div class="pw_ck left_arrange_2" v-if="credentials.passwordCheck === credentials.password">일치</div>
         </div>
       <!-- 빈칸일 때, 패스워드와 확인이 같지 않을 때 버튼 비활성화 -->
         <button :disabled="!credentials.passwordCheck || !credentials.password || credentials.password != credentials.passwordCheck || !credentials.id || !credentials.nickname"
@@ -95,7 +95,62 @@ export default {
 }
 </script>
 
-<style >
+<style>
+.button--brightness2 {
+  color: rgb(217, 211, 230);
+  background-color: transparent;
+  border: 2px solid #d2ece9;
+  border-radius: 5px;
+  overflow: hidden;
+  transition: background-color 0.7s;
+  padding-top:8px;
+  width: 12%;
+  height: 7%;
+  background-color: #412297;
+
+}
+.button--brightness2:before, .button--brightness1:after {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 100%;
+  border-radius: 5px;
+
+  
+}
+.button--brightness2:before {
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.5);
+  transform: translate3d(-150%, 0, 0) skew(-15deg);
+}
+.button--brightness2:after {
+  top: 0;
+  left: 30px;
+  width: 30px;
+  background-color: #412297;
+  transform: translate3d(-100px, 0, 0) skew(-15deg);
+}
+.button--brightness2:hover {
+  border: 2px solid #fff;
+  background-color: #412297;
+  transition: background-color 0.1s, color 0.7s 0.1s, border 0.7s;
+}
+.button--brightness2:hover:before, .button--brightness1:hover:after {
+  transform: translate3d(180%, 0, 0);
+  opacity: 0.6;
+  transition: transform 0.7s;
+}
+.left_arrange_1 {
+
+  position: absolute;
+  left: 25vw;
+}
+.left_arrange_2 {
+
+  position: absolute;
+  left: 28vw;
+}
 
 .signup {
   width: 35%;
@@ -125,7 +180,7 @@ export default {
 }
 
 .id_pw {
-  width: 482px;
+  width: 26vw;
   height: 50px;
   display: flex;
   flex-direction: row;
@@ -134,7 +189,7 @@ export default {
 }
 .id_left {
 
-  width: 77px;
+  width: 4vw;
   height: 55px;
   background: rgba(49,46,46,0.5);
   border-top-left-radius: 20px;
@@ -143,7 +198,7 @@ export default {
   
 }
 .left {
-  width: 77px;
+  width: 4vw;
   height: 50px;
   background: rgba(49,46,46,0.5);
   border-top-left-radius: 20px;
@@ -151,11 +206,11 @@ export default {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 .left_image {
-  max-width: 50%;
-  padding-top: 8px;
+  width: 2vw;
+  padding-top: 0.7vh;
 }
 .right {
-  width: 405px;
+  width: 22vw;
   height: 50px;
   background: rgba(219,219,219,0.6000000238418579);
   border-top-right-radius: 20px;
@@ -163,7 +218,7 @@ export default {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 .signup_box {
- width: 482px;
+ width: 26vw;
  height: 50px;
  background: rgba(49,46,46,0.5);
  border-radius: 20px;
@@ -193,6 +248,7 @@ export default {
   letter-spacing: 0.15rem;
   padding: 10px;
   width: 100%;
+  height:98%;
 }
 .card__input:focus, .card__input:active {
   background: rgba(254, 254, 254, 0.08);
@@ -205,7 +261,7 @@ export default {
   box-sizing: border-box;
   display: block;
   font-size: 0.7rem;
-  color: #ffffff;
+  color: #c42f8b;
   margin:3px;
 }
 
