@@ -55,9 +55,15 @@ export const video = {
             })
             .catch((err) => {
                 console.log('입장에러')
-                console.log(err)
+                if (err.response.status == 404){
+                    swal('방이 존재하지 않습니다.')
+                } else if (err.response.status == 403){
+                    swal('방에 인원이 꽉찼습니다.')
+                } else if (err.response.status ==405){
+                    swal('게임이 진행중입니다.')
+                }
+                
                 this.$router.push({ name: 'MainPage' })
-                swal('방에 인원이 꽉찼습니다.')
                 this.canJoin = false;
             });
     

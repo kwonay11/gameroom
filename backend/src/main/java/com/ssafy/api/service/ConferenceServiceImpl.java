@@ -68,7 +68,8 @@ public class ConferenceServiceImpl implements ConferenceService {
             // userGame 삭제
             if (userGame.isPresent()) { userGameRepository.delete(userGame.get()); }
 
-            //컨퍼런스 history 테이블에 남겨두기 , create(0), join(1), exit(2)
+
+        //컨퍼런스 테이블에 남겨두기 , create(0), join(1), exit(2)
             ConferenceHistory conferenceHistory = ConferenceHistory.builder()
                     .conference(conference.get().getConference())
                     .action(2)
