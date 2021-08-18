@@ -3,6 +3,7 @@ import com.ssafy.api.request.ConferencePasswordGetReq;
 import com.ssafy.api.response.*;
 import com.ssafy.api.service.ConferenceService;
 import com.ssafy.api.service.UserConferenceService;
+import com.ssafy.api.service.UserGameService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.db.entity.Conference;
@@ -12,6 +13,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -37,7 +39,8 @@ public class ConferenceController {
     ConferenceService conferenceService;
     @Autowired
     UserConferenceService userConferenceService;
-
+    @Autowired
+    UserGameService userGameService;
     @Autowired
     ConferenceHistoryService conferenceHistoryService;
 
@@ -126,11 +129,16 @@ public class ConferenceController {
         System.out.println("enterconference");
         Optional<Conference> conference = conferenceService.getConferenceById(conferenceId);
         if(!conference.isPresent() || !conference.get().isActive())  // 방이 존재하지 않거나 is_active가 false일 경우
-            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "false"));
+            return ResponseEntity.status(404).body(BaseResponseBody.of(404, "invalidate room"));
 
         List<UserConference> userConferenceList = userConferenceService.getUserConferenceByConferenceId(conferenceId);
         if(userConferenceList.size() >= conference.get().getMaxUser())  // 방의 인원이 초과된 경우
-            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "false"));
+            return ResponseEntity.status(403).body(BaseResponseBody.of(403, "room full"));
+
+        User conferenceOwner = conference.get().getOwner();
+        Optional<UserGame> userGame = userGameService.getUserGameByUser(conferenceOwner);
+        if(userGame.isPresent())
+            return ResponseEntity.status(405).body(BaseResponseBody.of(405, "room gaming"));
 
         // user_conference에 user 추가
         UserConference userConference = new UserConference();
@@ -165,7 +173,7 @@ public class ConferenceController {
         //관련 confencehistory삭제 & history저장
         conferenceService.exitConference(user, conferenceid);
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "true"));
-        }
+    }
 
     @GetMapping("/info/{conferenceId}")
     @ApiOperation(value = "게임 방 정보", notes = "게임 방 정보를 response")
