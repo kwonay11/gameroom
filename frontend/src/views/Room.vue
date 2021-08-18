@@ -54,23 +54,23 @@
                         <CatchMind :session="session"/>
                      </div> -->
                      <!-- 4. 노래방 -->
-                     <div v-if='roominfo.gameId === 4'>
+                     <div v-if='roominfo.gameId === 3'>
                         <Song :session="session"/>
                      </div>
                      <!-- 6. 글자맞추기 -->
-                     <div v-else-if='roominfo.gameId === 6'>
+                     <div v-else-if='roominfo.gameId === 5'>
                         <div class="capture">
                            {{ game_ing.question }}
                         </div>
                      </div>
                      <!-- 5. 순간포착 -->
-                     <div v-else-if='roominfo.gameId === 5'>
+                     <div v-else-if='roominfo.gameId === 4'>
                         <div v-if="picture" class="picture">                           
                            <img :src="require(`@/assets/images/${picture_keyword}.jpg`)" alt="key" style="width:100%">
                         </div>
                      </div>
                      <!-- 1 : 몸으로 말해요, 3 : 고요속의 외침 -->
-                     <div v-else-if='roominfo.gameId === 1 ||  roominfo.gameId === 3'>
+                     <div v-else-if='roominfo.gameId === 1 ||  roominfo.gameId === 2'>
                         <user-video :stream-manager="mainStreamManager"/>
                      </div>
                   </div>
@@ -92,13 +92,13 @@
 
          <!--  버튼 -->
          <div class="col-md-4">
-            <Button :publisher="publisher" :roominfo="roominfo" :session="session"/>
+            <Button :publisher="publisher" :roominfo="roominfo" :session="session" :myUserNick="myUserNick"/>
             <Chatting :session="session"/>
          </div>
       </div>
 
       <app-my-modal :visible.sync="visible_result">
-         <div calss="title">
+         <div class="title">
             게임 결과
          </div>
          <table class="blue_top">
@@ -169,6 +169,10 @@ export default {
         }
     },
    created() {
+      
+      this.myUserNick = this.$store.state.userData.nickname
+      console.log('room.vue 닉네임')
+      console.log(this.myUserNick)
 
       // 게임 정보 가져와서 게임 화면 맨 위에 띄우려고
       const room_id = this.$route.params.roomid;
@@ -366,6 +370,8 @@ export default {
 
             //마지막 라운드가 아니라면 게임을 계속 진행한다. 
             else{
+               console.log('erewr')
+               console.log(this.questioner)
                this.session.signal({
                   data: JSON.stringify({
                      "gameStatus": 1, // 게임 상태 (진행중)
@@ -399,14 +405,12 @@ export default {
          if (category === 1) {
             this.roominfo.gameName = '몸으로 말해요'
          }else if (category === 2) {
-            this.roominfo.gameName = '캐치 마인드'
-         }else if (category === 3) {
             this.roominfo.gameName = '고요속의 외침'
-         }else if (category === 4) {
+         }else if (category === 3) {
             this.roominfo.gameName = '노래방'
-         }else if (category === 5) {
+         }else if (category === 4) {
             this.roominfo.gameName = '순간 포착'
-         }else if (category === 6) {
+         }else if (category === 5) {
             this.roominfo.gameName = "글자 맞추기"
          }
       },    
@@ -418,6 +422,7 @@ export default {
 
 <style >
 .title{
+  
   text-shadow: 5px 5px 70px rgba(190, 209, 212, 0.582);
   font-size: 65px;
   background: linear-gradient(to bottom,#a769d6 ,#6f92d8);

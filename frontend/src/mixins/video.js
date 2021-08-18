@@ -5,7 +5,7 @@ import swal from 'sweetalert';
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-const OPENVIDU_SERVER_URL = "https://127.0.0.1:5443";  //로컬용
+const OPENVIDU_SERVER_URL = "https://127.0.0.1:5443"; //로컬용
 // const OPENVIDU_SERVER_URL = "https://i5c104.p.ssafy.io"; // aws용 
 // const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
@@ -41,6 +41,25 @@ export const video = {
 
 
 
+
+        // 방 ID 인거 같고
+        this.mySessionId = this.$route.params.roomid
+        this.myUserName = this.$store.state.id
+        this.myUserNick = this.$store.state.userData.nickname
+            // console.log(this.mySessionId)
+            // console.log(this.myUserName)
+        this.OV = new OpenVidu();
+        // --- Init a session ---
+        this.session = this.OV.initSession();
+        this.mySessionId = this.$route.params.conferenceid;
+        console.log('세션!!!!!!!!')
+        console.log(this.$route.params)
+        console.log(this.mySessionId)
+        this.myUserName = this.$store.state.id
+
+        console.log('video.js에서 내 닉네임')
+        console.log(this.myUserNick)
+            // --- Specify the actions when events take place in the session ---
         axios.defaults.headers.common["Authorization"] = `Bearer ${this.$store.state.accessToken}`;
         // --- Connect to the session with a valid user token ---
         axios.get(`${SERVER_URL}/conferences/${this.$route.params.roomid}`)
@@ -62,25 +81,6 @@ export const video = {
                 this.canJoin = false;
             });
 
-        // 방 ID 인거 같고
-        this.mySessionId = this.$route.params.roomid
-        this.myUserName = this.$store.state.id
-        this.myUserNick = this.$store.state.userData.nickname
-            // console.log(this.mySessionId)
-            // console.log(this.myUserName)
-        this.OV = new OpenVidu();
-        // --- Init a session ---
-        this.session = this.OV.initSession();
-        this.mySessionId = this.$route.params.conferenceid;
-        console.log('세션!!!!!!!!')
-        console.log(this.$route.params)
-        console.log(this.mySessionId)
-        this.myUserName = this.$store.state.id
-        this.myUserNick = this.$store.state.userData.nickname
-        console.log('video.js에서 내 닉네임')
-        console.log(this.myUserNick)
-            // --- Specify the actions when events take place in the session ---
-
         // On every new Stream received...
         this.session.on('streamCreated', ({ stream }) => {
             const subscriber = this.session.subscribe(stream);
@@ -90,6 +90,10 @@ export const video = {
             this.members.push(subscriber)
             console.log('멤버')
             console.log(this.members)
+
+            // this.members.sort(function(a, b) {
+            //     return a.stream.connection.connectionId < b.stream.connection.connectionId ? -1 : a.stream.connection.connectionId > b.stream.connection.connectionId ? 1 : 0
+            // })
         });
 
         // On every Stream destroyed...
@@ -138,6 +142,10 @@ export const video = {
                         console.log(this.publisher)
                         this.members.push(this.publisher)
                             // --- Publish your stream ---
+
+                        // this.members.sort(function(a, b) {
+                        //     return a.stream.connection.connectionId < b.stream.connection.connectionId ? -1 : a.stream.connection.connectionId > b.stream.connection.connectionId ? 1 : 0
+                        // })
 
                         this.session.publish(this.publisher);
                     })
