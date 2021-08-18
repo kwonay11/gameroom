@@ -34,6 +34,7 @@ export default {
          chat: [],
          // chatHeight: "30vh",
          myUserNick: null,
+        
        }
     },
     props:{
@@ -70,15 +71,27 @@ export default {
             const chatting_user = event.from.data.slice(15, -2)
             console.log(chatting_user)
 
+            const aa = JSON.parse(event.data)
+            console.log('aa')
+            console.log(aa)
 
-
-            this.chat.push({
-                user: chatting_user,
-                text: content
-            });
+            if (aa.correct) {
+               this.chat.push({
+                   user: chatting_user,
+                   text: `정답은 ${aa.answer}입니다.`
+               });
+            }
+            else {
+               this.chat.push({
+                   user: chatting_user,
+                   text: content
+               });
+            }
 
 
         });
+     
+        
    },
        methods: {
         sendMessage() {

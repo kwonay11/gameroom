@@ -65,7 +65,8 @@
                      </div>
                      <!-- 5. 순간포착 -->
                      <div v-else-if='roominfo.gameId === 4'>
-                        <div v-if="picture" class="picture">                           
+                        <div v-if="picture" class="picture">          
+                     
                            <img :src="require(`@/assets/images/${picture_keyword}.jpg`)" alt="key" style="width:100%">
                         </div>
                      </div>
@@ -78,7 +79,9 @@
                <!-- 답 입력창 -->
                <!-- 출제자 일때 -->
                <div v-if="myUserNick === mainStreamManager_nickname">
-                  {{ game_ing.keyword }}
+                  <div class="card2">
+                     <p>키워드:</p>&nbsp;{{ game_ing.keyword }}
+                  </div>
                </div>
                <!-- 출제자가 아닐 때 -->
                <div v-else>
@@ -165,7 +168,7 @@ export default {
             mainStreamManager_nickname: undefined,
 
             visible_result: false,
-            game_result: undefined
+            game_result: undefined,
         }
     },
    created() {
@@ -251,6 +254,7 @@ export default {
          
          
          
+         
 
          // const main_nickname = JSON.parse(this.members[this.questioner].session.connection.data)
          // console.log('출제자닉네임')
@@ -331,6 +335,7 @@ export default {
          if(this.game_answer === this.game_ing.keyword) {
             console.log('라운드헷갈림')
             console.log(this.round)
+            
 
             // 라운드가 5면 게임종료임을 알린다
             if (this.round === 5) {
@@ -395,7 +400,23 @@ export default {
                .catch(error => {
                   console.log(error);
                })
+               
+               this.session.signal({
+                  data: JSON.stringify({
+                     "correct": true,
+                     "answer": this.game_ing.keyword
+                  }),
+                  type: 'my-chat'
+               })
+               .then(() => {
+
+               })
+               .catch((err) => {
+                  console.log(err)
+               })
+
             }
+
          }
          this.game_answer = ''
             
@@ -425,6 +446,18 @@ export default {
 </script>
 
 <style >
+.card2{
+   font-size: 35px;
+   width: 30%;
+   background: #142d61b4;
+   font-weight: bold;
+   color:skyblue;
+   margin:0 auto;
+   border-radius: 20px;
+   padding-top:2vh;
+   border: 3px solid white;
+
+}
 .title{
   
   text-shadow: 5px 5px 70px rgba(190, 209, 212, 0.582);
@@ -432,6 +465,7 @@ export default {
   background: linear-gradient(to bottom,#a769d6 ,#6f92d8);
    -webkit-background-clip: text;
    -webkit-text-fill-color: transparent;
+   
    
 }
 .player {
