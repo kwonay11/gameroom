@@ -53,7 +53,8 @@ export default {
           this.$emit('login')
           this.$store.dispatch('login', this.credentials)
           this.$router.push({ name: 'MainPage' })
-          swal("로그인 성공","방구석 게임방을 즐기세요","success");
+         
+          swal("로그인 성공","방구석 게임방 입장을 환영합니다.","success");
         })
         .catch(() => {
           swal("로그인 실패","정확히 입력해주세요","error");
