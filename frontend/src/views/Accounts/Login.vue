@@ -114,7 +114,7 @@ export default {
   
 }
 .id_right {
-  width: 405px;
+  width: 22vw;
   height: 55px;
   background: rgba(219,219,219,0.6000000238418579);
   border-top-right-radius: 20px;
@@ -122,7 +122,7 @@ export default {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 .pw_left {
-  width: 77px;
+  width: 4vw;
   height: 55px;
   background: rgba(49,46,46,0.5);
   border-top-left-radius: 20px;
@@ -130,7 +130,7 @@ export default {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 .pw_right {
-  width: 405px;
+  width: 22vw;
   height: 55px;
   background: rgba(219,219,219,0.6000000238418579);
   border-top-right-radius: 20px;
@@ -138,7 +138,7 @@ export default {
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 .login_button {
- width: 482px;
+ width: 26vw;
  height: 55px;
  background: rgba(49,46,46,0.5);
  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -162,7 +162,6 @@ padding-top: 8px;
   padding-top: 7px;
 }
 .card__input {
-  border-radius: 20px;
   box-sizing: border-box;
   color: #000000;
   display: block;

@@ -185,7 +185,7 @@ export default {
 }
 
 .row_box {
-  width: 482px;
+  width: 26vw;
   height: 60px;
   display: flex;
   flex-direction: row;
@@ -210,7 +210,7 @@ export default {
   height: 60px;
 }
 .pw_box {
-  width: 482px;
+  width: 26vw;
   height: 30px;
   /* background: rgba(219,219,219,0.6000000238418579); */
   display: flex;

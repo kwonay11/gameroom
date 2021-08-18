@@ -20,13 +20,12 @@
             <!-- 크게 보이는 화면 -->
          <div id="main-video" class="col-md-8">
             <!-- 노래방일때 -->
-            <div v-if="roominfo.gameId === 4">
+            <!-- <div v-if="roominfo.gameId === 4">
                <Song :session="session"/>
-            </div>
-            <div v-else class="player">
-
+            </div> -->
+            <div class="player">
                <!-- 시작, 레디, 화면 -->
-              <div class="main_box">
+               <div class="main_box">
                   <!-- 시작하기 버튼 -->
                   <div v-if="!start && !ready">
                      <div class="main_box_2">
@@ -54,10 +53,6 @@
                      <div v-if='roominfo.gameId === 2'>
                         <CatchMind :session="session"/>
                      </div>
-                     <!-- 1 : 몸으로 말해요, 3 : 고요속의 외침 -->
-                     <div v-else-if='roominfo.gameId === 1 ||  roominfo.gameId === 3'>
-                        <user-video :stream-manager="mainStreamManager"/>
-                     </div>
                      <!-- 4. 노래방 -->
                      <div v-else-if='roominfo.gameId === 4'>
                         <Song :session="session"/>
@@ -72,20 +67,20 @@
                      <div v-else-if='roominfo.gameId === 5'>
                         <div v-if="picture" class="picture">                           
                            <img :src="require(`@/assets/images/${picture_keyword}.jpg`)" alt="key" style="width:100%">
-                           <!-- <img src="@/assets/images/설현.jpg" alt="key" style="width:100%"> -->
                         </div>
+                     </div>
+                     <!-- 1 : 몸으로 말해요, 3 : 고요속의 외침 -->
+                     <div v-else-if='roominfo.gameId === 1 ||  roominfo.gameId === 3'>
+                        <user-video :stream-manager="mainStreamManager"/>
                      </div>
                   </div>
                </div>
+            </div >
+         <!-- 답 입력창 -->
+            <div class="answer">
+               <input v-model="game_answer" class="input_answer" placeholder="답을 입력해주세요." type="text" @keyup.enter="check_answer"/>
+            </div> 
 
-               <!-- 답 입력창 -->
-
-                  <div class="answer">
-                     <input v-model="game_answer" class="input_answer" placeholder="답을 입력해주세요." type="text" @keyup.enter="check_answer"/>
-                  </div> 
-
-
-            </div>
          </div>
 
 
@@ -95,6 +90,17 @@
             <Chatting :session="session"/>
          </div>
       </div>
+
+      <app-my-modal :visible.sync="visible_result">
+         <table class="blue_top">
+         <tr><th>닉네임</th><th>전적</th></tr>
+         <tr v-for="value in game_result" v-bind:key="value.id">
+            <td>{{ value.nickname }}</td>
+            <td> 맞춘 횟수 : {{ value.answer }} </td>
+         </tr>
+         </table>
+      </app-my-modal>
+
       <!-- test -->
       <!-- <button @click="gametest" style="color:white"> 게임테스트버튼</button> -->
    </div>
@@ -102,6 +108,7 @@
 </template>
 
 <script>
+import { video } from '@/mixins/video'
 import UserVideo from '@/components/UserVideo';
 import Chatting from '@/components/GameRoom/Chatting';
 import Button from '@/components/GameRoom/Button';
@@ -109,18 +116,14 @@ import Ready from '@/components/GameRoom/Ready';
 import Start from '@/components/GameRoom/Start';
 import CatchMind from '@/components/Game/CatchMind/CatchMind';
 import Song from '@/components/Game/Song/Song';
-// import Capture from '@/components/Game/Capture/Capture';
 import Header from '@/components/GameRoom/Header';
-import { video } from '@/mixins/video'
+import myModal from '@/components/myModal'
 import axios from 'axios'
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 // import _ from "lodash"
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-// const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
-// const OPENVIDU_SERVER_SECRET = "MY_SECRET";
-// const SERVER_URL = process.env.VUE_APP_SERVER_URL
 export default {
    name: 'Room',
 
@@ -133,6 +136,7 @@ export default {
       CatchMind,
       Song,
       Header,
+      appMyModal: myModal,
    },
 
     data() {
@@ -145,15 +149,17 @@ export default {
             game_answer: '',
             gameStatus: 0,
             round: 0,
-            questioner: undefined,
             picture: false,
-            mainStreamManager_nickname: undefined,
             picture_keyword: undefined,
-            
+
+            questioner: undefined,
+            mainStreamManager_nickname: undefined,
+
+            visible_result: false,
+            game_result: undefined
         }
     },
    created() {
-      console.log('출제자 이름')
 
       // 게임 정보 가져와서 게임 화면 맨 위에 띄우려고
       const room_id = this.$route.params.roomid;
@@ -162,8 +168,9 @@ export default {
         this.roominfo = res.data
       })
 
+
+      // 스타트 버튼이 눌렸다는 신호가 오면 사람들한데도 알려줌
       this.session.on('signal:start-btn', () => {
-         // 스타트 버튼이 눌렸다는 신호가 오면 사람들한데도 알려줌
          this.start = true
 
          setTimeout(() => {
@@ -181,6 +188,7 @@ export default {
 
       })
 
+      // 게임 중 일때
       this.session.on('signal:game', (event) => {
          // 순간포착 어케함
          this.picture = true;
@@ -202,38 +210,52 @@ export default {
          console.log('게임 키워드 데이터들')
          console.log(this.game_ing)
          this.round = this.game_ing.round
-         this.questioner = this.game_ing.questioner
-         // this.questioner = 0
 
-         // this.picture_idx = this.game_ing.question
+         console.log('게임끝나고 데이터')
+         this.game_result = this.game_ing.data
+         console.log(this.game_result)
+
+
+         // 몸으로 말하기때 필요
+         // 출제자 인덱스
+         this.questioner = this.game_ing.questioner
+         this.mainStreamManager = this.members[this.questioner]
+         console.log('ㅁㅇㅁㅇㅁㅇ')
+         console.log(this.mainStreamManager)
+
+
+
+         // 순간포착
          this.picture_keyword = this.game_ing.keyword
          
          
 
-         const main_nickname = JSON.parse(this.members[this.questioner].session.connection.data)
-         console.log('출제자닉네임')
-         console.log(main_nickname.participantPublicId)
-         this.mainStreamManager_nickname = main_nickname.participantPublicId
-         this.mainStreamManager = this.members[this.questioner]
-         console.log('메인스트리머 확인')
-         console.log(this.mainStreamManager.stream.streamId)
+         // const main_nickname = JSON.parse(this.members[this.questioner].session.connection.data)
+         // console.log('출제자닉네임')
+         // console.log(main_nickname.participantPublicId)
+         // this.mainStreamManager_nickname = main_nickname.participantPublicId
+         // this.mainStreamManager = this.members[this.questioner]
+         // console.log('메인스트리머 확인')
+         // console.log(this.mainStreamManager.stream.streamId)
 
-         this.mainStreamManager.publishAudio(false)
+         // this.mainStreamManager.publishAudio(false)
       
-   
-
 
         });
-         this.session.on('signal:game_finish', (event) => {
-            console.log('게임끝')
-            console.log(event)
-            this.ready = false
-            this.start = false
-            this.gameStatus = 2
-            this.picture = true
-            this.mainStreamManager_nickname = undefined
 
-         })
+      //   게임 끝났다고 참가자들한테 알리기
+      this.session.on('signal:game_finish', (event) => {
+         console.log('게임끝')
+         console.log(event)
+         this.ready = false
+         this.start = false
+         this.gameStatus = 2
+         this.picture = true
+         this.mainStreamManager_nickname = undefined
+         this.visible_result = !this.visible_result
+
+
+      })
 
       //   });
 
@@ -241,13 +263,6 @@ export default {
       
       console.log(this.myUserNick)
 
-
-
-      // this.session.on('signal:song', (event) => {
-      //   const id = event.data.slice(1, -1)  
-      //   console.log('session에서 받은 id : ' + id)
-      //   this.videoId = id;
-      // });
   },
   methods: {
       song(){
@@ -267,8 +282,7 @@ export default {
             console.log(err)
          })
 
-         // ----------------몸으로 말하기 시작할 때 오픈비두로 시그널 보내기-------------------
-
+         // ----------------게임 시작할 때 참가자들 한테 시그널 보내기-------------------
          this.session.signal({
             data: JSON.stringify({
                "gameStatus": 0, // 게임 상태 (게임시작)
@@ -280,7 +294,6 @@ export default {
             type: 'game'
          })
          .then(() => {
-            console.log('몸으로 말해요');
             
          })
          .catch(error => {
@@ -288,6 +301,7 @@ export default {
          })
       },
 
+      //  ----------------답 입력 맞추기---------------
       check_answer() {
          
          console.log('게임 status 바뀌는거 확인')
@@ -295,70 +309,71 @@ export default {
          if(this.game_answer === this.game_ing.keyword) {
             console.log('라운드헷갈림')
             console.log(this.round)
+
             // 라운드가 5면 게임종료임을 알린다
-            // gamestatus=2
             if (this.round === 5) {
                this.gameStatus = 2
-
-                  this.ready = false,
-                  this.start = false,
+               // 준비, 시작도 다 false로 바껴서 다시 start버튼 나오게 돌아감
+               this.ready = false,
+               this.start = false,
             
+               // 참가자들한테 게임 끝났다고 알려주기
+               this.session.signal({
+               data: JSON.stringify(this.ready, this.start),
+               type: 'game_finish'
+               })
+               .then(() => {
+                  console.log('게임끝')
+               })
+               .catch(err => {
+                  console.log(err)
+               }),
 
-                     this.session.signal({
-                     data: JSON.stringify(this.ready, this.start),
-                     type: 'game_finish'
-                     })
-                     .then(() => {
-                        console.log('게임끝')
-                     })
-                     .catch(err => {
-                        console.log(err)
-                     }),
-                     // 게임 끝 
-                     this.session.signal({
-                     data: JSON.stringify({
-                        "gameStatus": 2, // 게임 상태(게임종료)
-                        "category" :this.roominfo.gameId, // 게임 종류
-                        "round":this.round, //라운드
-                        "conferenceId": this.$route.params.roomid, //방 id
-                        "JWT":this.$store.state.accessToken //토큰?
-                     }),
-                     type: 'game'
-                     })
-                     .then(() => {
-                        console.log('게임끝')
-                        this.game_answer = ''
-                     })
-                     .catch(err => {
-                        console.log(err)
-                        // this.game_answer = ''
-                     })     
+
+               // 라운드 5까지 갔을 때 게임 끝 오픈비두 서버한테 보내기
+               this.session.signal({
+               data: JSON.stringify({
+                  "gameStatus": 2, // 게임 상태(게임종료)
+                  "category" :this.roominfo.gameId, // 게임 종류
+                  "round":this.round, //라운드
+                  "conferenceId": this.$route.params.roomid, //방 id
+                  "JWT":this.$store.state.accessToken //토큰?
+               }),
+               type: 'game'
+               })
+               .then(() => {
+                  console.log('게임끝')
+                  this.game_answer = ''
+               })
+               .catch(err => {
+                  console.log(err)
+               })     
             }
+
             //마지막 라운드가 아니라면 게임을 계속 진행한다. 
             else{
                this.session.signal({
-            data: JSON.stringify({
-               "gameStatus": 1, // 게임 상태 (진행중)
-               "category" :this.roominfo.gameId, // 게임 종류
-               "round":this.round, //라운드
-               "conferenceId": this.$route.params.roomid, //방 id
-               "JWT":this.$store.state.accessToken //토큰?
-            }),
-            type: 'game'
-            })
-            .then(() => {
-               console.log('몸으로 말해요')
-               this.game_answer = ''
-               
-            })
-            .catch(error => {
-               console.log(error);
-               // this.game_answer = ''
-            })
+                  data: JSON.stringify({
+                     "gameStatus": 1, // 게임 상태 (진행중)
+                     "category" :this.roominfo.gameId, // 게임 종류
+                     "round":this.round, //라운드
+                     "conferenceId": this.$route.params.roomid, //방 id
+                     "JWT":this.$store.state.accessToken, //토큰?
+                     "mainstream_idx": this.questioner
+                  }),
+                  type: 'game'
+               })
+               .then(() => {
+                  console.log('몸으로 말해요')
+                  this.game_answer = ''
+                  
+               })
+               .catch(error => {
+                  console.log(error);
+               })
             }
-
-            }
-            this.game_answer = ''
+         }
+         this.game_answer = ''
             
       },
   
@@ -380,15 +395,9 @@ export default {
          }else if (category === 6) {
             this.roominfo.gameName = "6"
          }
-
-      },
-      
-
-    
+      },    
    },
-
    mixins: [video]
-
 }
 
 </script>
@@ -548,6 +557,32 @@ video {
    color: #777777;
    font-weight: bold;
    border-radius: 5px;
+}
+
+
+table {
+  table-layout: auto;
+  position: relative;
+  width: 80%;
+  margin: 5% auto 0;
+}
+
+.blue_top {
+  border-collapse: collapse;
+  border-top: 3px solid #168;
+} 
+
+.blue_top tr th {
+  height: 50px;
+  border: 1px solid #ddd;
+  text-align: center;
+  background-color: white;
+
+}
+.blue_top tr td {
+  height: 60px;
+  border: 1px solid #ddd;
+  color: white
 }
 
 </style>
