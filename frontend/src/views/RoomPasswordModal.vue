@@ -3,7 +3,6 @@
     <form class="room_box">
      <div class="title">
             방 비밀번호
-            {{ $route.params.id }}
           </div>
       <div class="row_box">
         <div class="left">
@@ -70,9 +69,9 @@ export default {
 
             })
             .catch((err) => {
-              console.log('비밀번호입장에러')
+              // console.log('비밀번호입장에러')
               console.log(err)
-              swal('비밀번호가 다릅니다.')
+              swal('비밀번호가 일치하지 않습니다.')
             })
     }
   }

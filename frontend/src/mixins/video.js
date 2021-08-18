@@ -60,9 +60,7 @@ export const video = {
                 swal('방에 인원이 꽉찼습니다.')
                 this.canJoin = false;
             });
-    },
-    mounted: function() {
-
+    
         // 방 ID 인거 같고
         this.mySessionId = this.$route.params.roomid
         this.myUserName = this.$store.state.id

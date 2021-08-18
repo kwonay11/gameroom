@@ -22,7 +22,7 @@
 <script>
 const SERVER_URL = process.env.VUE_APP_SERVER_URL
 import { authComputed } from "@/store/helpers"
-// import axios from 'axios'
+import axios from 'axios'
 
 export default {
     name: "button",
@@ -38,7 +38,7 @@ export default {
     },
 
     created(){
-    this.$axios.get(`${SERVER_URL}/conferences`)
+    axios.get(`${SERVER_URL}/conferences`)
     .then((res) => {
       console.log('대기방리스트불러오기')
       console.log(res.data[0])
@@ -98,7 +98,7 @@ export default {
   font-family: 'IM_Hyemin-Bold';
   margin: auto;
   font-weight: 600;
-  display: block;
+  display: inline-block;
   font-size: 1em;
   text-decoration: none;
   background-color:rgba(37, 44, 139, 0.76);
