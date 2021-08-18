@@ -58,8 +58,8 @@ public class ConferenceServiceImpl implements ConferenceService {
 
             // 방의 마지막사람은 컨퍼런스 종료시간+ isactive = false로 하고 방을 없애준다.
             long count = userConferenceRepository.countByConferenceId(conferenceId);
+            userConferenceRepository.delete(conference.get());
             if (count == 1L) {
-                userConferenceRepository.delete(conference.get());
                 Thread t = new ExitConferenceThread(user, conferenceId, this);
                 t.start();
             }
