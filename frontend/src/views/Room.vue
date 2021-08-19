@@ -429,14 +429,19 @@ export default {
 
          if (category === 1) {
             this.roominfo.gameName = '몸으로 말해요'
+            this.roominfo.gameSummary = '한 사람이 몸으로만 단어 설명을 하고 다른 사람들이 맞추는 게임'
          }else if (category === 2) {
             this.roominfo.gameName = '고요속의 외침'
+            this.roominfo.gameSummary = '음성 없이 제시어를 설명하는 게임'
          }else if (category === 3) {
             this.roominfo.gameName = '노래방'
+            this.roominfo.gameSummary = '다른 사람의 노래를 듣고 평가해보아요!'
          }else if (category === 4) {
             this.roominfo.gameName = '순간 포착'
+            this.roominfo.gameSummary = '순식간에 지나가는 사진을 맞춰보아요!'
          }else if (category === 5) {
             this.roominfo.gameName = "글자 맞추기"
+            this.roominfo.gameSummary = '구멍 뚫린 단어를 맞춰보세요!'
          }
       },    
    },
