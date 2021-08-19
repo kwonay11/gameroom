@@ -1,20 +1,30 @@
 <template>
   <div >
     <div class="btn1" >
-      <div @click="entersession">
+      <div>
         <router-link class="btn_text1" :to="`/gameroom/${fast_start}`">
+          <div class="button1 button--brightness1" v-if="loggedIn">빠른시작</div>
+        </router-link>
+        
+        <router-link class="btn_text1" :to="{ name: 'Login' }" >
+          <div v-if="!loggedIn">
           <div class="button1 button--brightness1">빠른시작</div>
+          </div>
         </router-link>
       </div>
-      <router-link class="btn_text1" :to="{ name: 'Creatroom' }" >
-        <div class="button1 button--brightness1" v-if="loggedIn">방만들기</div>
-      </router-link>
 
-      <router-link class="btn_text1" :to="{ name: 'Login' }" >
-        <div v-if="!loggedIn">
-        <div class="button1 button--brightness1">방만들기</div>
-        </div>
+      <div>
+        <router-link class="btn_text1" :to="{ name: 'Creatroom' }" >
+          <div class="button1 button--brightness1" v-if="loggedIn">방만들기</div>
         </router-link>
+
+        <router-link class="btn_text1" :to="{ name: 'Login' }" >
+          <div v-if="!loggedIn">
+          <div class="button1 button--brightness1">방만들기</div>
+          </div>
+        </router-link>
+      </div>
+
     </div>
   </div>
 </template>
