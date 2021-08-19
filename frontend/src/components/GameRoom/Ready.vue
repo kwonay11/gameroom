@@ -142,13 +142,13 @@ body {
 .demo__text {
   position: absolute;
   left: 50%;
-  top: 0;
+  top: 10px;
   width: 500px;
   height: 100%;
   margin-left: -250px;
   text-align: center;
   line-height: 140px;
-  font-size: 100px;
+  font-size: 90px;
   color: #fff;
   text-transform: uppercase;
   letter-spacing: 15px;

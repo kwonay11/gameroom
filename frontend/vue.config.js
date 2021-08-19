@@ -1,10 +1,23 @@
 const fs = require('fs');
+// const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
   /* 배포할때 사용함 */
-  configureWebpack: {
-    
-  },
+  // configureWebpack: config => {
+  //    config.optimization = {
+  //       minimize: true, 
+  //       minimizer: [ 
+  //         new TerserPlugin({
+  //            terserOptions: {
+  //               ecma: 6,
+  //               compress: { drop_console: true },
+  //                output: { comments: false }, 
+  //               }, 
+  //             }), 
+  //           ], 
+  //         } },
+
+
     devServer: {
       // proxy:{
       //   '/openvidu': {
