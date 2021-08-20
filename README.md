@@ -1,4 +1,4 @@
-![image-로고](README.assets/로고.png)
+<hr><center><img src="README.assets/로고.png"</center><hr>
 
 > **방구석 게임방 :video_game:**
 >
