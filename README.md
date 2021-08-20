@@ -199,7 +199,7 @@
     
 * Sub PJT3-2 Jira 소멸차트
 
-    * <img src="README.assets/image-20210820095007688.png" alt="image-20210820095007688" style="zoom:25%;" />
+    * ![image-20210820094608553](README.assets/image-20210820094608553.png)
 
 <br>
 
