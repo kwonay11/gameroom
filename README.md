@@ -1,9 +1,7 @@
+![image-로고](README.assets/로고.png)
 
-
-<left><img src="README.assets/image-20210820095007688.png" width="100" height="100"></left>
-
-# 방구석 게임방
-
+> **방구석 게임방 :video_game:**
+>
 > 화상 기반 랜선 게임 플랫폼 
 
 팀장 : `권예빈`
@@ -44,7 +42,6 @@
   - [와이어프레임 링크](https://www.figma.com/file/baTkJLA1PJCApXCzz7GJdZ/방구석게임방?node-id=0%3A1) 
   
   ![방구석게임방-와이어프래임](README.assets/방구석게임방_와이어프레임.gif)
-  
 
 
 - **ERD**
@@ -127,7 +124,7 @@
 
 > 협업을 위해 gitlab, JIra, notion을 사용합니다. 
 >
-> git을 통한 형상관리, jira를 통한 이슈 티켓 관리, 노션을 통한 업무일지 작성을 하고 있습니다.
+> git을 통한 형상관리, jira를 통한 이슈 티켓 관리, 노션을 통한 기획, 업무일지 작성, 자료 공유를 하고 있습니다.
 
 
 
@@ -185,7 +182,6 @@
 - 회의를 통해 기능 추가
   
   * Sprint를 시작할 때 이슈의 Story point와 담당자를 정한다.
-  
 
 #### burn down chart
 
