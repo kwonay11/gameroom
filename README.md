@@ -1,6 +1,6 @@
 
 
-<left><img src="README.assets/image-20210820095007688.png" width="100" height="100"></left>
+<center><img src="README.assets/image-20210820095007688.png"</center>
 
 # 방구석 게임방
 
