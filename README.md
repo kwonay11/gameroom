@@ -1,4 +1,8 @@
-# 🎈 방구석 게임방
+
+
+<center><img src="README.assets/image-20210820095007688.png"</center>
+
+# 방구석 게임방
 
 > 화상 기반 랜선 게임 플랫폼 
 
@@ -195,7 +199,7 @@
     
 * Sub PJT3-2 Jira 소멸차트
 
-    * 추가~~~
+    * ![image-20210820094608553](README.assets/image-20210820094608553.png)
 
 <br>
 
