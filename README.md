@@ -36,6 +36,14 @@
 
   http://i5c104.p.ssafy.io/
 
+* 프로젝트 UCC
+
+  [UCC 링크](https://youtu.be/UeD57uk1KIs)
+
+* 최종 발표 PPT
+
+  [PPT 링크](https://docs.google.com/presentation/d/1Uloc5hDAkm2A-T41ovh6GmlzAZZW4x2c/edit?usp=sharing&ouid=115205258160317470143&rtpof=true&sd=true)
+
 * **기획 및 요구사항정의**
 
   [기획안](https://spangle-dive-0b6.notion.site/e13cee0a62d344ec914af6c46bc48b1e)
