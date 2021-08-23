@@ -1,8 +1,6 @@
 
 ![로고](README.assets/로고.png)
 
-<center><img src="README.assets/image-20210820095007688.png"</center>
-
 # 방구석 게임방
 
 > 화상 기반 랜선 게임 플랫폼 
