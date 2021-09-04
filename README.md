@@ -220,7 +220,7 @@
 
 ## Color
 
-![](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/37805c89-624d-43ba-98ca-e6f6b2587da2/.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20210819%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20210819T131151Z&X-Amz-Expires=86400&X-Amz-Signature=b45c2059f42f1b1ba4db669fa56a81fc81ecfd60bc628207b4ad8ac4958490c6&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22.png%22)
+![컬러](README.assets/컬러.png)
 
 
 
@@ -241,6 +241,10 @@
 - **담당자** :  `김윤빈`, `정동원`
 
 <br>
+
+### 서비스 아키텍처
+
+![image-20210905003722383](README.assets/image-20210905003722383.png)
 
 ## ⚙ IDE
 
